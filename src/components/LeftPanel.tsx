@@ -3,6 +3,7 @@ import { MapPin } from 'lucide-react';
 import SearchBar from './SearchBar';
 import UserCard from './UserCard';
 import ReportSection from './ReportSection';
+import peopleImage from '../assets/people.png';
 
 interface LeftPanelProps {
   inscritos: number;
@@ -15,7 +16,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({ inscritos, sinPagar, onSearch }) 
     id: i,
     name: 'Luis Marquez',
     controlNumber: '2320028',
-    imageUrl: 'https://storage.googleapis.com/tagjs-prod.appspot.com/v1/KQqb07sxCU/hif9khww_expires_30_days.png',
+    imageUrl: peopleImage,
   }));
 
   return (
@@ -36,7 +37,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({ inscritos, sinPagar, onSearch }) 
           <div className="w-full h-[1px] bg-gray-100" />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2">
           {users.map((user, index) => (
             <UserCard
               key={user.id}
