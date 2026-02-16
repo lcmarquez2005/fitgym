@@ -1,9 +1,11 @@
 import React from 'react';
 import logoImage from '../assets/logo.png';
+import Sidebar from './Sidebar';
 
 const Header: React.FC = () => {
   return (
-    <div className="flex flex-col items-center self-stretch mb-[30px]">
+    <div className="flex flex-row align-center justify-center items-center self-stretch mb-[30px]">
+          <Sidebar />
           <a href='#' className="flex items-center gap-3">
             <img
               src={logoImage}

@@ -60,7 +60,7 @@ const ChartSection: React.FC<ChartSectionProps> = ({
         </div>
       </div>
 
-      <div className="mt-2 flex gap-4 bg-gray-50 p-4 rounded-xl border border-dashed border-gray-200 font-inter">
+      <div className="mt-2 flex hidden gap-4 bg-gray-50 p-4 rounded-xl border border-dashed border-gray-200 font-inter">
         <div className="flex flex-col gap-1">
           <span className="text-[10px] text-gray-400 uppercase font-bold">Inscritos</span>
           <input 
