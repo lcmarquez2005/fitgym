@@ -1,35 +1,73 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import {
+  Notification,
+  Header,
+  Hero,
+  LeftPanel,
+  RightPanel,
+  Footer,
+} from './components';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [notification, setNotification] = useState<string | null>(null);
+
+  // Estados para que la gráfica sea dinámica
+  const [inscritos, setInscritos] = useState(55);
+  const [sinPagar, setSinPagar] = useState(2);
+
+  const showNotification = (message: string) => {
+    setNotification(message);
+    setTimeout(() => setNotification(null), 3000);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="min-h-screen bg-gray-100">
+      {/* Importación de Fuentes */}
+      <style>
+        {`
+          @import url('https://fonts.googleapis.com/css2?family=Bakbak+One&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+          
+          .font-bakbak { font-family: 'Bakbak One', sans-serif; }
+          .font-inter { font-family: 'Inter', sans-serif; }
+        `}
+      </style>
 
-export default App
+      {/* Notificación Custom */}
+      <Notification message={notification} onClose={() => setNotification(null)} />
+
+      {/* Contenedor principal */}
+      <div className="max-w-8xl mx-auto bg-gray-100 pt-[30px] px-4 md:px-[50px] pb-12">
+        {/* Header / Logo */}
+        <Header />
+
+        {/* Hero Section */}
+        <Hero />
+
+        {/* Main Content Grid */}
+        <div className="flex flex-col lg:flex-row items-start self-stretch mb-[21px] gap-8">
+          
+          {/* Left Panel */}
+          <LeftPanel
+            inscritos={inscritos}
+            sinPagar={sinPagar}
+            onSearch={() => showNotification("Buscando usuario...")}
+          />
+
+          {/* Right Panel */}
+          <RightPanel
+            inscritos={inscritos}
+            sinPagar={sinPagar}
+            onInscritosChange={setInscritos}
+            onSinPagarChange={setSinPagar}
+          />
+        </div>
+
+        {/* Footer */}
+        <Footer />
+      </div>
+    </div>
+  );
+};
+
+export default App;
