@@ -1,6 +1,6 @@
 import React from 'react';
 import logoImage from '../assets/logo.png';
-import Sidebar from './Sidebar';
+import Sidebar from './Sidebar.tsx';
 
 const Header: React.FC = () => {
   return (
