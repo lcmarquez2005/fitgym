@@ -1,3 +1,4 @@
+// components/Sidebar.tsx (agregar estado para controlar el modal)
 import React, { useState } from 'react';
 import { 
   LayoutDashboard, 
@@ -9,6 +10,7 @@ import {
   Menu,
   X
 } from 'lucide-react';
+import { AltaUsuario } from './client/AltaUsuario';
 
 interface SidebarProps {
   userName?: string;
@@ -26,6 +28,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   onLogout 
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showAltaUsuario, setShowAltaUsuario] = useState(false);
 
   const menuItems = [
     { name: "Dashboard", icon: <LayoutDashboard size={24} /> },
@@ -37,13 +40,23 @@ const Sidebar: React.FC<SidebarProps> = ({
   const toggleSidebar = () => setIsOpen(!isOpen);
 
   const handleNavigation = (name: string) => {
-    onNavigate?.(name);
-    setIsOpen(false); // Cerrar al navegar
+    if (name === "Alta de Usuario") {
+      setShowAltaUsuario(true);
+      setIsOpen(false);
+    } else {
+      onNavigate?.(name);
+      setIsOpen(false);
+    }
+  };
+
+  const handleUserCreated = (userData: any) => {
+    console.log('Usuario creado exitosamente:', userData);
+    // Aquí puedes agregar lógica adicional como actualizar una lista, mostrar notificación, etc.
   };
 
   return (
     <>
-      {/* Botón Hamburguesa - Siempre visible o posicionado según tu layout */}
+      {/* Botón Hamburguesa */}
       <button 
         onClick={toggleSidebar}
         className="fixed top-6 left-6 z-40 p-3 bg-white opacity-[0.8] rounded-full shadow-lg hover:bg-gray-50 transition-all border border-gray-100 text-black active:scale-95"
@@ -52,7 +65,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         <Menu size={28} />
       </button>
 
-      {/* Backdrop (Fondo oscuro al abrir) */}
+      {/* Backdrop */}
       {isOpen && (
         <div 
           className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity"
@@ -60,14 +73,14 @@ const Sidebar: React.FC<SidebarProps> = ({
         />
       )}
 
-      {/* Sidebar con posicionamiento absolute/fixed */}
+      {/* Sidebar */}
       <aside 
         className={`fixed top-0 left-0 w-[320px] z-50 bg-transparent font-inter transition-transform duration-300 ease-in-out transform 
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div className="h-full p-6">
           <div 
-            className="flex flex-col items-start bg-white h-full py-8 px-6 rounded-[26px] border border-gray-100 relative" 
+            className="flex flex-col items-start bg-white h-full py-8 px-6 rounded-[26px] border border-gray-100 relative"
             style={{ boxShadow: "5px 6px 17px rgba(0, 0, 0, 0.15)" }}
           >
             {/* Botón Cerrar interno */}
@@ -130,13 +143,21 @@ const Sidebar: React.FC<SidebarProps> = ({
               onClick={onLogout}
             >
               <LogOut size={20} />
-              <span className="text-[20px] font-bakbak" >
+              <span className="text-[20px] font-bakbak">
                 Log Out
               </span>
             </button>
           </div>
         </div>
       </aside>
+
+      {/* Modal de Alta de Usuario */}
+      {showAltaUsuario && (
+        <AltaUsuario 
+          onClose={() => setShowAltaUsuario(false)}
+          onUserCreated={handleUserCreated}
+        />
+      )}
     </>
   );
 };
