@@ -1,5 +1,6 @@
 // components/Sidebar.tsx (agregar estado para controlar el modal)
 import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   UserPlus, 
@@ -23,12 +24,28 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ 
   userName = "Luis", 
   role = "Admin", 
-  activeTab = "Dashboard",
+  activeTab: propActiveTab = "Dashboard",
   onNavigate,
   onLogout 
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showAltaUsuario, setShowAltaUsuario] = useState(false);
+  const location = useLocation();
+  // Sincroniza el tab activo con la ruta
+  const getActiveTab = () => {
+    if (location.pathname.startsWith('/erp')) return 'Dashboard';
+    if (location.pathname.startsWith('/plans')) return 'Planes';
+    if (location.pathname.startsWith('/control')) return 'Control Acceso';
+    if (location.pathname.startsWith('/alta')) return 'Alta de Usuario';
+    return propActiveTab;
+  };
+  const [activeTab, setActiveTab] = useState<string>('Dashboard');
+
+  // Actualiza el tab activo cuando cambia la ruta
+  React.useEffect(() => {
+    setActiveTab(getActiveTab());
+  }, [location.pathname]);
+  const navigate = useNavigate();
 
   const menuItems = [
     { name: "Dashboard", icon: <LayoutDashboard size={24} /> },
@@ -40,8 +57,16 @@ const Sidebar: React.FC<SidebarProps> = ({
   const toggleSidebar = () => setIsOpen(!isOpen);
 
   const handleNavigation = (name: string) => {
+    setActiveTab(name);
     if (name === "Alta de Usuario") {
       setShowAltaUsuario(true);
+      setIsOpen(false);
+    } else if(name === "Dashboard") {
+      navigate('/erp');
+      setIsOpen(false);
+    }  else if(name === "Planes") {
+      setActiveTab('Planes')
+      navigate('/plans');
       setIsOpen(false);
     } else {
       onNavigate?.(name);
@@ -64,6 +89,14 @@ const Sidebar: React.FC<SidebarProps> = ({
       >
         <Menu size={28} />
       </button>
+
+      {/* Botón para ir a LandingPage */}
+      {/* <button
+        onClick={() => { setIsOpen(false); navigate('/'); }}
+        className="fixed top-20 left-6 z-40 p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all border border-blue-700 active:scale-95"
+      >
+        Ir a LandingPage
+      </button> */}
 
       {/* Backdrop */}
       {isOpen && (
@@ -142,7 +175,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               className="flex items-center justify-center w-full bg-[#606DE5] hover:bg-[#4f5bd1] text-white py-4 px-6 rounded-2xl border-0 transition-all shadow-lg active:scale-95 gap-2"
               onClick={onLogout}
             >
-              <LogOut size={20} />
+              <LogOut size={20} onClick={() => navigate('/')} />
               <span className="text-[20px] font-bakbak">
                 Log Out
               </span>

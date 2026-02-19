@@ -4,7 +4,7 @@ import logoImage from '../assets/logo.png';
 
 const Footer: React.FC = () => {
   return (
-    <div className="self-stretch bg-black p-8 md:p-[70px] mt-12 rounded-[40px] shadow-xl font-bakbak">
+    <div className="self-stretch bg-black p-8 md:p-[70px] mt-12 rounded-[40px] w-[90%] mx-auto shadow-xl font-bakbak">
       <div className="flex flex-col md:flex-row items-start self-stretch mb-[40px] gap-12">
         <div className="flex flex-1 flex-col items-start gap-7">
           <a href='#' className="flex items-center gap-3">

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import Footer from "../../components/Footer"
+import Header from "../../components/Header"
 
 export default function SocioPage() {
+
   const [extras, setExtras] = useState("");
 
   // URLs de tus imágenes de Figma
@@ -17,26 +20,7 @@ export default function SocioPage() {
     <div className="flex flex-col min-h-screen bg-[#CCF1FF] font-sans">
       
       {/* --- HEADER --- */}
-      <header className="flex items-center justify-between px-6 py-4">
-        {/* Icono Menú/Atrás de Figma */}
-        <img 
-            src={images.menuIcon} 
-            className="w-8 h-8 object-contain cursor-pointer" 
-            alt="Menu"
-        />
-        
-        <div className="flex items-center gap-3">
-          {/* Logo Header de Figma */}
-          <img 
-            src={images.logoHeader} 
-            className="w-10 h-10 object-contain" 
-            alt="Logo"
-          />
-          <span className="text-black text-2xl font-black tracking-wide">FITGYM</span>
-        </div>
-        
-        <div className="w-8"></div>
-      </header>
+        <Header />
 
       {/* --- CONTENIDO PRINCIPAL --- */}
       <div className="flex flex-col items-center w-full max-w-4xl mx-auto px-4 pb-10 gap-6">
@@ -170,50 +154,10 @@ export default function SocioPage() {
             </button>
 
             {/* --- FOOTER NEGRO --- */}
-            <div className="bg-black rounded-[28px] p-8 text-white mt-8">
-                <div className="flex flex-col md:flex-row justify-between gap-8 mb-8">
-                    <div className="max-w-xs">
-                         <div className="flex items-center gap-3 mb-4">
-                            {/* Logo Footer de Figma */}
-                            <img 
-                                src={images.logoFooter} 
-                                className="w-8 h-8 object-contain" 
-                                alt="Fitcamp"
-                            />
-                            <span className="text-xl font-bold">FITCAMP</span>
-                         </div>
-                         <p className="text-xs text-gray-400 leading-relaxed">
-                            Largest gym in indonesia, top-tier facilities, premium amenities.
-                         </p>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-8 text-xs text-gray-400">
-                        <div className="flex flex-col gap-2">
-                            <span className="font-bold text-white">More to Know</span>
-                            <span>Blog</span>
-                            <span>Subscription</span>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <span className="font-bold text-white">Contact Us</span>
-                            <span>021-0892-2323</span>
-                            <span>admin@fitcamp.com</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div className="h-[1px] bg-white/20 w-full mb-4"></div>
-                
-                <div className="flex justify-between text-[10px] text-gray-500">
-                    <span>2024 fitcampcorporation</span>
-                    <div className="flex gap-4">
-                        <span>Terms</span>
-                        <span>Privacy</span>
-                    </div>
-                </div>
-            </div>
 
         </div>
       </div>
+            <Footer />
     </div>
   );
 }

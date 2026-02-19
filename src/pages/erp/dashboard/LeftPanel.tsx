@@ -1,9 +1,9 @@
 import React from 'react';
 import { MapPin } from 'lucide-react';
-import SearchBar from './SearchBar';
-import UserCard from './UserCard';
+import SearchBar from '../../../components/SearchBar';
+import UserCard from '../../../components/UserCard';
 import ReportSection from './ReportSection';
-import peopleImage from '../assets/people.png';
+import peopleImage from '../../../assets/people.png';
 
 interface LeftPanelProps {
   inscritos: number;

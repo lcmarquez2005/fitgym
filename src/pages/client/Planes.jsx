@@ -1,20 +1,22 @@
 import React from "react";
-import Navbar from "../components/Navbar";
-import PricingCard from "../components/PricingCard";
-import Footer from "../components/Footer";
-import { useNavigate } from 'react-router-dom';
+import Navbar from "../../components/Navbar";
+import PricingCard from "../../components/PricingCard";
+import Footer from "../../components/Footer";
+import Sidebar from "../../components/Sidebar";
 
 const LandingPage = () => {
   // 1. Inicializamos la función de navegación
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // 2. Creamos la función que se ejecutará al hacer clic en cualquier plan
   const handleBuy = () => {
-    navigate('/checkout');
+    // navigate('/checkout');
   };
 
   return (
+
     <div className="flex flex-col bg-[#F6F8FE] min-h-screen">
+      <Sidebar />
       <Navbar />
 
       <div className="flex flex-col items-center py-16 px-4 text-center">
@@ -33,7 +35,7 @@ const LandingPage = () => {
           title="FITPLAN REGULAR"
           price={"MXN 800.00/\n3 Meses"}
           imageSrc="/images/plan1.png"
-          onBuy={handleBuy} // <--- ¡Esto es clave!
+          // onBuy={handleBuy} // <--- ¡Esto es clave!
           benefits={[
             "Acceso a todas las áreas de pesas",
             "Sesión personal de entrenamiento",
@@ -45,7 +47,7 @@ const LandingPage = () => {
           title="SUPER FITPLAN"
           price={"MXN 1100.00/\n3 Meses"}
           imageSrc="/images/plan2.png"
-          onBuy={handleBuy}
+          // onBuy={handleBuy}
           benefits={[
             "Acceso a todas las áreas del gimnasio",
             "Rutina personalizada y asesor de dieta",
@@ -58,7 +60,7 @@ const LandingPage = () => {
           title="MEGA FITPLAN"
           price={"MXN 3500.00/\n12 Meses"}
           imageSrc="/images/plan3.png"
-          onBuy={handleBuy}
+          // onBuy={handleBuy}
           benefits={[
             "Acceso al área de SPA",
             "Clases grupales (Boxeo, Yoga, etc)",

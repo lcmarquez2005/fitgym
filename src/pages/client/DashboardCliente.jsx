@@ -1,5 +1,7 @@
 import React from "react";
-import Sidebar from "../components/Sidebar.tsx";
+import Sidebar from "../../components/Sidebar.tsx";
+import Footer from "../../components/Footer.tsx";
+import Navbar from "../../components/Navbar.jsx";
 
 export default function Dashboard() {
   
@@ -118,50 +120,7 @@ export default function Dashboard() {
         </div>
 
         {/* --- FOOTER NEGRO --- */}
-        <div className="bg-black rounded-[30px] p-12 text-white mx-10 mb-8 mt-auto">
-            <div className="flex flex-col md:flex-row justify-between gap-12">
-                
-                {/* Logo Columna */}
-                <div className="flex flex-col gap-4 max-w-sm">
-                    <div className="flex items-center gap-3">
-                        <img src={images.logoFooter} className="w-10 h-10" alt="Logo" />
-                        <span className="text-2xl font-bold tracking-wide">FITCAMP</span>
-                    </div>
-                    <p className="text-sm text-gray-400 leading-relaxed">
-                        Largest gym in indonesian, top-tier facilities, premium amenities, and nationwide access to all gym locations.
-                    </p>
-                </div>
-
-                {/* Enlaces Columnas */}
-                <div className="flex gap-16">
-                    <div className="flex flex-col gap-3">
-                        <span className="text-sm font-bold text-white mb-1">More to Know</span>
-                        {['Blog', 'Subscription', 'Testimonial', 'About'].map(item => (
-                            <span key={item} className="text-xs text-gray-400 cursor-pointer hover:text-white transition-colors">{item}</span>
-                        ))}
-                    </div>
-                    <div className="flex flex-col gap-3">
-                        <span className="text-sm font-bold text-white mb-1">Contact Us</span>
-                        <span className="text-xs text-gray-400">021-0892-2323</span>
-                        <span className="text-xs text-gray-400">@fitcamp.body.fit</span>
-                        <span className="text-xs text-gray-400">admin@fitcamp.com</span>
-                    </div>
-                </div>
-            </div>
-
-            <div className="h-[1px] bg-white/10 w-full my-8"></div>
-
-            <div className="flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
-                <span>2024 fitcampcorporation</span>
-                <div className="flex gap-6 mt-4 md:mt-0">
-                    <span className="cursor-pointer hover:text-white">Terms of Services</span>
-                    <span className="cursor-pointer hover:text-white">Privacy Policy</span>
-                    <span className="cursor-pointer hover:text-white">Cookies</span>
-                    <span className="cursor-pointer hover:text-white">Legal</span>
-                </div>
-            </div>
-        </div>
-
+      <Footer />
       </div>
     </div>
   );
