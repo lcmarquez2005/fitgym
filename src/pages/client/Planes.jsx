@@ -1,10 +1,9 @@
-import React from "react";
 import Navbar from "../../components/Navbar";
 import PricingCard from "../../components/PricingCard";
 import Footer from "../../components/Footer";
 import Sidebar from "../../components/Sidebar";
 
-const LandingPage = () => {
+const Planes = () => {
   // 1. Inicializamos la función de navegación
   // const navigate = useNavigate();
 
@@ -76,4 +75,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default Planes;

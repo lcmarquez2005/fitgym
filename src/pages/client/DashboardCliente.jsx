@@ -23,18 +23,18 @@ export default function Dashboard() {
           y luego el contenido tendrá fondo blanco o gris claro según corresponda */}
       
       {/* 1. SIDEBAR IZQUIERDO */}
-      <Sidebar />
 
       {/* 2. CONTENIDO DERECHA */}
-      <div className="flex-1 flex flex-col h-full overflow-y-auto bg-[#F6F8FE] rounded-tl-[40px]">
+      <div className="flex-1 flex flex-col h-full overflow-y-auto bg-[#F6F8FE]">
         
+        <Navbar/>
         {/* HEADER AZUL (Ahora es parte del fondo superior, pero ponemos el título aquí) */}
         <div className="bg-[#9FDDFF] w-full py-10 px-12">
             <h1 className="text-black text-4xl font-normal opacity-80">Menu principal de opciones</h1>
         </div>
 
         {/* CONTENEDOR DE TARJETAS */}
-        <div className="flex flex-col xl:flex-row gap-6 px-10 -mt-6 pb-12 items-stretch">
+        <div className="flex flex-col xl:flex-row gap-6 px-10 mt-6 pb-12 items-stretch">
             
             {/* --- TARJETA 1: Usuario (Izquierda) --- */}
             <div className="bg-white rounded-[32px] p-8 shadow-sm flex flex-col items-center w-full xl:w-5/12 relative">

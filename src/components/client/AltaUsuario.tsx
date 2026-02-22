@@ -1,5 +1,5 @@
 // components/client/AltaUsuario.tsx
-import { useState } from "react";
+import { useState, type JSX } from "react";
 import { 
   X, 
   Fingerprint, 
@@ -7,11 +7,7 @@ import {
   Camera,
   ChevronUp,
   ChevronDown,
-  User,
-  Upload,
-  Image as ImageIcon
 } from 'lucide-react';
-import logo from "../../assets/logo.png";
 import frame10 from "../../assets/frame-10.png";
 
 

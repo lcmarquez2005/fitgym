@@ -66,7 +66,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       setIsOpen(false);
     }  else if(name === "Planes") {
       setActiveTab('Planes')
-      navigate('/plans');
+      navigate('/planes');
       setIsOpen(false);
     } else {
       onNavigate?.(name);
