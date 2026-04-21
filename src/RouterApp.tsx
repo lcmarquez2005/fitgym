@@ -1,0 +1,35 @@
+import { Routes, Route } from 'react-router-dom';
+// @ts-ignore
+import Planes from './pages/client/Planes.jsx';
+// @ts-ignore
+import LandingPage from './pages/client/Bienvenida.jsx';
+// @ts-ignore
+import Dashboard from './pages/client/DashboardCliente.jsx';
+// @ts-ignore
+import SocioPage from './pages/client/SocioPage.jsx';
+// @ts-ignore
+import CheckoutPage from './pages/client/CheckoutPage.jsx';
+// @ts-ignore
+import TicketPage from './pages/client/TicketPage.jsx';
+// @ts-ignore
+import EstadoCuenta from './pages/client/EstadoCuenta.jsx';
+import App from './App';
+
+const RouterApp = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/planes" element={<Planes />} />
+
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/socio" element={<SocioPage />} />
+      <Route path="/checkout" element={<CheckoutPage />} />
+      <Route path="/ticket" element={<TicketPage />} />
+      <Route path="/estado-cuenta" element={<EstadoCuenta />} />
+      {/* Ruta para la página original con todos los componentes */}
+      <Route path="/erp" element={<App />} />
+    </Routes>
+  );
+};
+
+export default RouterApp;
