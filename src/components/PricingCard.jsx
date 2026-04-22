@@ -1,6 +1,9 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom';
 
 const PricingCard = ({ title, price, benefits, imageSrc, buttonText }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-1 flex-col items-start bg-white py-8 rounded-3xl shadow-lg min-w-[300px]">
       <img
@@ -27,9 +30,9 @@ const PricingCard = ({ title, price, benefits, imageSrc, buttonText }) => {
       </div>
 
       <div className="flex flex-col md:flex-row justify-between items-center w-full px-8 gap-4 mt-auto">
-        <button 
+        <button
           className="bg-[#606DE5] py-3 px-6 rounded-3xl w-full md:w-auto hover:bg-[#4a55c2] transition"
-          onClick={() => alert(`Seleccionaste: ${title}`)}
+          onClick={() => navigate('/checkout', { state: { nombrePlan: title, costo: price } })}
         >
           <span className="text-white text-base font-bold">{buttonText || "¡Lo quiero!"}</span>
         </button>
