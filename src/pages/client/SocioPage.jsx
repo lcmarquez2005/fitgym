@@ -54,25 +54,26 @@ export default function SocioPage() {
 
   // ── BÚSQUEDA ──────────────────────────────────────────────
   const buscarSocio = async () => {
-    if (!busqueda.trim()) return;
-    setBuscando(true);
-    setSinResultados(false);
-    setResultados([]);
-    try {
-      const urlBase = import.meta.env.VITE_API_URL;
-      const res = await fetch(`${urlBase}/socios/buscar?q=${encodeURIComponent(busqueda)}`);
-      const data = await res.json();
-      if (data.length === 0) {
-        setSinResultados(true);
-      } else {
-        setResultados(data);
-      }
-    } catch (err) {
-      console.error("Error al buscar:", err);
-    } finally {
-      setBuscando(false);
+  if (!busqueda.trim()) return;
+  setBuscando(true);
+  setSinResultados(false);
+  setResultados([]);
+  try {
+    const urlBase = import.meta.env.VITE_API_URL;
+    const res = await fetch(`${urlBase}/socios/buscar?q=${encodeURIComponent(busqueda)}`);
+    const json = await res.json();
+    const lista = Array.isArray(json) ? json : json.data ?? []; // compatible con ambos
+    if (lista.length === 0) {
+      setSinResultados(true);
+    } else {
+      setResultados(lista);
     }
-  };
+  } catch (err) {
+    console.error("Error al buscar:", err);
+  } finally {
+    setBuscando(false);
+  }
+};
 
   const seleccionarSocio = (socio) => {
     setFormData({
