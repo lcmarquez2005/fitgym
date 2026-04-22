@@ -37,6 +37,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     if (location.pathname.startsWith('/plans')) return 'Planes';
     if (location.pathname.startsWith('/control')) return 'Control Acceso';
     if (location.pathname.startsWith('/alta')) return 'Alta de Usuario';
+    if (location.pathname.startsWith('/socio')) return 'Socio';
     return propActiveTab;
   };
   const [activeTab, setActiveTab] = useState<string>('Dashboard');
