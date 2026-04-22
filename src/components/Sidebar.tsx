@@ -9,7 +9,8 @@ import {
   LogOut,
   Settings,
   Menu,
-  X
+  X,
+  Users
 } from 'lucide-react';
 import { AltaUsuario } from './client/AltaUsuario';
 
@@ -39,18 +40,19 @@ const Sidebar: React.FC<SidebarProps> = ({
     if (location.pathname.startsWith('/alta')) return 'Alta de Usuario';
     if (location.pathname.startsWith('/socio')) return 'Socio';
     return propActiveTab;
-  };
-  const [activeTab, setActiveTab] = useState<string>('Dashboard');
+  };const [activeTab, setActiveTab] = useState<string>('Dashboard');
 
   // Actualiza el tab activo cuando cambia la ruta
   React.useEffect(() => {
     setActiveTab(getActiveTab());
   }, [location.pathname]);
+  
   const navigate = useNavigate();
 
   const menuItems = [
     { name: "Dashboard", icon: <LayoutDashboard size={24} /> },
     { name: "Alta de Usuario", icon: <UserPlus size={24} /> },
+    { name: "Socio", icon: <Users size={24} /> }, // <-- NUEVO: Agregamos la opción Socio al menú
     { name: "Planes", icon: <Dumbbell size={24} /> },
     { name: "Control Acceso", icon: <ShieldCheck size={24} /> },
   ];
@@ -65,9 +67,13 @@ const Sidebar: React.FC<SidebarProps> = ({
     } else if(name === "Dashboard") {
       navigate('/erp');
       setIsOpen(false);
-    }  else if(name === "Planes") {
+    } else if(name === "Planes") {
       setActiveTab('Planes')
       navigate('/planes');
+      setIsOpen(false);
+    } else if (name === "Socio") { // <-- NUEVO: Agregamos la navegación para Socio
+      setActiveTab('Socio');
+      navigate('/socio');
       setIsOpen(false);
     } else {
       onNavigate?.(name);
@@ -90,14 +96,6 @@ const Sidebar: React.FC<SidebarProps> = ({
       >
         <Menu size={28} />
       </button>
-
-      {/* Botón para ir a LandingPage */}
-      {/* <button
-        onClick={() => { setIsOpen(false); navigate('/'); }}
-        className="fixed top-20 left-6 z-40 p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all border border-blue-700 active:scale-95"
-      >
-        Ir a LandingPage
-      </button> */}
 
       {/* Backdrop */}
       {isOpen && (
@@ -174,9 +172,12 @@ const Sidebar: React.FC<SidebarProps> = ({
             {/* Botón Log Out */}
             <button 
               className="flex items-center justify-center w-full bg-[#606DE5] hover:bg-[#4f5bd1] text-white py-4 px-6 rounded-2xl border-0 transition-all shadow-lg active:scale-95 gap-2"
-              onClick={onLogout}
+              onClick={() => {
+                if (onLogout) onLogout();
+                navigate('/');
+              }}
             >
-              <LogOut size={20} onClick={() => navigate('/')} />
+              <LogOut size={20} />
               <span className="text-[20px] font-bakbak">
                 Log Out
               </span>
