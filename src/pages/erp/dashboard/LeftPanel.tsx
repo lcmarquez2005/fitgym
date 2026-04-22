@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { MapPin } from 'lucide-react';
 import SearchBar from '../../../components/SearchBar';
 import UserCard from '../../../components/UserCard';
 import ReportSection from './ReportSection';
 import peopleImage from '../../../assets/people.png';
+import { UserService, type User } from '../../../services/user.service';
 
 interface LeftPanelProps {
   inscritos: number;
@@ -12,12 +13,46 @@ interface LeftPanelProps {
 }
 
 const LeftPanel: React.FC<LeftPanelProps> = ({ inscritos, sinPagar, onSearch }) => {
-  const users = Array.from({ length: 7 }, (_, i) => ({
-    id: i,
-    name: 'Luis Marquez',
-    controlNumber: '2320028',
-    imageUrl: peopleImage,
-  }));
+  const [users, setUsers] = useState<User[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    loadUsers();
+  }, []);
+
+  const loadUsers = async () => {
+    try {
+      const data = await UserService.getAll();
+      setUsers(data);
+      setAllUsers(data);
+      setError(null);
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
+
+  const handleSearch = async (searchTerm: string) => {
+    if (!searchTerm.trim()) {
+      setUsers(allUsers);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const results = await UserService.search(searchTerm);
+      setUsers(results);
+    } catch (error) {
+      console.error("Error buscando usuarios:", error);
+      setError("Error en la búsqueda");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="flex flex-1 flex-col bg-white p-6 md:p-8 gap-8 rounded-3xl shadow-sm border border-gray-200">
@@ -33,7 +68,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({ inscritos, sinPagar, onSearch }) 
 
       <div className="flex flex-col self-stretch gap-6">
         <div className="flex flex-col self-stretch gap-6">
-          <SearchBar onSearch={onSearch} />
+          <SearchBar onSearch={handleSearch} />
           <div className="w-full h-[1px] bg-gray-100" />
         </div>
 
@@ -42,9 +77,9 @@ const LeftPanel: React.FC<LeftPanelProps> = ({ inscritos, sinPagar, onSearch }) 
             <UserCard
               key={user.id}
               index={index}
-              name={user.name}
-              controlNumber={user.controlNumber}
-              imageUrl={user.imageUrl}
+              name={user.name + " " + user.lastName}
+              controlNumber={user.noControl}
+              imageUrl={peopleImage}
             />
           ))}
         </div>
