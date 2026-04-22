@@ -87,7 +87,6 @@ const LeftPanel: React.FC<LeftPanelProps> = ({ inscritos, sinPagar, onSearch }) 
       </div>
 
       <ReportSection inscritos={inscritos} sinPagar={sinPagar} />
-      <AltaUsuario/>
     </div>
   );
 };
