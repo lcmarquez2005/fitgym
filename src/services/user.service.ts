@@ -6,9 +6,25 @@ export interface User {
     name: string;
     lastName: string;
     noControl: string;
-    urlImage: string;
+    fotoPerfil: string;
+    huellaDigital: string;
+    rol: string;
 }
 
+export interface UserPost {
+    name: string;
+    lastName: string;
+    noControl: string;
+    fotoPerfil: string;
+    huellaDigital: string;
+    rol: string;
+}
+
+export interface ApiResponse {
+    message: string;
+    success: boolean;
+    data: any;
+}
 export const UserService = {
     // Petición GET para obtener todos los usuarios
     getAll: async (): Promise<User[]> => {
@@ -25,6 +41,23 @@ export const UserService = {
         const response = await fetch(`${BASE_URL}/users/search?q=${encodeURIComponent(query)}`);
 
         if (!response.ok) throw new Error('Error en la búsqueda');
+
+        return await response.json();
+    },
+
+    create: async (userData: UserPost): Promise<ApiResponse> => {
+        const response = await fetch(`${BASE_URL}/users`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', // OBLIGATORIO para que Spring entienda el JSON
+            },
+            body: JSON.stringify(userData),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Error al crear usuario');
+        }
 
         return await response.json();
     }

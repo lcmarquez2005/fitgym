@@ -5,6 +5,7 @@ import UserCard from '../../../components/UserCard';
 import ReportSection from './ReportSection';
 import peopleImage from '../../../assets/people.png';
 import { UserService, type User } from '../../../services/user.service';
+import { AltaUsuario } from './Alta';
 
 interface LeftPanelProps {
   inscritos: number;
@@ -86,6 +87,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({ inscritos, sinPagar, onSearch }) 
       </div>
 
       <ReportSection inscritos={inscritos} sinPagar={sinPagar} />
+      <AltaUsuario/>
     </div>
   );
 };
