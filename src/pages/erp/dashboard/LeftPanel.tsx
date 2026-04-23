@@ -5,7 +5,7 @@ import UserCard from '../../../components/UserCard';
 import ReportSection from './ReportSection';
 import peopleImage from '../../../assets/people.png';
 import { UserService, type User } from '../../../services/user.service';
-import { AltaUsuario } from './Alta';
+// import { AltaUsuario } from './Alta';
 
 interface LeftPanelProps {
   inscritos: number;
@@ -13,10 +13,10 @@ interface LeftPanelProps {
   onSearch: () => void;
 }
 
-const LeftPanel: React.FC<LeftPanelProps> = ({ inscritos, sinPagar, onSearch }) => {
+const LeftPanel: React.FC<LeftPanelProps> = ({ inscritos, sinPagar }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [ setLoading] = useState<boolean>(false);
   const [allUsers, setAllUsers] = useState<User[]>([]);
 
   useEffect(() => {
