@@ -20,31 +20,28 @@ export const LoginPage = () => {
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError('');
-        setLoading(true);
+    e.preventDefault();
+    setError('');
+    setLoading(true);
 
-        try {
-            const response = await AuthService.login(formData);
+    try {
+        const response = await AuthService.login(formData);
 
-            if (response.success && response.data) {
-                // Guardar en contexto
-                login(response.data.user, response.data.token);
-                // Redirigir según rol
-                if (response.data.user.rol === 'CLIENTE') {
-                    navigate('/dashboard'); // Landing page del socio
-                } else {
-                    navigate('/erp'); // ERP
-                }
-            } else {
-                setError(response.message || 'Error al iniciar sesión');
-            }
-        } catch (err: any) {
-            setError(err.message || 'Error de conexión');
-        } finally {
-            setLoading(false);
+        if (response.success && response.data) {
+            // Guardar en contexto
+            login(response.data.user, response.data.token);
+            
+            // Redirigir SIEMPRE al ERP
+            navigate('/erp');
+        } else {
+            setError(response.message || 'Error al iniciar sesión');
         }
-    };
+    } catch (err: any) {
+        setError(err.message || 'Error de conexión');
+    } finally {
+        setLoading(false);
+    }
+};
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
