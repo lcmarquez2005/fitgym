@@ -21,6 +21,7 @@ import TicketPage from './pages/client/TicketPage.jsx';
 import App from './App';
 // @ts-ignore
 import SocioPage from './pages/client/SocioPage.jsx';
+import FinanzasPage from './pages/erp/finanzas/FinanzasPage';
 
 // =============================================
 // PÁGINAS DE AUTENTICACIÓN
@@ -57,21 +58,26 @@ const RouterApp = () => {
                 {/* Solo accesibles con token JWT válido          */}
                 {/* ============================================= */}
                 <Route
-                    path="*"
+                    path="/erp"
                     element={
-                        <div className="min-h-screen flex items-center justify-center">
-                            <div className="text-center">
-                                <h1 className="text-6xl font-bold text-gray-300">404</h1>
-                                <p className="text-xl text-gray-500 mt-4">Página no encontrada</p>
-                            </div>
-                        </div>
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                            <App />
+                        </ProtectedRoute>
                     }
                 />
                 <Route
                     path="/socio"
                     element={
-                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH']}>
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
                             <SocioPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/erp/finanzas"
+                    element={
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                            <FinanzasPage />
                         </ProtectedRoute>
                     }
                 />
