@@ -10,7 +10,11 @@ import {
   Settings,
   Menu,
   X,
-  Users
+  Users,
+  Banknote,
+  Package,
+  Briefcase,
+  CalendarCheck
 } from 'lucide-react';
 import { AltaUsuario } from './client/AltaUsuario';
 
@@ -34,6 +38,10 @@ const Sidebar: React.FC<SidebarProps> = ({
   const location = useLocation();
   // Sincroniza el tab activo con la ruta
   const getActiveTab = () => {
+    if (location.pathname.startsWith('/erp/finanzas')) return 'Finanzas';
+    if (location.pathname.startsWith('/erp/inventario')) return 'Inventario';
+    if (location.pathname.startsWith('/erp/rrhh')) return 'RRHH';
+    if (location.pathname.startsWith('/erp/reservas')) return 'Reservas';
     if (location.pathname.startsWith('/erp')) return 'Dashboard';
     if (location.pathname.startsWith('/plans')) return 'Planes';
     if (location.pathname.startsWith('/control')) return 'Control Acceso';
@@ -52,7 +60,11 @@ const Sidebar: React.FC<SidebarProps> = ({
   const menuItems = [
     { name: "Dashboard", icon: <LayoutDashboard size={24} /> },
     { name: "Alta de Usuario", icon: <UserPlus size={24} /> },
-    { name: "Socio", icon: <Users size={24} /> }, // <-- NUEVO: Agregamos la opción Socio al menú
+    { name: "Socio", icon: <Users size={24} /> },
+    { name: "Finanzas", icon: <Banknote size={24} /> },
+    { name: "Inventario", icon: <Package size={24} /> },
+    { name: "RRHH", icon: <Briefcase size={24} /> },
+    { name: "Reservas", icon: <CalendarCheck size={24} /> },
     { name: "Planes", icon: <Dumbbell size={24} /> },
     { name: "Control Acceso", icon: <ShieldCheck size={24} /> },
   ];
@@ -67,11 +79,23 @@ const Sidebar: React.FC<SidebarProps> = ({
     } else if(name === "Dashboard") {
       navigate('/erp');
       setIsOpen(false);
+    } else if(name === "Finanzas") {
+      navigate('/erp/finanzas');
+      setIsOpen(false);
+    } else if(name === "Inventario") {
+      navigate('/erp/inventario');
+      setIsOpen(false);
+    } else if(name === "RRHH") {
+      navigate('/erp/rrhh');
+      setIsOpen(false);
+    } else if(name === "Reservas") {
+      navigate('/erp/reservas');
+      setIsOpen(false);
     } else if(name === "Planes") {
       setActiveTab('Planes')
       navigate('/planes');
       setIsOpen(false);
-    } else if (name === "Socio") { // <-- NUEVO: Agregamos la navegación para Socio
+    } else if (name === "Socio") {
       setActiveTab('Socio');
       navigate('/socio');
       setIsOpen(false);

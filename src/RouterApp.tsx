@@ -22,6 +22,9 @@ import App from './App';
 // @ts-ignore
 import SocioPage from './pages/client/SocioPage.jsx';
 import FinanzasPage from './pages/erp/finanzas/FinanzasPage';
+import InventarioPage from './pages/erp/inventario/InventarioPage';
+import RRHHPage from './pages/erp/rrhh/RRHHPage';
+import ReservasPage from './pages/erp/reservas/ReservasPage';
 
 // =============================================
 // PÁGINAS DE AUTENTICACIÓN
@@ -78,6 +81,30 @@ const RouterApp = () => {
                     element={
                         <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
                             <FinanzasPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/erp/inventario"
+                    element={
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                            <InventarioPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/erp/rrhh"
+                    element={
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                            <RRHHPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/erp/reservas"
+                    element={
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                            <ReservasPage />
                         </ProtectedRoute>
                     }
                 />

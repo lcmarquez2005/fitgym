@@ -14,7 +14,9 @@ export const AltaUsuario = ({ onClose, onUserCreated }: { onClose: () => void, o
     noControl: '',
     fotoPerfil: '',
     huellaDigital: '',
-    rol: 'CLIENTE'
+    rol: 'CLIENTE',
+    email: '',
+    password: ''
   });
   
   const [loading, setLoading] = useState(false);
@@ -62,6 +64,8 @@ export const AltaUsuario = ({ onClose, onUserCreated }: { onClose: () => void, o
     if (!formData.name.trim()) nuevosErrores.name = 'El nombre es obligatorio';
     if (!formData.lastName.trim()) nuevosErrores.lastName = 'Los apellidos son obligatorios';
     if (!formData.noControl.trim()) nuevosErrores.noControl = 'El número de control es obligatorio';
+    if (!formData.email?.trim()) nuevosErrores.email = 'El email es obligatorio';
+    if (!formData.password?.trim()) nuevosErrores.password = 'La contraseña es obligatoria';
     if (!formData.huellaDigital) nuevosErrores.huellaDigital = 'Debes capturar la huella digital';
     
     setErrors(nuevosErrores);
@@ -276,6 +280,38 @@ export const AltaUsuario = ({ onClose, onUserCreated }: { onClose: () => void, o
                 disabled={loading}
               />
               {errors.noControl && <p className="text-red-500 text-xs mt-1 ml-1">{errors.noControl}</p>}
+            </div>
+
+            <div>
+              <label className="text-sm font-semibold text-gray-600 ml-1">CORREO ELECTRÓNICO *</label>
+              <input
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Ej. juan@correo.com"
+                className={`w-full p-3 rounded-2xl border-2 transition-all outline-none ${
+                  errors.email ? 'border-red-400 bg-red-50' : 'border-gray-200 focus:border-indigo-500'
+                }`}
+                disabled={loading}
+              />
+              {errors.email && <p className="text-red-500 text-xs mt-1 ml-1">{errors.email}</p>}
+            </div>
+
+            <div>
+              <label className="text-sm font-semibold text-gray-600 ml-1">CONTRASEÑA TEMPORAL *</label>
+              <input
+                name="password"
+                type="text"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Ej. FitGym2024"
+                className={`w-full p-3 rounded-2xl border-2 transition-all outline-none ${
+                  errors.password ? 'border-red-400 bg-red-50' : 'border-gray-200 focus:border-indigo-500'
+                }`}
+                disabled={loading}
+              />
+              {errors.password && <p className="text-red-500 text-xs mt-1 ml-1">{errors.password}</p>}
             </div>
             
             <div>
