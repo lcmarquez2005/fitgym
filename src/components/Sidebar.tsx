@@ -14,7 +14,8 @@ import {
   Banknote,
   Package,
   Briefcase,
-  CalendarCheck
+  CalendarCheck,
+  LineChart
 } from 'lucide-react';
 import { AltaUsuario } from './client/AltaUsuario';
 
@@ -36,7 +37,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [showAltaUsuario, setShowAltaUsuario] = useState(false);
   const location = useLocation();
-  // Sincroniza el tab activo con la ruta
   const getActiveTab = () => {
     if (location.pathname.startsWith('/erp/finanzas')) return 'Finanzas';
     if (location.pathname.startsWith('/erp/inventario')) return 'Inventario';

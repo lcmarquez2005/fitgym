@@ -3,16 +3,16 @@
 import { useState } from 'react';
 import DashboardFinanzas from './DashboardFinanzas';
 import CajaPage from './CajaPage';
-import EstadoResultadosPage from './EstadoResultadosPage';
+import ReportesLayout from './reportes/ReportesLayout';
 import ImpuestosPage from './ImpuestosPage';
 import NominaPage from './NominaPage';
 
-type Tab = 'dashboard' | 'caja' | 'resultados' | 'impuestos' | 'nomina';
+type Tab = 'dashboard' | 'caja' | 'reportes' | 'impuestos' | 'nomina';
 
 const TABS: { key: Tab; label: string; emoji: string }[] = [
   { key: 'dashboard', label: 'Dashboard', emoji: '📊' },
   { key: 'caja', label: 'Caja', emoji: '💰' },
-  { key: 'resultados', label: 'Estado de Resultados', emoji: '📈' },
+  { key: 'reportes', label: 'Reportes y Análisis', emoji: '📈' },
   { key: 'impuestos', label: 'Impuestos', emoji: '🏛️' },
   { key: 'nomina', label: 'Nómina', emoji: '👷' },
 ];
@@ -51,7 +51,7 @@ export default function FinanzasPage() {
       <div className="max-w-7xl mx-auto">
         {tab === 'dashboard' && <DashboardFinanzas />}
         {tab === 'caja' && <CajaPage />}
-        {tab === 'resultados' && <EstadoResultadosPage />}
+        {tab === 'reportes' && <ReportesLayout />}
         {tab === 'impuestos' && <ImpuestosPage />}
         {tab === 'nomina' && <NominaPage />}
       </div>
