@@ -34,6 +34,7 @@ import { RegisterPage } from './pages/auth/RegisterPage';
 import { ForgotPasswordPage } from './pages/auth/ForgotPasswordPage';
 import { ResetPasswordPage } from './pages/auth/ResetPasswordPage';
 import { VerifyEmailPage } from './pages/auth/VerifyEmailPAge';
+import MarketingPage from '@pages/erp/marketing/MarketingPage.js';
 
 const RouterApp = () => {
     return (
@@ -108,7 +109,14 @@ const RouterApp = () => {
                         </ProtectedRoute>
                     }
                 />
-                
+                <Route
+                    path="/erp/marketing"
+                    element={
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                            <MarketingPage />
+                        </ProtectedRoute>
+                    }
+                />
                 {/* Ruta 404 - Página no encontrada */}
                 <Route
                     path="*"
