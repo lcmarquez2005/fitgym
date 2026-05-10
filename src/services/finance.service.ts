@@ -66,6 +66,13 @@ export const registrarTransaccion = async (data: {
   return res.json();
 };
 
+export const getTransaccionesCaja = async () => {
+  const res = await fetch(`${BASE_URL}/finance/caja/transacciones`, {
+    headers: getAuthHeaders(),
+  });
+  return res.json();
+};
+
 // ── Impuestos ─────────────────────────────────────────────────────────────────
 export const crearPeriodoFiscal = async (data: {
   nombre: string;
