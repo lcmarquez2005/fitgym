@@ -1,9 +1,11 @@
 import React from "react";
+// @ts-ignore
 import Navbar from "../../components/Navbar";
+// @ts-ignore
 import Footer from "../../components/Footer";
 import { useNavigate } from "react-router-dom";
 
-const TicketPage = () => {
+const TicketPage: React.FC = () => {
   const navigate = useNavigate();
 
   return (

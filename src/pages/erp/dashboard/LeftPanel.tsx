@@ -16,7 +16,7 @@ interface LeftPanelProps {
 const LeftPanel: React.FC<LeftPanelProps> = ({ inscritos, sinPagar }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [ setLoading] = useState<boolean>(false);
+  const [ _, setLoading] = useState<boolean>(false);
   const [allUsers, setAllUsers] = useState<User[]>([]);
 
   useEffect(() => {

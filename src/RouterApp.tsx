@@ -1,16 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
-// @ts-ignore
-import Planes from './pages/client/Planes.jsx';
-// @ts-ignore
-import LandingPage from './pages/client/Bienvenida.jsx';
-// @ts-ignore
-import Dashboard from './pages/client/DashboardCliente.jsx';
-// @ts-ignore
-import SocioPage from './pages/client/SocioPage.jsx';
-// @ts-ignore
-import CheckoutPage from './pages/client/CheckoutPage.jsx';
-// @ts-ignore
-import TicketPage from './pages/client/TicketPage.jsx';
+import Planes from './pages/client/Planes';
+import LandingPage from './pages/client/Bienvenida';
+import Dashboard from './pages/client/DashboardCliente';
+import SocioPage from './pages/client/SocioPage';
+import CheckoutPage from './pages/client/CheckoutPage';
+import TicketPage from './pages/client/TicketPage';
 import App from './App';
 
 const RouterApp = () => {

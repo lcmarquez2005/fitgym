@@ -1,19 +1,21 @@
+import React from "react";
+// @ts-ignore
 import Navbar from "../../components/Navbar";
+// @ts-ignore
 import PricingCard from "../../components/PricingCard";
+// @ts-ignore
 import Footer from "../../components/Footer";
+// @ts-ignore
 import Sidebar from "../../components/Sidebar";
 
-const Planes = () => {
-  // 1. Inicializamos la función de navegación
+const Planes: React.FC = () => {
   // const navigate = useNavigate();
 
-  // 2. Creamos la función que se ejecutará al hacer clic en cualquier plan
-  const handleBuy = () => {
-    // navigate('/checkout');
-  };
+  // const handleBuy = () => {
+  //   navigate('/checkout');
+  // };
 
   return (
-
     <div className="flex flex-col bg-[#F6F8FE] min-h-screen">
       <Sidebar />
       <Navbar />
@@ -28,13 +30,10 @@ const Planes = () => {
       </div>
 
       <div className="flex flex-col lg:flex-row justify-center items-stretch max-w-[1200px] mx-auto gap-8 px-4 mb-20">
-        
-        {/* Agregamos onBuy={handleBuy} a cada tarjeta */}
         <PricingCard 
           title="FITPLAN REGULAR"
           price={"MXN 800.00/\n3 Meses"}
           imageSrc="/images/plan1.png"
-          // onBuy={handleBuy} // <--- ¡Esto es clave!
           benefits={[
             "Acceso a todas las áreas de pesas",
             "Sesión personal de entrenamiento",
@@ -46,7 +45,6 @@ const Planes = () => {
           title="SUPER FITPLAN"
           price={"MXN 1100.00/\n3 Meses"}
           imageSrc="/images/plan2.png"
-          // onBuy={handleBuy}
           benefits={[
             "Acceso a todas las áreas del gimnasio",
             "Rutina personalizada y asesor de dieta",
@@ -59,7 +57,6 @@ const Planes = () => {
           title="MEGA FITPLAN"
           price={"MXN 3500.00/\n12 Meses"}
           imageSrc="/images/plan3.png"
-          // onBuy={handleBuy}
           benefits={[
             "Acceso al área de SPA",
             "Clases grupales (Boxeo, Yoga, etc)",
@@ -67,7 +64,6 @@ const Planes = () => {
             "Descuento grupal exclusivo"
           ]}
         />
-
       </div>
 
       <Footer />
