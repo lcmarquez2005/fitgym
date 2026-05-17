@@ -35,7 +35,7 @@ const Navbar = () => {
           {/* Botón de Login */}
           <button 
             className="bg-[#606DE5] py-3 px-6 rounded-3xl hover:bg-[#4a55c2] transition-all active:scale-95 shadow-md shadow-indigo-100"
-            onClick={() => navigate("/erp")} 
+            onClick={() => navigate("/login")} 
           >
             <span className="text-white text-base font-bold">Log in</span>
           </button>

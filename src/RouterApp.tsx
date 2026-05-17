@@ -1,26 +1,106 @@
+// src/RouterApp.tsx
 import { Routes, Route } from 'react-router-dom';
-import Planes from './pages/client/Planes';
-import LandingPage from './pages/client/Bienvenida';
-import Dashboard from './pages/client/DashboardCliente';
-import SocioPage from './pages/client/SocioPage';
-import CheckoutPage from './pages/client/CheckoutPage';
-import TicketPage from './pages/client/TicketPage';
-import App from './App';
+import { AuthProvider } from './context/AuthContext';
+import { ProtectedRoute } from './guard/ProtectedRoute';
+
+// =============================================
+// PÁGINAS PÚBLICAS (Landing Page)
+// =============================================
+// @ts-ignore
+import LandingPage from './pages/client/Bienvenida.tsx';
+// @ts-ignore
+import Planes from './pages/client/Planes.tsx';
+// @ts-ignore
+import CheckoutPage from '@pages/client/CheckoutPage/index.tsx';
+// @ts-ignore
+import TicketPage from '@pages/client/SocioPage/index.tsx';
+
+// =============================================
+// PÁGINAS ERP (Protegidas)
+// =============================================
+// import App from './App';
+// @ts-ignore
+import SocioPage from '@pages/client/SocioPage/index.tsx';
+
+// =============================================
+// PÁGINAS DE AUTENTICACIÓN
+// =============================================
+import { LoginPage } from './pages/auth/LoginPage';
+import { RegisterPage } from './pages/auth/RegisterPage';
+import { ForgotPasswordPage } from './pages/auth/ForgotPasswordPage';
+import { ResetPasswordPage } from './pages/auth/ResetPasswordPage';
+import { VerifyEmailPage } from './pages/auth/VerifyEmailPAge';
+import DashboardERP from '@pages/erp/DashboardERP.tsx';
 
 const RouterApp = () => {
-  return (
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/planes" element={<Planes />} />
+    return (
+        <AuthProvider>
+            <Routes>
+                {/* ============================================= */}
+                {/* RUTAS PÚBLICAS - LANDING PAGE                 */}
+                {/* ============================================= */}
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/planes" element={<Planes />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/ticket" element={<TicketPage />} />
 
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/socio" element={<SocioPage />} />
-      <Route path="/checkout" element={<CheckoutPage />} />
-      <Route path="/ticket" element={<TicketPage />} />
-      {/* Ruta para la página original con todos los componentes */}
-      <Route path="/erp" element={<App />} />
-    </Routes>
-  );
+                {/* ============================================= */}
+                {/* RUTAS DE AUTENTICACIÓN                        */}
+                {/* ============================================= */}
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                <Route path="/reset-password" element={<ResetPasswordPage />} />
+                <Route path="/verify-email" element={<VerifyEmailPage />} />
+
+                {/* ============================================= */}
+                {/* RUTAS PROTEGIDAS - ERP                       */}
+                {/* Solo accesibles con token JWT válido          */}
+                {/* ============================================= */}
+                <Route
+                    path="*"
+                    element={
+                        <div className="min-h-screen flex items-center justify-center">
+                            <div className="text-center">
+                                <h1 className="text-6xl font-bold text-gray-300">404</h1>
+                                <p className="text-xl text-gray-500 mt-4">Página no encontrada</p>
+                            </div>
+                        </div>
+                    }
+                />
+                <Route
+                    path="/socio"
+                    element={
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH']}>
+                            <SocioPage />
+                        </ProtectedRoute>
+                    }
+                />
+                
+                <Route
+                    path="/erp"
+                    element={
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH']}>
+                            <DashboardERP />
+                        </ProtectedRoute>
+                    }
+                />
+                
+                {/* Ruta 404 - Página no encontrada */}
+                <Route
+                    path="*"
+                    element={
+                        <div className="min-h-screen flex items-center justify-center">
+                            <div className="text-center">
+                                <h1 className="text-6xl font-bold text-gray-300">404</h1>
+                                <p className="text-xl text-gray-500 mt-4">Página no encontrada</p>
+                            </div>
+                        </div>
+                    }
+                />
+            </Routes>
+        </AuthProvider>
+    );
 };
 
 export default RouterApp;
