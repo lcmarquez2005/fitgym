@@ -1,7 +1,7 @@
 // src/pages/auth/RegisterPage.tsx
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthService, RegisterRequest } from '../../services/auth.service';
+import { AuthService, type RegisterRequest } from '../../services/auth.service';
 
 export const RegisterPage = () => {
     console.log("Entrando al componente de registro")
