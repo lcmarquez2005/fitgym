@@ -3,10 +3,14 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthService, type LoginRequest } from '../../services/auth.service';
 import { useAuth } from '../../context/AuthContext';
+import { useAuthRedirect } from '../../hooks/useAuthRedirect';
 
 export const LoginPage = () => {
     const navigate = useNavigate();
     const { login } = useAuth();
+
+    // Redirect authenticated users to ERP
+    useAuthRedirect();
 
     const [formData, setFormData] = useState<LoginRequest>({
         email: '',
