@@ -1,5 +1,6 @@
 // src/services/user.service.ts
 import { BASE_URL, handleResponse } from './api.config';
+import { getAuthHeaders } from './auth.headers';
 
 export interface User {
     id: number;
@@ -25,20 +26,27 @@ export interface ApiResponse {
     success: boolean;
     data: any;
 }
+
 export const UserService = {
     // Petición GET para obtener todos los usuarios
     getAll: async (): Promise<User[]> => {
-        const response = await fetch(`${BASE_URL}/users`);
+        const response = await fetch(`${BASE_URL}/users`, {
+            headers: getAuthHeaders(),
+        });
         return handleResponse<User[]>(response);
     },
 
     // Petición GET para un solo usuario
     //   getById: async (id: number): Promise<User> => {
-    //     const response = await fetch(`${BASE_URL}/users/${id}`);
+    //     const response = await fetch(`${BASE_URL}/users/${id}`, {
+    //       headers: getAuthHeaders(),
+    //     });
     //     return handleResponse<User>(response);
     //   }
     search: async (query: string): Promise<User[]> => {
-        const response = await fetch(`${BASE_URL}/users/search?q=${encodeURIComponent(query)}`);
+        const response = await fetch(`${BASE_URL}/users/search?q=${encodeURIComponent(query)}`, {
+            headers: getAuthHeaders(),
+        });
 
         if (!response.ok) throw new Error('Error en la búsqueda');
 
@@ -48,9 +56,7 @@ export const UserService = {
     create: async (userData: UserPost): Promise<ApiResponse> => {
         const response = await fetch(`${BASE_URL}/users`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json', // OBLIGATORIO para que Spring entienda el JSON
-            },
+            headers: getAuthHeaders(),
             body: JSON.stringify(userData),
         });
 
