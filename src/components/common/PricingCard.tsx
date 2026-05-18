@@ -1,6 +1,14 @@
 import React from "react";
 
-const PricingCard = ({ title, price, benefits, imageSrc, buttonText }) => {
+interface PricingCardProps {
+  title: string;
+  price: string;
+  benefits: string[];
+  imageSrc?: string;
+  buttonText?: string;
+}
+
+const PricingCard: React.FC<PricingCardProps> = ({ title, price, benefits, imageSrc, buttonText }) => {
   return (
     <div className="flex flex-1 flex-col items-start bg-white py-8 rounded-3xl shadow-lg min-w-[300px]">
       <img

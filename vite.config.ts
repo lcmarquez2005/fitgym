@@ -9,10 +9,15 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
-      '@img': resolve(__dirname, 'public/assets'),
+      '@img': resolve(__dirname, 'public/images'),
+      '@assets': resolve(__dirname, 'src/assets'),
       '@components': resolve(__dirname, 'src/components'),
+      '@common': resolve(__dirname, 'src/components/common'),
+      '@layout': resolve(__dirname, 'src/components/layout'),
       '@pages': resolve(__dirname, 'src/pages'),
-      // Puedes agregar más alias aquí si lo necesitas
+      '@services': resolve(__dirname, 'src/services'),
+      '@context': resolve(__dirname, 'src/context'),
+      '@hooks': resolve(__dirname, 'src/hooks'),
     },
   },
 })

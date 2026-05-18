@@ -1,11 +1,11 @@
 // components/client/AltaUsuario.tsx
 import { X } from 'lucide-react';
-import frame10 from "../../assets/frame-10.png";
-import { BiometricInput } from "../BiometricInput";
-import { CameraInput } from "../CameraInput";
+import frame10 from "@assets/frame-10.png";
+import { BiometricInput } from "@common/BiometricInput";
+import { CameraInput } from "@common/CameraInput";
 import { useState } from 'react';
-import { UserService, type UserPost } from '../../services/user.service';
-import { BASE_URL } from '../../services/api.config'; // 👈 IMPORTAR BASE_URL
+import { UserService, type UserPost } from '@services/user.service';
+import { BASE_URL } from '@services/api.config'; // 👈 IMPORTAR BASE_URL
 
 export const AltaUsuario = ({ onClose, onUserCreated }: { onClose: () => void, onUserCreated?: (d: any) => void }) => {
   const [formData, setFormData] = useState<UserPost>({

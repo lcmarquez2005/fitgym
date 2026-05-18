@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent } from "react";
-import Footer from "../../../components/Footer";
-import Header from "../../../components/Header";
+import Footer from "@layout/Footer";
+import Header from "@layout/Header";
 import type { SocioFormData, Socio } from "./types";
 import SocioStyles from "./SocioStyles";
 import SocioSearchBar from "./SocioSearchBar";
@@ -8,6 +8,7 @@ import SocioProfileCard from "./SocioProfileCard";
 import SocioMembershipCard from "./SocioMembershipCard";
 import SocioMedicalCard from "./SocioMedicalCard";
 import SocioActions from "./SocioActions";
+import { SocioService } from "@services/socio.service";
 
 export default function SocioPage() {
   const images = {
@@ -65,10 +66,7 @@ export default function SocioPage() {
     setSinResultados(false);
     setResultados([]);
     try {
-      const urlBase = import.meta.env.VITE_API_URL;
-      const res = await fetch(`${urlBase}/socios/buscar?q=${encodeURIComponent(busqueda)}`);
-      const json = await res.json();
-      const lista = Array.isArray(json) ? json : json.data ?? [];
+      const lista = await SocioService.buscar(busqueda);
       if (lista.length === 0) setSinResultados(true);
       else setResultados(lista);
     } catch (err) {
@@ -108,29 +106,15 @@ export default function SocioPage() {
   };
 
   const registrarSocio = async (datos: SocioFormData) => {
-    const urlBase = import.meta.env.VITE_API_URL;
-    const respuesta = await fetch(`${urlBase}/socios`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(datos),
-    });
-    return await respuesta.json();
+    return await SocioService.crear(datos);
   };
 
   const actualizarSocio = async (id: string, datos: SocioFormData) => {
-    const urlBase = import.meta.env.VITE_API_URL;
-    const respuesta = await fetch(`${urlBase}/socios/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(datos),
-    });
-    return await respuesta.json();
+    return await SocioService.actualizar(id, datos);
   };
 
   const eliminarSocio = async (id: string) => {
-    const urlBase = import.meta.env.VITE_API_URL;
-    const respuesta = await fetch(`${urlBase}/socios/${id}`, { method: "DELETE" });
-    return await respuesta.json();
+    return await SocioService.eliminar(id);
   };
 
   const inputBase = `w-full text-sm font-medium px-4 py-3 rounded-xl border outline-none transition-all duration-200`;
@@ -153,7 +137,6 @@ export default function SocioPage() {
       <SocioStyles />
 
       <div className="socio-root">
-        {/* @ts-ignore */}
         <Header />
 
         <div style={{ maxWidth: 860, margin: "0 auto", padding: "24px 16px 48px" }}>
@@ -210,7 +193,6 @@ export default function SocioPage() {
           />
         </div>
 
-        {/* @ts-ignore */}
         <Footer />
       </div>
     </>

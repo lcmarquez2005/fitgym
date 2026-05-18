@@ -17,9 +17,17 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
+      "@/*": ["src/*"],
       "@img/*": ["public/images/*"],
-      "@componentes/*": ["src/components/*"],
-      "@pages/*": ["src/pages/*"]
+      "@assets/*": ["src/assets/*"],
+      "@components/*": ["src/components/*"],
+      "@common/*": ["src/components/common/*"],
+      "@layout/*": ["src/components/layout/*"],
+      "@pages/*": ["src/pages/*"],
+      "@services/*": ["src/services/*"],
+      "@context/*": ["src/context/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@assets/*": ["src/assets/*"]
     },
 
     /* Linting */

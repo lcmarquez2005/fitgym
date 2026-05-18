@@ -1,7 +1,7 @@
 // src/pages/auth/ResetPasswordPage.tsx
 import { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '@services/auth.service';
 
 export const ResetPasswordPage = () => {
     const [searchParams] = useSearchParams();

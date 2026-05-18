@@ -1,12 +1,8 @@
 import React from "react";
-// @ts-ignore
-import Navbar from "../../components/Navbar";
-// @ts-ignore
-import PricingCard from "../../components/PricingCard";
-// @ts-ignore
-import Footer from "../../components/Footer";
-// @ts-ignore
-import Sidebar from "../../components/Sidebar";
+import Navbar from "@layout/Navbar";
+import PricingCard from "@common/PricingCard";
+import Footer from "@layout/Footer";
+import Sidebar from "@layout/Sidebar";
 
 const Planes: React.FC = () => {
   // const navigate = useNavigate();
