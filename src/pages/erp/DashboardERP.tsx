@@ -6,7 +6,7 @@ import {
   LeftPanel,
   RightPanel,
   Footer,
-} from '../../components';
+} from '@/components';
 
 const DashboardERP = () => {
   const [notification, setNotification] = useState<string | null>(null);

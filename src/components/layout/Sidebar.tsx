@@ -12,7 +12,7 @@ import {
   X,
   Users
 } from 'lucide-react';
-import { AltaUsuario } from './client/AltaUsuario';
+import { AltaUsuario } from '../client/AltaUsuario';
 
 interface SidebarProps {
   userName?: string;

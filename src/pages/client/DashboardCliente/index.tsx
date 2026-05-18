@@ -1,8 +1,6 @@
 
-// @ts-ignore
-import Footer from "../../../components/Footer";
-// @ts-ignore
-import Navbar from "../../../components/Navbar";
+import Footer from "@layout/Footer";
+import Navbar from "@layout/Navbar";
 import UserCard from "./UserCard";
 import MembershipSummaryCard from "./MembershipSummaryCard";
 

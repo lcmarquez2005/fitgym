@@ -1,5 +1,5 @@
 import React from 'react';
-import logoImage from '../assets/logo.png';
+import logoImage from '@assets/logo.png';
 import Sidebar from './Sidebar.tsx';
 // import Navbar from './Navbar.jsx';
 

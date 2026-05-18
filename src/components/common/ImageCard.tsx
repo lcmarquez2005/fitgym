@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface ImageCardProps {
-  index: number |null;
+  index?: number | null;
   title: string;
   subtitle: string;
   imageUrl: string;

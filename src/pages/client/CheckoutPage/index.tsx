@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-// @ts-ignore
-import Navbar from "../../../components/Navbar";
-// @ts-ignore
-import Footer from "../../../components/Footer";
+import Navbar from "@layout/Navbar";
+import Footer from "@layout/Footer";
 import { useNavigate } from "react-router-dom";
 import CheckoutForm from "./CheckoutForm";
 import CheckoutSummary from "./CheckoutSummary";

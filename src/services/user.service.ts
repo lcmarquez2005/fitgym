@@ -16,6 +16,7 @@ export interface UserPost {
     name: string;
     lastName: string;
     noControl: string;
+    email: string;
     fotoPerfil: string;
     huellaDigital: string;
     rol: string;
@@ -56,13 +57,36 @@ export const UserService = {
     create: async (userData: UserPost): Promise<ApiResponse> => {
         const response = await fetch(`${BASE_URL}/users`, {
             method: 'POST',
-            headers: getAuthHeaders(),
+            headers: {
+                ...getAuthHeaders(),
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify(userData),
         });
 
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.message || 'Error al crear usuario');
+        }
+
+        return await response.json();
+    },
+
+    uploadPhoto: async (file: File): Promise<{ url: string }> => {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const response = await fetch(`${BASE_URL}/users/upload-photo`, {
+            method: 'POST',
+            headers: {
+                ...getAuthHeaders(),
+            },
+            body: formData,
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Error al subir la foto');
         }
 
         return await response.json();

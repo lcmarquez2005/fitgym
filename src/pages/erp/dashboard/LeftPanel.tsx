@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { MapPin } from 'lucide-react';
-import SearchBar from '../../../components/SearchBar';
-import UserCard from '../../../components/UserCard';
+import SearchBar from '@common/SearchBar';
+import UserCard from '@common/UserCard';
 import ReportSection from './ReportSection';
-import peopleImage from '../../../assets/people.png';
-import { UserService, type User } from '../../../services/user.service';
+import peopleImage from '@assets/people.png';
+import { UserService, type User } from '@services/user.service';
 // import { AltaUsuario } from './Alta';
 
 interface LeftPanelProps {

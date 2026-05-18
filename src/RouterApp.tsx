@@ -2,25 +2,21 @@
 import { Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './guard/ProtectedRoute';
+import { Toaster } from 'sonner';
 
 // =============================================
 // PÁGINAS PÚBLICAS (Landing Page)
 // =============================================
-// @ts-ignore
-import LandingPage from './pages/client/Bienvenida.tsx';
-// @ts-ignore
-import Planes from './pages/client/Planes.tsx';
-// @ts-ignore
-import CheckoutPage from '@pages/client/CheckoutPage/index.tsx';
-// @ts-ignore
-import TicketPage from '@pages/client/SocioPage/index.tsx';
+import LandingPage from '@pages/client/Bienvenida';
+import Planes from '@pages/client/Planes';
+import CheckoutPage from '@pages/client/CheckoutPage/index';
+import TicketPage from '@pages/client/SocioPage/index';
 
 // =============================================
 // PÁGINAS ERP (Protegidas)
 // =============================================
 // import App from './App';
-// @ts-ignore
-import SocioPage from '@pages/client/SocioPage/index.tsx';
+import SocioPage from '@pages/client/SocioPage/index';
 
 // =============================================
 // PÁGINAS DE AUTENTICACIÓN
@@ -30,11 +26,12 @@ import { RegisterPage } from './pages/auth/RegisterPage';
 import { ForgotPasswordPage } from './pages/auth/ForgotPasswordPage';
 import { ResetPasswordPage } from './pages/auth/ResetPasswordPage';
 import { VerifyEmailPage } from './pages/auth/VerifyEmailPAge';
-import DashboardERP from '@pages/erp/DashboardERP.tsx';
+import DashboardERP from '@pages/erp/DashboardERP';
 
 const RouterApp = () => {
     return (
         <AuthProvider>
+            <Toaster richColors position="top-right" />
             <Routes>
                 {/* ============================================= */}
                 {/* RUTAS PÚBLICAS - LANDING PAGE                 */}

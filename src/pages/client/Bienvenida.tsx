@@ -1,14 +1,9 @@
 import React from "react";
-// @ts-ignore
-import Navbar from "../../components/Navbar";
-// @ts-ignore
-import Footer from "../../components/Footer";
-// @ts-ignore
-import Sidebar from "../../components/Sidebar";
-// @ts-ignore
-import ImageCard from "@components/ImageCard";
-// @ts-ignore
-import gymImage from '../../assets/gym.jpg';
+import Navbar from "@layout/Navbar";
+import Footer from "@layout/Footer";
+import Sidebar from "@layout/Sidebar";
+import ImageCard from "@common/ImageCard";
+import gymImage from '@assets/gym.jpg';
 
 const LandingPage: React.FC = () => {
   return (

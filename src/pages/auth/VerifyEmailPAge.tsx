@@ -1,7 +1,7 @@
 // src/pages/auth/VerifyEmailPage.tsx
 import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '@services/auth.service';
 
 export const VerifyEmailPage = () => {
     const [searchParams] = useSearchParams();

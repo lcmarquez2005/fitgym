@@ -1,6 +1,6 @@
 import React from 'react';
-import ChartSection from '../../../components/ChartSection';
-import TimeSchedule from '../../../components/TimeSchedule';
+import ChartSection from '@layout/ChartSection';
+import TimeSchedule from '@common/TimeSchedule';
 
 interface RightPanelProps {
   inscritos: number;
