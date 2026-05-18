@@ -2,6 +2,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './guard/ProtectedRoute';
+import { Toaster } from 'sonner';
 
 // =============================================
 // PÁGINAS PÚBLICAS (Landing Page)
@@ -30,6 +31,7 @@ import DashboardERP from '@pages/erp/DashboardERP';
 const RouterApp = () => {
     return (
         <AuthProvider>
+            <Toaster richColors position="top-right" />
             <Routes>
                 {/* ============================================= */}
                 {/* RUTAS PÚBLICAS - LANDING PAGE                 */}

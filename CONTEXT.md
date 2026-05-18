@@ -1,40 +1,46 @@
-# Proyecto FitGym - Contexto Arquitectónico
+# FitGym Project - Architectural Context
 
-Este documento describe la estructura, tecnologías y convenciones del proyecto FitGym para mantener la coherencia en el desarrollo.
+This document describes the structure, technologies, and conventions of the FitGym project to maintain development consistency.
 
-## Tecnologías Principales
+## Core Technologies
 - **Frontend**: React 19 (Vite), TypeScript.
-- **Estilos**: Tailwind CSS 4.
-- **Iconos**: Lucide React.
+- **Styling**: Tailwind CSS 4.
+- **Icons**: Lucide React.
+- **Notifications**: Sonner (Global toasts).
 - **Routing**: React Router DOM 7.
-- **Backend (Referencia)**: Spring Boot con Seguridad JWT.
+- **Backend (Reference)**: Spring Boot with JWT Security.
 
-## Estructura de Directorios
-La arquitectura sigue un enfoque basado en componentes organizados por propósito y alias para importaciones limpias.
+## Directory Structure
+The architecture follows a component-based approach organized by purpose, utilizing aliases for clean imports.
 
-- `src/assets/`: Recursos estáticos (imágenes, logos) importados en el código.
+- `src/assets/`: Static resources (images, logos) imported in code.
 - `src/components/`:
-    - `common/`: Componentes reutilizables de bajo nivel (Botones, Inputs, Cards).
-    - `layout/`: Componentes de estructura global (Navbar, Sidebar, Footer, Header).
-    - `client/`: Componentes específicos de la vista de cliente.
-- `src/context/`: Contextos de React (ej. AuthContext para manejo de sesiones).
-- `src/guard/`: Protectores de rutas (ProtectedRoute) basados en roles.
-- `src/hooks/`: Custom hooks para lógica reutilizable.
-- `src/pages/`: Contenedores de vistas principales, organizados por módulos (auth, client, erp).
-- `src/services/`: Capa de abstracción de red para peticiones al backend.
-- `src/services/api.config.ts`: Configuración base de fetch y manejo de errores.
+    - `common/`: Low-level reusable components (Buttons, Inputs, Generic Cards).
+    - `layout/`: Global structure components (Navbar, Sidebar, Footer, Header).
+    - `client/`: Specific components for the client-side view.
+- `src/context/`: React Contexts (e.g., AuthContext for session management).
+- `src/guard/`: Route guards (ProtectedRoute) based on roles.
+- `src/hooks/`: Custom hooks for reusable logic.
+- `src/pages/`: Main view containers, organized by modules (auth, client, erp).
+- `src/services/`: Network abstraction layer for backend requests.
+- `src/services/api.config.ts`: Base fetch configuration and error handling.
 
-## Alias de Importación (Vite & TS)
+## Import Aliases (Vite & TS)
 - `@/*`: `src/*`
 - `@img/*`: `public/images/*`
+- `@assets/*`: `src/assets/*`
 - `@components/*`: `src/components/*`
 - `@common/*`: `src/components/common/*`
 - `@layout/*`: `src/components/layout/*`
 - `@pages/*`: `src/pages/*`
 - `@services/*`: `src/services/*`
+- `@context/*`: `src/context/*`
+- `@hooks/*`: `src/hooks/*`
 
-## Convenciones de Desarrollo
-1. **Tipado Estricto**: Evitar el uso de `any` y `@ts-ignore`. Todos los componentes deben ser `.tsx`.
-2. **Peticiones**: No usar `fetch` directamente en componentes. Utilizar los servicios definidos en `src/services/`.
-3. **Seguridad**: Para endpoints privados, usar `getAuthHeaders()` de `@services/auth.headers.ts`.
-4. **Estado**: Por ahora se utiliza `Context API` para el estado global y `useState` local. No se ha implementado TanStack Query ni Zustand aún.
+## Development Conventions
+1. **Strict Typing**: Avoid using `any` and `@ts-ignore`. All components must be `.tsx`.
+2. **Requests**: Do not use `fetch` directly in components. Use the services defined in `src/services/`.
+3. **Security**: For private endpoints, use `getAuthHeaders()` from `@services/auth.headers.ts`.
+4. **Notifications**: Use `toast` from `sonner` for all success/error feedback. Avoid using local state for alerts.
+5. **State Management**: Currently using `Context API` for global state and local `useState`. TanStack Query or Zustand have not been implemented yet.
+6. **Package Manager**: Use ONLY `pnpm`. `npm` is strictly forbidden.

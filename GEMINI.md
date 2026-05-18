@@ -1,20 +1,22 @@
-# Gemini AI - Instrucciones de Comportamiento
+# Gemini AI - Behavioral Instructions
 
-Este archivo sirve como guía para la IA (Gemini CLI) al interactuar con el código de FitGym.
+This file serves as a guide for the AI (Gemini CLI) when interacting with the FitGym codebase.
 
-## Reglas de Oro
-- **Consultar Contexto**: Antes de realizar cualquier cambio estructural, leer `CONTEXT.md`.
-- **Validar Endpoints**: Antes de implementar una nueva funcionalidad que requiera datos, consultar `API.md`.
-- **Seguimiento**: Actualizar `PROGRESS.md` después de cada hito importante completado o feature agregada.
+## Golden Rules
+- **Consult Context**: Before making any structural changes, read `CONTEXT.md`.
+- **Validate Endpoints**: Before implementing new functionality that requires data, consult `API.md`.
+- **Tracking**: Update `PROGRESS.md` after every major milestone completed or feature added.
+- **Package Manager**: Use ONLY `pnpm`. `npm` is strictly forbidden in this project.
 
-## Flujo de Trabajo para la IA
-1. **Investigación**: Analizar archivos existentes relacionados con la tarea.
-2. **Estrategia**: Proponer el plan al usuario (Modo Plan si es complejo).
-3. **Ejecución**: Aplicar cambios quirúrgicos siguiendo las convenciones de `CONTEXT.md`.
-4. **Validación**: Correr `npx tsc --noEmit` para asegurar que no se introdujeron errores de tipos.
+## Workflow for AI
+1. **Research**: Analyze existing files related to the task.
+2. **Strategy**: Propose the plan to the user (Plan Mode if complex).
+3. **Execution**: Apply surgical changes following `CONTEXT.md` conventions.
+4. **Validation**: ALWAYS run `pnpm run build` to ensure the project compiles correctly and no errors were introduced. Do not settle for just `tsc --noEmit`.
 
-## Restricciones Técnicas
-- **Extensiones**: Solo crear archivos `.tsx` para componentes.
-- **Imports**: Usar alias (`@common`, `@layout`, `@pages`, `@services`) siempre que sea posible.
-- **Seguridad**: Asegurarse de que las llamadas a endpoints privados usen `getAuthHeaders()`.
-- **Librerías**: No instalar nuevas librerías (como TanStack Query o Zustand) sin aprobación explícita, tal como se indica en `CONTEXT.md`.
+## Technical Restrictions
+- **Extensions**: Only create `.tsx` files for components.
+- **Imports**: Use aliases (`@common`, `@layout`, `@pages`, `@services`, `@assets`, `@context`, `@hooks`) whenever possible.
+- **Security**: Ensure that private endpoint calls use `getAuthHeaders()`.
+- **Notifications**: Always use `toast` from `sonner` for success/error/warning feedback. Do not implement manual alert states in components.
+- **Libraries**: Do not install new libraries (like TanStack Query or Zustand) without explicit approval, as stated in `CONTEXT.md`.

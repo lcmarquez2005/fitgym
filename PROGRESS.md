@@ -1,48 +1,49 @@
-# FitGym - Seguimiento de Progreso
+# FitGym - Progress Tracking
 
-Este archivo registra las funcionalidades implementadas y las tareas pendientes.
+This file records implemented functionalities and pending tasks.
 
-## ✅ Implementado
-- **Autenticación**:
-    - [x] Registro de usuario.
-    - [x] Login con JWT.
-    - [x] Verificación de email.
-    - [x] Recuperación de contraseña.
-    - [x] AuthContext para manejo de sesión global.
-    - [x] Rutas protegidas por rol.
-- **Servicios de API**:
+## ✅ Implemented
+- **Authentication**:
+    - [x] User registration.
+    - [x] Login with JWT.
+    - [x] Email verification.
+    - [x] Password recovery.
+    - [x] AuthContext for global session management.
+    - [x] Role-based protected routes.
+- **API Services**:
     - [x] AuthService.
     - [x] UserService.
     - [x] SocioService.
-    - [x] api.config.ts para manejo centralizado de peticiones.
-- **Arquitectura y Documentación**:
-    - [x] Reestructuración de carpetas (`common`, `layout`).
-    - [x] Estandarización a TypeScript (.tsx) y eliminación de `@ts-ignore`.
-    - [x] Configuración de Alias de importación.
-    - [x] `API.md` (Documentación de endpoints).
-    - [x] `CONTEXT.md` (Mapa del proyecto).
-    - [x] `GEMINI.md` (Instrucciones para IA).
-- **Vistas Principales (Estructura)**:
-    - [x] Dashboard ERP (Layout básico).
-    - [x] Gestión de Socios (CRUD integrado con SocioService).
-    - [x] Landing Page y Planes.
+    - [x] `api.config.ts` for centralized request handling.
+- **Architecture and Documentation**:
+    - [x] Folder restructuring (`common`, `layout`).
+    - [x] TypeScript standardization (.tsx) and removal of `@ts-ignore`.
+    - [x] Import Alias configuration.
+    - [x] `API.md` (Endpoint documentation).
+    - [x] `CONTEXT.md` (Project map).
+    - [x] `GEMINI.md` (AI instructions).
+    - [x] Refactored `AltaUsuario.tsx` into a clean component with a dedicated custom hook (`useAltaUsuario.ts`) and fixed image upload logic.
+- **Main Views (Structure)**:
+    - [x] ERP Dashboard (Basic layout).
+    - [x] Member Management (CRUD integrated with SocioService).
+    - [x] Landing Page and Plans.
 
-## 🏗️ En Progreso
-- [ ] Refinamiento de la documentación de contexto.
+## 🏗️ In Progress
+- [ ] Refinement of context documentation.
 
-## 📋 Pendiente por Implementar
-- **Módulo de Planes**:
-    - [ ] Endpoint `GET /planes` en el backend e integrarlo en frontend.
-    - [ ] Compra de planes desde la vista de cliente.
-- **Módulo de Pagos**:
-    - [ ] Integración real de Checkout (Stripe o similar).
-    - [ ] Generación de tickets/facturas reales.
-- **Dashboard ERP Dinámico**:
-    - [ ] Gráficas conectadas a datos reales del backend.
-    - [ ] Reportes exportables.
-- **Mejoras de UX/UI**:
-    - [ ] Implementar esqueletos de carga (Skeletons).
-    - [ ] Manejo de errores más visual (Toasts).
-- **Optimización**:
-    - [ ] Evaluación de TanStack Query para gestión de caché.
-    - [ ] Evaluación de Zustand para estados complejos si es necesario.
+## 📋 Pending Implementation
+- **Plans Module**:
+    - [ ] `GET /planes` endpoint in backend and integrate in frontend.
+    - [ ] Plan purchasing from client view.
+- **Payments Module**:
+    - [ ] Real Checkout integration (Stripe or similar).
+    - [ ] Generation of real digital tickets/invoices.
+- **Dynamic ERP Dashboard**:
+    - [ ] Charts connected to real backend data.
+    - [ ] Exportable reports.
+- **UX/UI Improvements**:
+    - [ ] Implement loading skeletons.
+    - [ ] More visual error handling (Toasts).
+- **Optimization**:
+    - [ ] Evaluation of TanStack Query for cache management.
+    - [ ] Evaluation of Zustand for complex states if necessary.
