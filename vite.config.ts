@@ -1,11 +1,14 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
-
-// https://vite.dev/config/
+import tailwindcss from '@tailwindcss/vite'
 import { resolve } from 'path';
 
+// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    tailwindcss(),  // ← Agrega esta línea
+  ],
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
