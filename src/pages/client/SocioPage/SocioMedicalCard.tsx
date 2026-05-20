@@ -19,45 +19,47 @@ const SocioMedicalCard: React.FC<SocioMedicalCardProps> = ({
   fingerprintImg
 }) => {
   return (
-    <div className="card" style={{ marginBottom: 24 }}>
-      <div style={{ padding: "28px 32px" }}>
-        <div className="section-chip">
+    <div className="overflow-hidden bg-white border shadow-sm rounded-2xl border-slate-200">
+      <div className="p-7 md:p-8">
+        <div className="inline-flex items-center gap-2 px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-slate-600 uppercase bg-slate-100 border border-slate-200 rounded-full">
           <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
           </svg>
           Información médica
         </div>
 
-        <div className="row-field">
-          <span className="row-label">Lesiones</span>
-          <div style={{ flex: 1 }}>
-            <input name="lesiones" value={formData.lesiones} onChange={handleChange} disabled={!editable} placeholder="Describe lesiones..." className={inputClass} />
+        <div className="flex items-center justify-between gap-4 py-3.5 border-b border-slate-100">
+          <label htmlFor="lesiones" className="text-sm font-semibold text-slate-500">Lesiones</label>
+          <div className="flex-1">
+            <input id="lesiones" name="lesiones" value={formData.lesiones} onChange={handleChange} disabled={!editable} placeholder="Describe lesiones..." className={inputClass} autoComplete="off" />
           </div>
         </div>
-        <div className="row-field" style={{ marginBottom: 16 }}>
-          <span className="row-label">Alergias</span>
-          <div style={{ flex: 1 }}>
-            <input name="alergias" value={formData.alergias} onChange={handleChange} disabled={!editable} placeholder="Describe alergias..." className={inputClass} />
+        <div className="flex items-center justify-between gap-4 py-3.5 border-b border-slate-100 mb-4">
+          <label htmlFor="alergias" className="text-sm font-semibold text-slate-500">Alergias</label>
+          <div className="flex-1">
+            <input id="alergias" name="alergias" value={formData.alergias} onChange={handleChange} disabled={!editable} placeholder="Describe alergias..." className={inputClass} autoComplete="off" />
           </div>
         </div>
 
-        <label className={labelClass}>Notas adicionales</label>
+        <label htmlFor="extras" className={labelClass}>Notas adicionales</label>
         <textarea
+          id="extras"
           name="extras"
           placeholder="Observaciones, notas especiales, rutinas..."
           value={formData.extras}
           onChange={handleChange}
           rows={3}
           disabled={!editable}
-          className="extras-textarea"
+          className="w-full p-4 mt-1 text-sm transition-all duration-200 bg-white border-2 rounded-xl border-slate-200 text-slate-800 placeholder-slate-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 focus:bg-white disabled:bg-slate-50 disabled:border-slate-100 disabled:text-slate-400 disabled:cursor-not-allowed"
+          autoComplete="off"
         />
 
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 16, paddingTop: 16, borderTop: "1px solid #f1f5f9" }}>
+        <div className="flex items-center justify-between pt-4 mt-4 border-t border-slate-100">
           <div>
-            <span style={{ fontSize: 13, fontWeight: 700, color: "#475569" }}>Huella digital / QR</span>
-            <p style={{ fontSize: 11, color: "#94a3b8", margin: "2px 0 0" }}>Identificación biométrica del socio</p>
+            <span className="text-sm font-bold text-slate-600">Huella digital / QR</span>
+            <p className="mt-0.5 text-xs text-slate-400">Identificación biométrica del socio</p>
           </div>
-          <img src={fingerprintImg} style={{ width: 64, height: 64, objectFit: "contain", opacity: 0.7 }} alt="Huella" />
+          <img src={fingerprintImg} className="object-contain w-16 h-16 opacity-70" alt="Huella" />
         </div>
       </div>
     </div>

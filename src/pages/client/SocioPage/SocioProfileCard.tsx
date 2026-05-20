@@ -23,16 +23,16 @@ const SocioProfileCard: React.FC<SocioProfileCardProps> = ({
   labelClass
 }) => {
   return (
-    <div className="card" style={{ marginBottom: 16 }}>
+    <div className="overflow-hidden bg-white border shadow-sm rounded-2xl border-slate-200">
       {/* Dark header */}
-      <div className="card-header">
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, position: "relative", zIndex: 1 }}>
-          <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 11, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: "1.5px" }}>
+      <div className="relative p-7 md:p-8 overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900">
+        <div className="relative z-10 flex items-center justify-between mb-5">
+          <span className="text-xs font-extrabold tracking-widest uppercase text-white/50 font-syne">
             Perfil del Socio
           </span>
           <button
             onClick={() => setEditable(!editable)}
-            className={`edit-toggle-btn ${editable ? "editing" : "locked"}`}
+            className={`inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold transition-colors rounded-full ${editable ? "bg-red-500/10 text-red-300 border border-red-500/20 hover:bg-red-500/20" : "bg-white/10 text-white/80 border border-white/20 hover:bg-white/20"}`}
           >
             {editable ? (
               <>
@@ -52,38 +52,33 @@ const SocioProfileCard: React.FC<SocioProfileCardProps> = ({
           </button>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 20, position: "relative", zIndex: 1 }}>
-          <div style={{ position: "relative" }}>
-            <div className="photo-ring">
-              <img src={foto} style={{ width: "100%", height: "100%", objectFit: "cover" }} alt="Foto Socio" />
+        <div className="relative z-10 flex items-center gap-5">
+          <div className="relative shrink-0">
+            <div className="relative w-28 h-28 overflow-hidden border-4 rounded-full border-white/20">
+              <img src={foto} className="object-cover w-full h-full" alt="Foto Socio" />
               {editable && (
-                <label htmlFor="foto-input" className="photo-overlay">
+                <label htmlFor="foto-input" className="absolute inset-0 flex flex-col items-center justify-center text-white transition-opacity bg-black/50 opacity-0 cursor-pointer hover:opacity-100">
                   <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  <span style={{ fontSize: 10, fontWeight: 700 }}>Cambiar foto</span>
+                  <span className="mt-1 text-xs font-bold">Cambiar</span>
                 </label>
               )}
             </div>
-            <input id="foto-input" type="file" accept="image/*" style={{ display: "none" }} onChange={handleFotoChange} disabled={!editable} />
+            <input id="foto-input" type="file" accept="image/*" className="hidden" onChange={handleFotoChange} disabled={!editable} />
           </div>
           <div>
-            <h2 style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 22, color: "white", margin: "0 0 4px", lineHeight: 1.2 }}>
+            <h2 className="m-0 mb-1 text-2xl font-extrabold leading-tight text-white font-syne">
               {formData.nombreCompleto || "Nuevo Socio"}
             </h2>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+            <div className="flex flex-wrap items-center gap-2">
               {formData.idSocio && (
-                <span style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", fontWeight: 600 }}>#{formData.idSocio}</span>
+                <span className="text-sm font-semibold text-white/50">#{formData.idSocio}</span>
               )}
               {formData.estatus && (
-                <span className="badge" style={{
-                  background: "rgba(99,102,241,0.2)",
-                  color: "#a5b4fc",
-                  border: "1px solid rgba(99,102,241,0.3)",
-                  fontSize: 11
-                }}>
-                  <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#a5b4fc", display: "inline-block" }} />
+                <span className="inline-flex items-center gap-2 px-3 py-1 text-xs font-semibold border rounded-full border-indigo-400/30 bg-indigo-500/20 text-indigo-300">
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-indigo-300" />
                   {formData.estatus}
                 </span>
               )}
@@ -93,45 +88,45 @@ const SocioProfileCard: React.FC<SocioProfileCardProps> = ({
       </div>
 
       {/* Form body */}
-      <div style={{ padding: "28px 32px" }}>
-        <div className="section-chip">
+      <div className="p-7 md:p-8">
+        <div className="inline-flex items-center gap-2 px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-slate-600 uppercase bg-slate-100 border border-slate-200 rounded-full">
           <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
           </svg>
           Datos personales
         </div>
-        <div className="grid-2">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div>
-            <label className={labelClass}>Nombre completo</label>
-            <input name="nombreCompleto" value={formData.nombreCompleto} onChange={handleChange} disabled={!editable} placeholder="Nombre completo" className={inputClass} />
+            <label htmlFor="nombreCompleto" className={labelClass}>Nombre completo</label>
+            <input id="nombreCompleto" name="nombreCompleto" value={formData.nombreCompleto} onChange={handleChange} disabled={!editable} placeholder="Nombre completo" className={inputClass} autoComplete="name" />
           </div>
           <div>
-            <label className={labelClass}>Teléfono</label>
-            <input name="telefono" value={formData.telefono} onChange={handleChange} type="tel" disabled={!editable} placeholder="55 1234 5678" className={inputClass} />
+            <label htmlFor="telefono" className={labelClass}>Teléfono</label>
+            <input id="telefono" name="telefono" value={formData.telefono} onChange={handleChange} type="tel" disabled={!editable} placeholder="55 1234 5678" className={inputClass} autoComplete="tel" />
           </div>
           <div>
-            <label className={labelClass}>Correo electrónico</label>
-            <input name="email" value={formData.email} onChange={handleChange} type="email" disabled={!editable} placeholder="correo@ejemplo.com" className={inputClass} />
+            <label htmlFor="email" className={labelClass}>Correo electrónico</label>
+            <input id="email" name="email" value={formData.email} onChange={handleChange} type="email" disabled={!editable} placeholder="correo@ejemplo.com" className={inputClass} autoComplete="email" />
           </div>
           <div>
-            <label className={labelClass}>Fecha de nacimiento</label>
-            <input name="fechaNacimiento" value={formData.fechaNacimiento} onChange={handleChange} type="date" disabled={!editable} className={inputClass} />
+            <label htmlFor="fechaNacimiento" className={labelClass}>Fecha de nacimiento</label>
+            <input id="fechaNacimiento" name="fechaNacimiento" value={formData.fechaNacimiento} onChange={handleChange} type="date" disabled={!editable} className={inputClass} autoComplete="bday" />
           </div>
           <div>
-            <label className={labelClass}>Sexo</label>
-            <select name="sexo" value={formData.sexo} onChange={handleChange} disabled={!editable} className={inputClass}>
+            <label htmlFor="sexo" className={labelClass}>Sexo</label>
+            <select id="sexo" name="sexo" value={formData.sexo} onChange={handleChange} disabled={!editable} className={inputClass}>
               <option>Masculino</option>
               <option>Femenino</option>
               <option>Otro</option>
             </select>
           </div>
           <div>
-            <label className={labelClass}>Contacto de emergencia</label>
-            <input name="contactoEmergencia" value={formData.contactoEmergencia} onChange={handleChange} disabled={!editable} placeholder="Nombre del contacto" className={inputClass} />
+            <label htmlFor="contactoEmergencia" className={labelClass}>Contacto de emergencia</label>
+            <input id="contactoEmergencia" name="contactoEmergencia" value={formData.contactoEmergencia} onChange={handleChange} disabled={!editable} placeholder="Nombre del contacto" className={inputClass} autoComplete="off" />
           </div>
           <div>
-            <label className={labelClass}>Teléfono de emergencia</label>
-            <input name="telefonoEmergencia" value={formData.telefonoEmergencia} onChange={handleChange} type="tel" disabled={!editable} placeholder="55 9876 5432" className={inputClass} />
+            <label htmlFor="telefonoEmergencia" className={labelClass}>Teléfono de emergencia</label>
+            <input id="telefonoEmergencia" name="telefonoEmergencia" value={formData.telefonoEmergencia} onChange={handleChange} type="tel" disabled={!editable} placeholder="55 9876 5432" className={inputClass} autoComplete="off" />
           </div>
         </div>
       </div>

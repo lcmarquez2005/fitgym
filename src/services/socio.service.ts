@@ -1,6 +1,6 @@
 import { BASE_URL, handleResponse } from './api.config';
 import { getAuthHeaders } from './auth.headers';
-import type { Socio, SocioFormData } from '../pages/client/SocioPage/types';
+import type { Socio, SocioFormData } from '@pages/client/SocioPage/types';
 
 export interface ApiResponse {
     message: string;
@@ -14,13 +14,10 @@ export const SocioService = {
         const response = await fetch(`${BASE_URL}/socios/buscar?q=${encodeURIComponent(query)}`, {
             headers: getAuthHeaders(),
         });
-        
-        if (!response.ok) {
-            throw new Error('Error al buscar socios');
-        }
 
-        const json = await response.json();
-        return Array.isArray(json) ? json : json.data ?? [];
+        // Usar handleResponse para consistencia en el manejo de errores y respuestas
+        const result = await handleResponse<Socio[] | ApiResponse>(response);
+        return Array.isArray(result) ? result : (result.data as Socio[] ?? []);
     },
 
     // POST /api/socios
@@ -31,7 +28,7 @@ export const SocioService = {
                 ...getAuthHeaders(),
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(datos),
+            body: JSON.stringify(mapFormDataToRequest(datos)),
         });
         return handleResponse<ApiResponse>(response);
     },
@@ -44,7 +41,7 @@ export const SocioService = {
                 ...getAuthHeaders(),
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(datos),
+            body: JSON.stringify(mapFormDataToRequest(datos)),
         });
         return handleResponse<ApiResponse>(response);
     },
@@ -57,4 +54,42 @@ export const SocioService = {
         });
         return handleResponse<ApiResponse>(response);
     }
+};
+
+/**
+ * Maps the frontend's SocioFormData to the structure expected by the backend's SocioRequest.
+ * This is a crucial translation layer.
+ * @param formData The data from the React form.
+ * @returns An object formatted for the Spring Boot API.
+ */
+const mapFormDataToRequest = (formData: SocioFormData) => {
+    // Split 'nombreCompleto' into 'name' and 'lastName' for the backend.
+    const nameParts = formData.nombreCompleto.trim().split(' ');
+    const name = nameParts[0] || '';
+    const lastName = nameParts.slice(1).join(' ');
+
+    return {
+        // User-related fields
+        name: name,
+        lastName: lastName,
+        email: formData.email,
+        telefono: formData.telefono,
+        fechaNacimiento: formData.fechaNacimiento,
+        sexo: formData.sexo,
+        foto: formData.foto,
+
+        // Socio-specific fields
+        idSocio: formData.idSocio,
+        contactoEmergencia: formData.contactoEmergencia,
+        telefonoEmergencia: formData.telefonoEmergencia,
+        tipoMembresia: formData.tipoMembresia,
+        descuento: formData.descuento,
+        costoMensual: formData.costoMensual,
+        fechaInicio: formData.fechaInicio,
+        fechaFin: formData.fechaFin,
+        estatus: formData.estatus,
+        lesiones: formData.lesiones,
+        alergias: formData.alergias,
+        extras: formData.extras,
+    };
 };
