@@ -3,12 +3,13 @@
  * Utility to add Bearer token to request headers
  * Automatically retrieves token from localStorage
  */
-
 export const getAuthHeaders = (additionalHeaders?: Record<string, string>) => {
     const token = localStorage.getItem('token');
+    console.log("--- DEBUG AUTH HEADERS ---", token ? "Token encontrado" : "SIN TOKEN");
+
     return {
         'Content-Type': 'application/json',
-        ...(token && { 'Authorization': `Bearer ${token}` }),
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
         ...additionalHeaders,
     };
 };

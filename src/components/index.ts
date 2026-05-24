@@ -16,6 +16,12 @@ export { default as ChartSection } from './layout/ChartSection';
 export { default as Sidebar } from './layout/Sidebar';
 export { default as Navbar } from './layout/Navbar';
 
+// Client
+export { AltaUsuario } from './client/AltaUsuario';
+export { EditUsuario } from './client/EditUsuario';
+export { ProcesarPagoModal } from './erp/ProcesarPagoModal';
+export { GenerarDatosPrueba } from './erp/GenerarDatosPrueba';
+
 // Dashboard (ERP)
 export { default as ReportSection } from '../pages/erp/dashboard/ReportSection';
 export { default as LeftPanel } from '../pages/erp/dashboard/LeftPanel';

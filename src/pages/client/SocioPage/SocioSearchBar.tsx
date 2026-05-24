@@ -6,12 +6,9 @@ interface SocioSearchBarProps {
   setBusqueda: (v: string) => void;
   buscando: boolean;
   sinResultados: boolean;
-  resultados: Socio[];
   buscarSocio: () => void;
-  seleccionarSocio: (socio: Socio) => void;
   setSinResultados: (v: boolean) => void;
   setResultados: (v: Socio[]) => void;
-  estatusColors: Record<string, string>;
 }
 
 const SocioSearchBar: React.FC<SocioSearchBarProps> = ({
@@ -19,12 +16,9 @@ const SocioSearchBar: React.FC<SocioSearchBarProps> = ({
   setBusqueda,
   buscando,
   sinResultados,
-  resultados,
   buscarSocio,
-  seleccionarSocio,
   setSinResultados,
   setResultados,
-  estatusColors
 }) => {
   return (
     <div className="relative">
@@ -73,34 +67,12 @@ const SocioSearchBar: React.FC<SocioSearchBarProps> = ({
         </button>
       </div>
 
-      {resultados.length > 0 && (
-        <div className="absolute z-10 w-full mt-2 overflow-hidden bg-white border shadow-xl rounded-2xl border-slate-200">
-          {resultados.map((socio, _i) => (
-            <button key={socio.id} className="flex items-center w-full gap-4 p-4 text-left transition-colors hover:bg-slate-50" onClick={() => seleccionarSocio(socio)}>
-              <div className="flex items-center justify-center w-10 h-10 rounded-full shrink-0 bg-indigo-100 text-indigo-500">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="m-0 overflow-hidden text-sm font-bold text-ellipsis whitespace-nowrap text-slate-800">{socio.nombreCompleto}</p>
-                <p className="m-0 text-xs text-slate-400">ID: {socio.idSocio} · {socio.email}</p>
-              </div>
-              <span className={`inline-flex items-center gap-2 px-3 py-1 text-xs font-semibold rounded-full ${estatusColors[socio.estatus ?? ""] || "bg-slate-100 text-slate-500"}`}>
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-current" />
-                {socio.estatus}
-              </span>
-            </button>
-          ))}
-        </div>
-      )}
-
       {sinResultados && (
         <div className="flex items-center gap-2 p-3 mt-2 text-sm bg-red-50 border border-red-200 rounded-lg text-red-600">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          No se encontraron socios con ese criterio.
+          No se encontraron resultados.
         </div>
       )}
     </div>

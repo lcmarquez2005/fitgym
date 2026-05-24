@@ -32,11 +32,11 @@ const Sidebar: React.FC<SidebarProps> = ({
   
   // Sincroniza el tab activo con la ruta
   const getActiveTab = () => {
-    if (location.pathname.startsWith('/erp')) return 'Dashboard';
-    if (location.pathname.startsWith('/plans')) return 'Planes';
+    if (location.pathname === '/erp') return 'Dashboard';
+    if (location.pathname === '/planes') return 'Planes';
+    if (location.pathname === '/socio') return 'Socio';
     if (location.pathname.startsWith('/control')) return 'Control Acceso';
     if (location.pathname.startsWith('/alta')) return 'Alta de Usuario';
-    if (location.pathname.startsWith('/socio')) return 'Socio';
     return propActiveTab;
   };
 
@@ -208,7 +208,10 @@ const Sidebar: React.FC<SidebarProps> = ({
       {/* Modal de Alta de Usuario */}
       {showAltaUsuario && (
         <AltaUsuario 
-          onClose={() => setShowAltaUsuario(false)}
+          onClose={() => {
+            setShowAltaUsuario(false);
+            setActiveTab(getActiveTab());
+          }}
           onUserCreated={handleUserCreated}
         />
       )}

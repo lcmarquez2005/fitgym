@@ -1,12 +1,14 @@
-import React from 'react';
-import { X, Loader2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Loader2, CreditCard } from 'lucide-react';
 import frame10 from "@assets/frame-10.png";
-import { BiometricInput, CameraInput } from "@/components";
-import { useAltaUsuario } from '@hooks/useAltaUsuario';
+import { BiometricInput, CameraInput, ProcesarPagoModal } from "@/components";
+import { useEditUsuario } from '@hooks/useEditUsuario';
+import { type User } from '@services/user.service';
 
-interface AltaUsuarioProps {
+interface EditUsuarioProps {
+  user: User;
   onClose: () => void;
-  onUserCreated?: (data: any) => void;
+  onUserUpdated?: (data: any) => void;
 }
 
 interface FormFieldProps {
@@ -38,7 +40,7 @@ const FormField: React.FC<FormFieldProps> = ({ label, name, value, onChange, pla
   </div>
 );
 
-export const AltaUsuario: React.FC<AltaUsuarioProps> = ({ onClose, onUserCreated }) => {
+export const EditUsuario: React.FC<EditUsuarioProps> = ({ user, onClose, onUserUpdated }) => {
   const {
     formData,
     loading,
@@ -50,7 +52,9 @@ export const AltaUsuario: React.FC<AltaUsuarioProps> = ({ onClose, onUserCreated
     handleFingerprintCapture,
     handlePhotoUpload,
     handleSubmit
-  } = useAltaUsuario({ onClose, onUserCreated });
+  } = useEditUsuario({ user, onClose, onUserUpdated });
+
+  const [showPagoModal, setShowPagoModal] = useState(false);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-1">
@@ -67,11 +71,28 @@ export const AltaUsuario: React.FC<AltaUsuarioProps> = ({ onClose, onUserCreated
         <div className="overflow-y-auto p-3 md:p-5">
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="text-center space-y-4">
-              <img src={frame10} className="w-40 mx-auto transform hover:scale-105 transition-transform" alt="New User" />
+              <img src={frame10} className="w-40 mx-auto transform hover:scale-105 transition-transform" alt="Edit User" />
               <div className="space-y-1">
-                <h2 className="text-xl font-bakbak text-black uppercase">Nuevo Registro</h2>
-                <p className="text-gray-400 font-medium italic">Ingresa los datos del nuevo integrante</p>
+                <div className="flex items-center justify-center gap-3">
+                  <h2 className="text-xl font-bakbak text-black uppercase">Editar Usuario</h2>
+                  <span className="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-xl font-bakbak text-lg border-2 border-indigo-100 shadow-sm">
+                    #{user.id}
+                  </span>
+                </div>
+                <p className="text-gray-400 font-medium italic">Modifica los datos del integrante</p>
               </div>
+            </div>
+
+            {/* Acciones Rápidas */}
+            <div className="flex justify-center gap-4 px-6">
+              <button
+                type="button"
+                onClick={() => setShowPagoModal(true)}
+                className="flex items-center gap-2 px-6 py-3 bg-green-50 text-green-600 rounded-2xl font-bold hover:bg-green-100 transition-all border border-green-200 shadow-sm"
+              >
+                <CreditCard size={20} />
+                PROCESAR PAGO
+              </button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -156,13 +177,21 @@ export const AltaUsuario: React.FC<AltaUsuarioProps> = ({ onClose, onUserCreated
               {loading ? (
                 <span className="flex items-center justify-center gap-3">
                   <Loader2 className="animate-spin" size={24} />
-                  Procesando...
+                  Actualizando...
                 </span>
-              ) : 'Finalizar Registro'}
+              ) : 'Guardar Cambios'}
             </button>
           </form>
         </div>
       </div>
+
+      {showPagoModal && (
+        <ProcesarPagoModal 
+          socioId={user.id}
+          socioNombre={`${user.name} ${user.lastName}`}
+          onClose={() => setShowPagoModal(false)}
+        />
+      )}
     </div>
   );
 };

@@ -13,6 +13,8 @@ export interface Socio {
   email: string;
   noControl?: string;
   foto?: string;
+  huellaDigital?: string;
+  rol?: string;
 
   // From socios table
   idSocio: string;

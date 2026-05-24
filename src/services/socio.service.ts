@@ -9,15 +9,38 @@ export interface ApiResponse {
 }
 
 export const SocioService = {
+    // GET /api/socios - Obtener todos
+    getAll: async (): Promise<Socio[]> => {
+        try {
+            const response = await fetch(`${BASE_URL}/socios/buscar?q=`, {
+                headers: getAuthHeaders(),
+            });
+            const result = await handleResponse<Socio[] | ApiResponse>(response);
+            const data = Array.isArray(result) ? result : (result.data as Socio[] ?? []);
+            console.log("--- DEBUG SOCIO SERVICE (SEARCH ALL) ---", data);
+            return data;
+        } catch (e) {
+            console.warn("Intento de búsqueda fallido, probando endpoint raíz...", e);
+            const response = await fetch(`${BASE_URL}/socios`, {
+                headers: getAuthHeaders(),
+            });
+            const result = await handleResponse<Socio[] | ApiResponse>(response);
+            return Array.isArray(result) ? result : (result.data as Socio[] ?? []);
+        }
+    },
+
     // GET /api/socios/buscar?q={query}
     buscar: async (query: string): Promise<Socio[]> => {
+        if (!query.trim()) return SocioService.getAll();
+
         const response = await fetch(`${BASE_URL}/socios/buscar?q=${encodeURIComponent(query)}`, {
             headers: getAuthHeaders(),
         });
 
-        // Usar handleResponse para consistencia en el manejo de errores y respuestas
         const result = await handleResponse<Socio[] | ApiResponse>(response);
-        return Array.isArray(result) ? result : (result.data as Socio[] ?? []);
+        const data = Array.isArray(result) ? result : (result.data as Socio[] ?? []);
+        console.log(`--- DEBUG SOCIO SERVICE (SEARCH: ${query}) ---`, data);
+        return data;
     },
 
     // POST /api/socios
@@ -53,6 +76,12 @@ export const SocioService = {
             headers: getAuthHeaders(),
         });
         return handleResponse<ApiResponse>(response);
+    },
+
+    ascenderASocio: async (datosMembresia: Partial<SocioFormData>): Promise<ApiResponse> => {
+        // En este backend, POST /api/socios con los datos del usuario 
+        // realiza el ascenso automáticamente.
+        return SocioService.crear(datosMembresia as SocioFormData);
     }
 };
 
@@ -73,21 +102,23 @@ const mapFormDataToRequest = (formData: SocioFormData) => {
         name: name,
         lastName: lastName,
         email: formData.email,
+        noControl: formData.idSocio, // Map idSocio from frontend to noControl for backend
+        
+        // Socio-specific fields
+        tipoMembresia: formData.tipoMembresia,
+        costoMensual: formData.costoMensual,
+        fechaInicio: formData.fechaInicio,
+        fechaFin: formData.fechaFin,
+        estatus: formData.estatus || 'ACTIVO',
+        
+        // Optional fields (if backend accepts them)
         telefono: formData.telefono,
         fechaNacimiento: formData.fechaNacimiento,
         sexo: formData.sexo,
         foto: formData.foto,
-
-        // Socio-specific fields
-        idSocio: formData.idSocio,
         contactoEmergencia: formData.contactoEmergencia,
         telefonoEmergencia: formData.telefonoEmergencia,
-        tipoMembresia: formData.tipoMembresia,
         descuento: formData.descuento,
-        costoMensual: formData.costoMensual,
-        fechaInicio: formData.fechaInicio,
-        fechaFin: formData.fechaFin,
-        estatus: formData.estatus,
         lesiones: formData.lesiones,
         alergias: formData.alergias,
         extras: formData.extras,

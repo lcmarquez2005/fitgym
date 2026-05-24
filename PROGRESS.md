@@ -27,6 +27,12 @@ This file records implemented functionalities and pending tasks.
     - [x] ERP Dashboard (Basic layout).
     - [x] Member Management (CRUD integrated with SocioService).
     - [x] Landing Page and Plans.
+    - [x] **Edit User**: Modal for editing user profiles directly from the dashboard.
+    - [x] **Access Control (Kiosk Mode)**: Public view for entry validation via Control Number or Fingerprint.
+- **Payments and Memberships**:
+    - [x] `PagoService` for processing payments.
+    - [x] `ProcesarPagoModal` for manual membership renewals and payments.
+    - [x] Integration of payment flow into User and Socio details.
 
 ## 🏗️ In Progress
 - [ ] Refinement of context documentation.
@@ -43,7 +49,6 @@ This file records implemented functionalities and pending tasks.
     - [ ] Exportable reports.
 - **UX/UI Improvements**:
     - [ ] Implement loading skeletons.
-    - [ ] More visual error handling (Toasts).
 - **Optimization**:
     - [ ] Evaluation of TanStack Query for cache management.
     - [ ] Evaluation of Zustand for complex states if necessary.

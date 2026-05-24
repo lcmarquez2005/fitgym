@@ -27,6 +27,7 @@ import { ForgotPasswordPage } from './pages/auth/ForgotPasswordPage';
 import { ResetPasswordPage } from './pages/auth/ResetPasswordPage';
 import { VerifyEmailPage } from './pages/auth/VerifyEmailPAge';
 import DashboardERP from '@pages/erp/DashboardERP';
+import ControlAcceso from '@pages/erp/ControlAcceso';
 
 const RouterApp = () => {
     return (
@@ -40,6 +41,7 @@ const RouterApp = () => {
                 <Route path="/planes" element={<Planes />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="/ticket" element={<TicketPage />} />
+                <Route path="/control-acceso" element={<ControlAcceso />} />
 
                 {/* ============================================= */}
                 {/* RUTAS DE AUTENTICACIÓN                        */}

@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import type { ApiResponse } from "@services/socio.service";
 import type { SocioFormData } from "./types";
-import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { ProcesarPagoModal } from "@/components";
 
 interface SocioActionsProps {
   formData: SocioFormData;
@@ -25,7 +25,7 @@ const SocioActions: React.FC<SocioActionsProps> = ({
   eliminarSocio,
   limpiarFormulario
 }) => {
-  const navigate = useNavigate();
+  const [showPagoModal, setShowPagoModal] = useState(false);
 
   return (
     <div className="p-6 space-y-4 bg-white border shadow-sm rounded-2xl border-slate-200">
@@ -52,6 +52,16 @@ const SocioActions: React.FC<SocioActionsProps> = ({
       {socioSeleccionadoId && (
         <>
           <button
+            className="flex items-center justify-center w-full gap-3 px-4 py-3 text-sm font-bold text-white transition-all duration-200 bg-indigo-600 rounded-xl hover:bg-indigo-700 shadow-lg shadow-indigo-500/20"
+            onClick={() => setShowPagoModal(true)}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            Procesar Pago / Renovar
+          </button>
+
+          <button
             disabled={!editable}
             className="flex items-center justify-center w-full gap-3 px-4 py-3 text-sm font-bold text-white transition-all duration-200 bg-amber-500 rounded-xl hover:bg-amber-600 shadow-lg shadow-amber-500/20 disabled:bg-slate-300 disabled:shadow-none disabled:cursor-not-allowed"
             onClick={async () => {
@@ -69,6 +79,7 @@ const SocioActions: React.FC<SocioActionsProps> = ({
             </svg>
             Actualizar socio
           </button>
+          
           <button
             className="flex items-center justify-center w-full gap-3 px-4 py-3 text-sm font-bold text-white transition-all duration-200 bg-red-600 rounded-xl hover:bg-red-700 shadow-lg shadow-red-500/20"
             onClick={() => {
@@ -93,14 +104,20 @@ const SocioActions: React.FC<SocioActionsProps> = ({
             </svg>
             Eliminar socio
           </button>
-          <button className="flex items-center justify-center w-full gap-3 px-4 py-3 text-sm font-bold text-white transition-all duration-200 bg-indigo-600 rounded-xl hover:bg-indigo-700 shadow-lg shadow-indigo-500/20" onClick={() => navigate("/erp/estado-cuenta")}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            Estado de cuenta
-          </button>
         </>
       )}
+
+      {showPagoModal && socioSeleccionadoId && (
+        <ProcesarPagoModal 
+          socioId={socioSeleccionadoId}
+          socioNombre={formData.nombreCompleto}
+          onClose={() => setShowPagoModal(false)}
+          onPagoExitoso={() => {
+            // Actualizar estado local si es necesario
+          }}
+        />
+      )}
+
       <div className="pt-4 mt-4 border-t border-slate-200">
         <button
           className="flex items-center justify-center w-full gap-3 px-4 py-3 text-sm font-bold text-slate-600 transition-colors bg-slate-100 rounded-xl hover:bg-slate-200"

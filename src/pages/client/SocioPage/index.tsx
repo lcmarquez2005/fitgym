@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from "react";
+import { useState, useEffect, type ChangeEvent } from "react";
 import { toast } from "sonner";
 import Footer from "@layout/Footer";
 import Header from "@layout/Header";
@@ -9,6 +9,8 @@ import SocioMembershipCard from "./SocioMembershipCard";
 import SocioMedicalCard from "./SocioMedicalCard";
 import SocioActions from "./SocioActions";
 import { SocioService } from "@services/socio.service";
+import { UserPlus, UserCircle, Activity, CreditCard, Users } from 'lucide-react';
+import { GenerarDatosPrueba } from "@/components";
 
 export default function SocioPage() {
   const images = {
@@ -27,24 +29,48 @@ export default function SocioPage() {
     telefonoEmergencia: "",
     idSocio: "",
     fechaRegistro: "",
-    estatus: "Activo",
-    tipoMembresia: "Individual",
+    estatus: "ACTIVO",
+    tipoMembresia: "MENSUAL",
     descuento: "0",
-    costoMensual: "0",
-    fechaInicio: "",
-    fechaFin: "",
+    costoMensual: "500",
+    fechaInicio: new Date().toISOString().split('T')[0],
+    fechaFin: new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().split('T')[0],
     lesiones: "Ninguna",
     alergias: "Ninguna",
     extras: "",
   };
 
+  const [activeTab, setActiveTab] = useState<'perfil' | 'membresia' | 'medico'>('perfil');
   const [foto, setFoto] = useState(images.userPhoto);
   const [busqueda, setBusqueda] = useState("");
   const [resultados, setResultados] = useState<Socio[]>([]);
+  const [allSocios, setAllSocios] = useState<Socio[]>([]);
   const [buscando, setBuscando] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [sinResultados, setSinResultados] = useState(false);
   const [socioSeleccionadoId, setSocioSeleccionadoId] = useState<string | null>(null);
   const [editable, setEditable] = useState(true);
+  const [formData, setFormData] = useState<SocioFormData>(initialFormData);
+
+  // Carga inicial de todos los socios
+  useEffect(() => {
+    loadAllSocios();
+  }, []);
+
+  const loadAllSocios = async () => {
+    setLoading(true);
+    try {
+      const data = await SocioService.getAll();
+      console.log("SocioPage: Socios cargados", data);
+      setAllSocios(data);
+      setResultados(data);
+    } catch (err) {
+      console.error("SocioPage: Error cargando socios", err);
+      toast.error("Error al cargar la lista de socios");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleFotoChange = (e: ChangeEvent<HTMLInputElement>) => {
     const archivo = e.target.files?.[0];
@@ -54,8 +80,6 @@ export default function SocioPage() {
     }
   };
 
-  const [formData, setFormData] = useState<SocioFormData>(initialFormData);
-
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     if (!editable) return;
     const { name, value } = e.target;
@@ -63,14 +87,17 @@ export default function SocioPage() {
   };
 
   const buscarSocio = async () => {
-    if (!busqueda.trim()) return;
+    if (!busqueda.trim()) {
+      setResultados(allSocios);
+      setSinResultados(false);
+      return;
+    }
     setBuscando(true);
     setSinResultados(false);
-    setResultados([]);
     try {
       const lista = await SocioService.buscar(busqueda);
+      setResultados(lista);
       if (lista.length === 0) setSinResultados(true);
-      else setResultados(lista);
     } catch (err) {
       toast.error("Error al buscar socios. Inténtalo de nuevo.");
     } finally {
@@ -79,24 +106,19 @@ export default function SocioPage() {
   };
 
   const seleccionarSocio = (socio: Socio) => {
-    // The backend sends a computed `nombreCompleto` and all fields match camelCase.
-    // We also convert numbers to strings for the input fields.
-
     const newFormData: SocioFormData = {
-      ...initialFormData, // Start with a clean slate to remove old data
-      ...socio, // Spread all properties from the socio object
+      ...initialFormData,
+      ...socio,
       id: socio.id,
       descuento: socio.descuento?.toString() ?? "0",
       costoMensual: socio.costoMensual?.toString() ?? "0",
     };
 
     setFormData(newFormData);
-    if (socio.foto) setFoto(socio.foto); // Use 'foto' from the socio object
-    setSocioSeleccionadoId(socio.id); // 'id' from socio is now required
+    if (socio.foto) setFoto(socio.foto);
+    setSocioSeleccionadoId(socio.id);
     setEditable(false);
-    setResultados([]);
-    setBusqueda("");
-    setSinResultados(false);
+    setActiveTab('perfil');
   };
 
   const limpiarFormulario = () => {
@@ -105,21 +127,28 @@ export default function SocioPage() {
     setFoto(images.userPhoto);
     setEditable(true);
     setBusqueda("");
-    setResultados([]);
+    setResultados(allSocios);
     setSinResultados(false);
+    setActiveTab('perfil');
     toast.info("Formulario listo para registrar un nuevo socio.");
   };
 
   const registrarSocio = async (datos: SocioFormData) => {
-    return await SocioService.crear(datos);
+    const res = await SocioService.crear(datos);
+    if (res.success) loadAllSocios();
+    return res;
   };
 
   const actualizarSocio = async (id: string, datos: SocioFormData) => {
-    return await SocioService.actualizar(id, datos);
+    const res = await SocioService.actualizar(id, datos);
+    if (res.success) loadAllSocios();
+    return res;
   };
 
   const eliminarSocio = async (id: string) => {
-    return await SocioService.eliminar(id);
+    const res = await SocioService.eliminar(id);
+    if (res.success) loadAllSocios();
+    return res;
   };
 
   const inputBase = `w-full text-sm font-medium px-4 py-3 rounded-xl border outline-none transition-all duration-200`;
@@ -127,92 +156,170 @@ export default function SocioPage() {
     focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 focus:bg-white`;
   const inputDisabled = `bg-slate-50 border-slate-100 text-slate-400 cursor-not-allowed`;
   const inputClass = `${inputBase} ${editable ? inputEnabled : inputDisabled}`;
-
   const labelClass = "block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5";
 
-  const estatusColors: Record<string, string> = {
-    Activo: "bg-emerald-50 text-emerald-600 border border-emerald-200",
-    Suspendido: "bg-amber-50 text-amber-600 border border-amber-200",
-    Inactivo: "bg-slate-100 text-slate-500 border border-slate-200",
-    Pendiente: "bg-blue-50 text-blue-600 border border-blue-200",
-  };
-
   return (
-    <>
-      {/* SocioStyles se elimina ya que sus estilos se migraron a Tailwind o clases de componente */}
-      <div className="min-h-screen bg-slate-100 font-sans">
-        <Header />
+    <div className="min-h-screen bg-slate-50/50 font-sans flex flex-col">
+      <Header />
 
-        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-slate-800 font-syne">Gestión de Socios</h1>
-            <p className="text-slate-500">Busca, crea, edita y gestiona la información de los socios.</p>
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+          <div>
+            <h1 className="text-4xl font-bakbak text-black uppercase tracking-tight text-[#606DE5]">Gestión de Socios</h1>
+            <p className="text-gray-500 font-medium italic">Administra, registra y controla el acceso de los miembros</p>
           </div>
+          
+          <button 
+            onClick={limpiarFormulario}
+            className="flex items-center gap-2 bg-black text-white px-6 py-3 rounded-2xl font-bakbak hover:bg-gray-800 transition-all active:scale-95 shadow-xl shadow-gray-200"
+          >
+            <UserPlus size={20} />
+            NUEVO REGISTRO
+          </button>
+        </div>
 
-          <div className="w-full max-w-2xl mx-auto mb-8">
-            <SocioSearchBar
-              busqueda={busqueda}
-              setBusqueda={setBusqueda}
-              buscando={buscando}
-              sinResultados={sinResultados}
-              resultados={resultados}
-              buscarSocio={buscarSocio}
-              seleccionarSocio={seleccionarSocio}
-              setSinResultados={setSinResultados}
-              setResultados={setResultados}
-              estatusColors={estatusColors}
-            />
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+          {/* Panel Izquierdo: Buscador y Lista */}
+          <div className="lg:col-span-4 space-y-6">
+            <div className="bg-white p-6 rounded-[32px] border border-gray-100 shadow-sm flex flex-col gap-6">
+              <SocioSearchBar
+                busqueda={busqueda}
+                setBusqueda={setBusqueda}
+                buscando={buscando}
+                sinResultados={sinResultados}
+                buscarSocio={buscarSocio}
+                setSinResultados={setSinResultados}
+                setResultados={setResultados}
+              />
 
-          {/* Layout de 2 columnas: 2/3 para info, 1/3 para acciones */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-8">
-            <div className="lg:col-span-2 space-y-6">
-              <SocioProfileCard
-                formData={formData}
-                handleChange={handleChange}
-                editable={editable}
-                setEditable={setEditable}
-                foto={foto}
-                handleFotoChange={handleFotoChange}
-                inputClass={inputClass}
-                labelClass={labelClass}
-              />
-              <SocioMembershipCard
-                formData={formData}
-                handleChange={handleChange}
-                editable={editable}
-                inputClass={inputClass}
-                labelClass={labelClass}
-              />
-              <SocioMedicalCard
-                formData={formData}
-                handleChange={handleChange}
-                editable={editable}
-                inputClass={inputClass}
-                labelClass={labelClass}
-                fingerprintImg={images.fingerprint}
-              />
-            </div>
+              {/* Lista Persistente de Socios */}
+              <div className="flex flex-col gap-2 max-h-[550px] overflow-y-auto pr-2 custom-scrollbar">
+                <div className="flex justify-between items-center px-2 mb-2">
+                  <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Socios Registrados</h3>
+                  <span className="bg-slate-100 text-slate-500 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                    {resultados.length}
+                  </span>
+                </div>
 
-            <div className="lg:col-span-1">
-              <div className="sticky top-8">
-                <SocioActions
-                  formData={formData}
-                  socioSeleccionadoId={socioSeleccionadoId}
-                  editable={editable}
-                  setEditable={setEditable}
-                  registrarSocio={registrarSocio}
-                  actualizarSocio={actualizarSocio}
-                  eliminarSocio={eliminarSocio}
-                  limpiarFormulario={limpiarFormulario}
-                />
+                {loading ? (
+                   <div className="flex flex-col items-center py-10 gap-2">
+                     <div className="w-8 h-8 border-4 border-gray-100 border-t-indigo-500 rounded-full animate-spin" />
+                     <span className="text-[10px] font-bold text-gray-400 uppercase">Cargando Socios...</span>
+                   </div>
+                ) : resultados.length === 0 ? (
+                  <div className="flex flex-col items-center py-10 text-gray-300 gap-3">
+                    <Users size={40} className="opacity-20" />
+                    <p className="italic text-sm text-center px-4">No se encontraron socios con los filtros actuales</p>
+                  </div>
+                ) : (
+                  resultados.map((socio) => (
+                    <button
+                      key={socio.id}
+                      onClick={() => seleccionarSocio(socio)}
+                      className={`flex items-center gap-4 p-3 rounded-2xl transition-all text-left group ${socioSeleccionadoId === socio.id ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200' : 'hover:bg-slate-50 bg-white border border-transparent'}`}
+                    >
+                      <div className={`w-12 h-12 rounded-full overflow-hidden border-2 ${socioSeleccionadoId === socio.id ? 'border-white/40' : 'border-gray-100'}`}>
+                        <img 
+                          src={socio.foto || images.userPhoto} 
+                          className="w-full h-full object-cover" 
+                          alt={socio.nombreCompleto} 
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className={`font-bold text-sm truncate ${socioSeleccionadoId === socio.id ? 'text-white' : 'text-gray-800'}`}>
+                          {socio.nombreCompleto}
+                        </p>
+                        <p className={`text-[11px] truncate ${socioSeleccionadoId === socio.id ? 'text-indigo-100' : 'text-gray-400'}`}>
+                          ID: {socio.idSocio}
+                        </p>
+                      </div>
+                      <div className={`w-2.5 h-2.5 rounded-full shadow-sm ${socio.estatus === 'ACTIVO' ? 'bg-green-400 ring-4 ring-green-400/20' : 'bg-red-400 ring-4 ring-red-400/20'}`} title={socio.estatus} />
+                    </button>
+                  ))
+                )}
               </div>
             </div>
-          </div>
-        </main>
 
-        <Footer />
-      </div>
-    </>
+            <SocioActions
+              formData={formData}
+              socioSeleccionadoId={socioSeleccionadoId}
+              editable={editable}
+              setEditable={setEditable}
+              registrarSocio={registrarSocio}
+              actualizarSocio={actualizarSocio}
+              eliminarSocio={eliminarSocio}
+              limpiarFormulario={limpiarFormulario}
+            />
+
+            <GenerarDatosPrueba />
+          </div>
+
+          {/* Panel Derecho: Detalles (Tabs) */}
+          <div className="lg:col-span-8 flex flex-col gap-6">
+            {/* Tabs Navigation */}
+            <div className="flex bg-white p-2 rounded-2xl border border-gray-100 shadow-sm gap-2">
+              <button
+                onClick={() => setActiveTab('perfil')}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm transition-all ${activeTab === 'perfil' ? 'bg-black text-white shadow-lg' : 'text-gray-400 hover:bg-gray-50'}`}
+              >
+                <UserCircle size={18} />
+                PERFIL
+              </button>
+              <button
+                onClick={() => setActiveTab('membresia')}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm transition-all ${activeTab === 'membresia' ? 'bg-black text-white shadow-lg' : 'text-gray-400 hover:bg-gray-50'}`}
+              >
+                <CreditCard size={18} />
+                MEMBRESÍA
+              </button>
+              <button
+                onClick={() => setActiveTab('medico')}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm transition-all ${activeTab === 'medico' ? 'bg-black text-white shadow-lg' : 'text-gray-400 hover:bg-gray-50'}`}
+              >
+                <Activity size={18} />
+                MÉDICO
+              </button>
+            </div>
+
+            {/* Tab Content */}
+            <div className="flex-1 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              {activeTab === 'perfil' && (
+                <SocioProfileCard
+                  formData={formData}
+                  handleChange={handleChange}
+                  editable={editable}
+                  setEditable={setEditable}
+                  foto={foto}
+                  handleFotoChange={handleFotoChange}
+                  inputClass={inputClass}
+                  labelClass={labelClass}
+                />
+              )}
+              {activeTab === 'membresia' && (
+                <SocioMembershipCard
+                  formData={formData}
+                  handleChange={handleChange}
+                  editable={editable}
+                  inputClass={inputClass}
+                  labelClass={labelClass}
+                />
+              )}
+              {activeTab === 'medico' && (
+                <SocioMedicalCard
+                  formData={formData}
+                  handleChange={handleChange}
+                  editable={editable}
+                  inputClass={inputClass}
+                  labelClass={labelClass}
+                  fingerprintImg={images.fingerprint}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <Footer />
+    </div>
   );
 }
