@@ -4,7 +4,7 @@ import { clearToken } from "./auth.headers";
 // En el futuro esto vendrá de un .env, por ahora lo dejamos fijo
 export const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080' + '/api';
 
-export const handleResponse = async <T>(response: Response): Promise<T> => {
+export const handleResponse = async <T = any>(response: Response): Promise<T> => {
   // Si el token es inválido o ha expirado, el servidor responderá con 401 o 403.
   // En ese caso, limpiamos el token y recargamos la página para forzar el login.
   if (response.status === 401 || response.status === 403) {

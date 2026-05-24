@@ -47,7 +47,6 @@ interface DashboardData {
 const fmt = (n: number) =>
   (n ?? 0).toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
 
-const COLORS_PIE = ['#606de5', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'];
 const COLORS_TXCAT = ['#606de5', '#10b981', '#f59e0b', '#ef4444'];
 
 // Convierte las transacciones en datos para la gráfica de barras por hora
@@ -256,7 +255,7 @@ export default function DashboardFinanzas() {
               <XAxis dataKey="semana" tick={{ fontSize: 12 }} />
               <YAxis tick={{ fontSize: 11 }}
                 tickFormatter={v => `$${(v / 1000).toFixed(0)}k`} />
-              <Tooltip formatter={(v: number) => fmt(v)} />
+              <Tooltip formatter={(v: any) => fmt(v)} />
               <Area type="monotone" dataKey="monto" stroke="#606de5"
                 strokeWidth={2} fill="url(#colorMonto)" name="Ingresos" />
             </AreaChart>
@@ -308,7 +307,7 @@ export default function DashboardFinanzas() {
                 <XAxis dataKey="hora" tick={{ fontSize: 11 }} />
                 <YAxis tick={{ fontSize: 11 }}
                   tickFormatter={v => `$${(v / 1000).toFixed(0)}k`} />
-                <Tooltip formatter={(v: number) => fmt(v)} />
+                <Tooltip formatter={(v: any) => fmt(v)} />
                 <Legend />
                 <Bar dataKey="ingresos" name="Ingresos" fill="#10b981" radius={[4, 4, 0, 0]} />
                 <Bar dataKey="egresos" name="Egresos" fill="#ef4444" radius={[4, 4, 0, 0]} />
@@ -333,7 +332,7 @@ export default function DashboardFinanzas() {
                       <Cell key={i} fill={COLORS_TXCAT[i % COLORS_TXCAT.length]} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(v: number) => fmt(v)} />
+                  <Tooltip formatter={(v: any) => fmt(v)} />
                 </PieChart>
               </ResponsiveContainer>
               <div className="space-y-1 mt-2">

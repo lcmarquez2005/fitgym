@@ -1,6 +1,6 @@
 // src/pages/erp/marketing/MarketingPage.tsx
 import { useState } from 'react';
-import Sidebar from '../../../components/Sidebar';
+import Sidebar from '@layout/Sidebar';
 import DashboardMarketing from './DashboardMarketing.tsx';
 import LeadsPage from './LeadsPage.tsx';
 import CampanasPage from './CampanasPage.tsx';

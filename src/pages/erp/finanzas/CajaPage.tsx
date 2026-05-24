@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer, Cell
+  Tooltip, ResponsiveContainer
 } from 'recharts';
 import {
   getCajaActual, abrirCaja, cerrarCaja,
@@ -296,7 +296,7 @@ export default function CajaPage() {
                     <XAxis dataKey="cat" tick={{ fontSize: 11 }} />
                     <YAxis tick={{ fontSize: 11 }}
                       tickFormatter={v => `$${(v / 1000).toFixed(0)}k`} />
-                    <Tooltip formatter={(v: number) => fmt(v)} />
+                    <Tooltip formatter={(v: any) => fmt(v)} />
                     <Bar dataKey="ingresos" name="Ingresos" fill="#10b981" radius={[4, 4, 0, 0]} />
                     <Bar dataKey="egresos" name="Egresos" fill="#ef4444" radius={[4, 4, 0, 0]} />
                   </BarChart>

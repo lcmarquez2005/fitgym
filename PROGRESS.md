@@ -23,13 +23,18 @@ This file records implemented functionalities and pending tasks.
     - [x] `CONTEXT.md` (Project map).
     - [x] `GEMINI.md` (AI instructions).
     - [x] Refactored `AltaUsuario.tsx` into a clean component with a dedicated custom hook (`useAltaUsuario.ts`) and fixed image upload logic.
-- **Main Views (Structure)**:
+- **Main Views & ERP Modules**:
     - [x] ERP Dashboard (Basic layout).
     - [x] Member Management (CRUD integrated with SocioService).
     - [x] Landing Page and Plans.
+    - [x] Finance Module (Caja, Estado de Resultados, Impuestos, Nómina integration).
+    - [x] Inventory Module (Equipos, Suplementos, Mantenimiento, Proveedores).
+    - [x] HR Module (RRHHPage payroll file generation & contract roles).
+    - [x] Reservations Module (HorarioSemanal, class lists, slot booking).
+    - [x] Marketing Module (LeadsPage, CampanasPage, PromocionesPage, SegmentacionPage).
 
 ## 🏗️ In Progress
-- [ ] Refinement of context documentation.
+- [x] Merged feature branches (`creacionLoginAuth` in backend, `RamaRodrigo` in frontend) into `develop` with compile verification.
 
 ## 📋 Pending Implementation
 - **Plans Module**:

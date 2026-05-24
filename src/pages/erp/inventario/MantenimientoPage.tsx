@@ -4,7 +4,6 @@ import { InventarioService } from '../../../services/inventario.service';
 export default function MantenimientoPage() {
     const [equipos, setEquipos] = useState<any[]>([]);
     const [mantenimientos, setMantenimientos] = useState<any[]>([]);
-    const [loading, setLoading] = useState(false);
     const [msg, setMsg] = useState('');
 
     // Form

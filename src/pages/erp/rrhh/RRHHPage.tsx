@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { RRHHService, EmpleadoFinance, UsuarioSinFicha } from '../../../services/rrhh.service';
+import { RRHHService } from '@services/rrhh.service';
+import type { EmpleadoFinance, UsuarioSinFicha } from '@services/rrhh.service';
 
 export default function RRHHPage() {
     const [empleados, setEmpleados] = useState<EmpleadoFinance[]>([]);

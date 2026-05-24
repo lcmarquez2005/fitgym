@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getBalanceGeneral } from '../../../../services/reportes.service';
-import { Download, RefreshCw, BarChart3, Building, DollarSign, Wallet } from 'lucide-react';
+import { Download, RefreshCw, Building, DollarSign, Wallet } from 'lucide-react';
 import { BASE_URL } from '../../../../services/api.config';
 
 export default function ViewBalanceGeneral() {

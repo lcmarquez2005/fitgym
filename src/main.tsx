@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import RouterApp from './RouterApp';
 import { BrowserRouter } from 'react-router-dom'
