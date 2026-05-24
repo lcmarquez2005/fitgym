@@ -6,19 +6,32 @@ import PromocionesPage from './PromocionesPage.tsx';
 import SegmentacionPage from './SegmentacionPage.tsx';
 import Header from '@layout/Header';
 import Footer from '@layout/Footer';
+import {
+  Megaphone,
+  LayoutDashboard,
+  Target,
+  Tag,
+  Layers
+} from 'lucide-react';
 
 type Tab = 'dashboard' | 'leads' | 'campanas' | 'promociones' | 'segmentacion';
 
-const TABS: { key: Tab; label: string; emoji: string }[] = [
-    { key: 'dashboard', label: 'Dashboard', emoji: '📊' },
-    { key: 'leads', label: 'Leads', emoji: '🎯' },
-    { key: 'campanas', label: 'Campañas', emoji: '📢' },
-    { key: 'promociones', label: 'Promociones', emoji: '🏷️' },
-    { key: 'segmentacion', label: 'Segmentación', emoji: '👥' },
-];
+interface TabItem {
+  key: Tab;
+  label: string;
+  icon: React.ReactNode;
+}
 
 export default function MarketingPage() {
     const [tab, setTab] = useState<Tab>('dashboard');
+
+    const TABS: TabItem[] = [
+        { key: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={18} /> },
+        { key: 'leads', label: 'Leads', icon: <Target size={18} /> },
+        { key: 'campanas', label: 'Campañas', icon: <Megaphone size={18} /> },
+        { key: 'promociones', label: 'Promociones', icon: <Tag size={18} /> },
+        { key: 'segmentacion', label: 'Segmentación', icon: <Layers size={18} /> },
+    ];
 
     return (
         <div className="min-h-screen bg-[#F6F8FE] font-inter">
@@ -34,10 +47,12 @@ export default function MarketingPage() {
                 >
                     <div className="space-y-2">
                         <div className="flex items-center gap-3">
-                            <span className="text-3xl">📢</span>
+                            <div className="p-3 bg-[#606DE5]/10 rounded-2xl text-[#606DE5]">
+                                <Megaphone size={28} />
+                            </div>
                             <h1 className="text-3xl font-bakbak text-black uppercase tracking-wide">Módulo Marketing</h1>
                         </div>
-                        <p className="text-gray-500 font-medium italic pl-10">Campañas, promociones, segmentación de socios y seguimiento de prospectos.</p>
+                        <p className="text-gray-500 font-medium italic pl-16">Campañas, promociones, segmentación de socios y seguimiento de prospectos.</p>
                     </div>
                     
                     {/* Glassmorphic Tabs Navigation */}
@@ -52,7 +67,7 @@ export default function MarketingPage() {
                                         : 'text-gray-500 hover:text-black hover:bg-white/80'
                                 }`}
                             >
-                                <span className="text-base">{t.emoji}</span>
+                                {t.icon}
                                 <span>{t.label}</span>
                             </button>
                         ))}

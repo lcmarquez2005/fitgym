@@ -7,19 +7,33 @@ import ImpuestosPage from './ImpuestosPage';
 import NominaPage from './NominaPage';
 import Header from '@layout/Header';
 import Footer from '@layout/Footer';
+import {
+  Wallet,
+  TrendingUp,
+  Coins,
+  BarChart3,
+  Landmark,
+  UserCheck
+} from 'lucide-react';
 
 type Tab = 'dashboard' | 'caja' | 'reportes' | 'impuestos' | 'nomina';
 
-const TABS: { key: Tab; label: string; emoji: string }[] = [
-  { key: 'dashboard', label: 'Dashboard', emoji: '📊' },
-  { key: 'caja', label: 'Caja', emoji: '💰' },
-  { key: 'reportes', label: 'Reportes y Análisis', emoji: '📈' },
-  { key: 'impuestos', label: 'Impuestos', emoji: '🏛️' },
-  { key: 'nomina', label: 'Nómina', emoji: '👷' },
-];
+interface TabItem {
+  key: Tab;
+  label: string;
+  icon: React.ReactNode;
+}
 
 export default function FinanzasPage() {
   const [tab, setTab] = useState<Tab>('dashboard');
+
+  const TABS: TabItem[] = [
+    { key: 'dashboard', label: 'Dashboard', icon: <TrendingUp size={18} /> },
+    { key: 'caja', label: 'Caja', icon: <Coins size={18} /> },
+    { key: 'reportes', label: 'Reportes y Análisis', icon: <BarChart3 size={18} /> },
+    { key: 'impuestos', label: 'Impuestos', icon: <Landmark size={18} /> },
+    { key: 'nomina', label: 'Nómina', icon: <UserCheck size={18} /> },
+  ];
 
   return (
     <div className="min-h-screen bg-[#F6F8FE] font-inter">
@@ -35,10 +49,12 @@ export default function FinanzasPage() {
         >
           <div className="space-y-2">
             <div className="flex items-center gap-3">
-              <span className="text-3xl">💼</span>
+              <div className="p-3 bg-[#606DE5]/10 rounded-2xl text-[#606DE5]">
+                <Wallet size={28} />
+              </div>
               <h1 className="text-3xl font-bakbak text-black uppercase tracking-wide">Módulo Finanzas</h1>
             </div>
-            <p className="text-gray-500 font-medium italic pl-10">Gestión financiera integral del gimnasio</p>
+            <p className="text-gray-500 font-medium italic pl-16">Gestión financiera integral del gimnasio</p>
           </div>
           
           {/* Glassmorphic Tabs Navigation */}
@@ -53,7 +69,7 @@ export default function FinanzasPage() {
                     : 'text-gray-500 hover:text-black hover:bg-white/80'
                 }`}
               >
-                <span className="text-base">{t.emoji}</span>
+                {t.icon}
                 <span>{t.label}</span>
               </button>
             ))}

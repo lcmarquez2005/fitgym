@@ -3,6 +3,7 @@ import { RRHHService } from '@services/rrhh.service';
 import type { EmpleadoFinance, UsuarioSinFicha } from '@services/rrhh.service';
 import Header from '@layout/Header';
 import Footer from '@layout/Footer';
+import { Users } from 'lucide-react';
 
 export default function RRHHPage() {
     const [empleados, setEmpleados] = useState<EmpleadoFinance[]>([]);
@@ -71,10 +72,12 @@ export default function RRHHPage() {
                 >
                     <div className="space-y-2">
                         <div className="flex items-center gap-3">
-                            <span className="text-3xl">👥</span>
+                            <div className="p-3 bg-[#606DE5]/10 rounded-2xl text-[#606DE5]">
+                                <Users size={28} />
+                            </div>
                             <h1 className="text-3xl font-bakbak text-black uppercase tracking-wide">Módulo RRHH</h1>
                         </div>
-                        <p className="text-gray-500 font-medium italic pl-10">Contratos, expedientes de empleados y nómina.</p>
+                        <p className="text-gray-500 font-medium italic pl-16">Contratos, expedientes de empleados y nómina.</p>
                     </div>
                 </div>
 
