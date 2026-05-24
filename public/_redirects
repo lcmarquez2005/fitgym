@@ -1,0 +1,4 @@
+/*
+# Fallback para Single Page Application (SPA)
+# Esto redirige todas las peticiones que no son archivos al index.html
+/*    /index.html   200

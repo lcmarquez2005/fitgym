@@ -10,28 +10,26 @@ import {
   Settings,
   Menu,
   X,
-  Users
+  Users,
+  Home
 } from 'lucide-react';
 import { AltaUsuario } from '../client/AltaUsuario';
+import { useAuth } from '@context/AuthContext';
 
 interface SidebarProps {
-  userName?: string;
-  role?: string;
   activeTab?: string;
   onNavigate?: (tab: string) => void;
-  onLogout?: () => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ 
-  userName = "Luis", 
-  role = "Admin", 
   activeTab: propActiveTab = "Dashboard",
   onNavigate,
-  onLogout 
 }) => {
+  const { user, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [showAltaUsuario, setShowAltaUsuario] = useState(false);
   const location = useLocation();
+  
   // Sincroniza el tab activo con la ruta
   const getActiveTab = () => {
     if (location.pathname.startsWith('/erp')) return 'Dashboard';
@@ -40,7 +38,9 @@ const Sidebar: React.FC<SidebarProps> = ({
     if (location.pathname.startsWith('/alta')) return 'Alta de Usuario';
     if (location.pathname.startsWith('/socio')) return 'Socio';
     return propActiveTab;
-  };const [activeTab, setActiveTab] = useState<string>('Dashboard');
+  };
+
+  const [activeTab, setActiveTab] = useState<string>('Dashboard');
 
   // Actualiza el tab activo cuando cambia la ruta
   React.useEffect(() => {
@@ -52,7 +52,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const menuItems = [
     { name: "Dashboard", icon: <LayoutDashboard size={24} /> },
     { name: "Alta de Usuario", icon: <UserPlus size={24} /> },
-    { name: "Socio", icon: <Users size={24} /> }, // <-- NUEVO: Agregamos la opción Socio al menú
+    { name: "Socio", icon: <Users size={24} /> },
     { name: "Planes", icon: <Dumbbell size={24} /> },
     { name: "Control Acceso", icon: <ShieldCheck size={24} /> },
   ];
@@ -71,7 +71,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       setActiveTab('Planes')
       navigate('/planes');
       setIsOpen(false);
-    } else if (name === "Socio") { // <-- NUEVO: Agregamos la navegación para Socio
+    } else if (name === "Socio") {
       setActiveTab('Socio');
       navigate('/socio');
       setIsOpen(false);
@@ -81,9 +81,14 @@ const Sidebar: React.FC<SidebarProps> = ({
     }
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+    setIsOpen(false);
+  };
+
   const handleUserCreated = (userData: any) => {
     console.log('Usuario creado exitosamente:', userData);
-    // Aquí puedes agregar lógica adicional como actualizar una lista, mostrar notificación, etc.
   };
 
   return (
@@ -132,10 +137,10 @@ const Sidebar: React.FC<SidebarProps> = ({
               />
               <div className="flex flex-1 flex-col items-start gap-0">
                 <span className="text-black text-[22px] font-bakbak leading-tight">
-                  {userName}
+                  {user?.name || "Invitado"}
                 </span>
                 <span className="text-gray-500 text-[16px] font-inter font-medium">
-                  {role}
+                  {user?.rol || "Sin rol"}
                 </span>
               </div>
               <button className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-400">
@@ -147,6 +152,23 @@ const Sidebar: React.FC<SidebarProps> = ({
 
             {/* Menú de Navegación */}
             <nav className="flex flex-col w-full gap-2 mb-6 flex-1 overflow-y-auto">
+              <button
+                onClick={() => {
+                  navigate('/');
+                  setIsOpen(false);
+                }}
+                className="flex items-center w-full p-3 rounded-xl transition-all gap-3 group text-gray-600 hover:bg-gray-50 mb-2"
+              >
+                <div className="text-gray-400 group-hover:text-black">
+                  <Home size={24} />
+                </div>
+                <span className="text-[19px] font-inter font-semibold">
+                  Ir a Landing
+                </span>
+              </button>
+
+              <div className="bg-gray-100 w-full h-[1px] mb-4" />
+
               {menuItems.map((item) => (
                 <button
                   key={item.name}
@@ -171,11 +193,8 @@ const Sidebar: React.FC<SidebarProps> = ({
 
             {/* Botón Log Out */}
             <button 
-              className="flex items-center justify-center w-full bg-[#606DE5] hover:bg-[#4f5bd1] text-white py-4 px-6 rounded-2xl border-0 transition-all shadow-lg active:scale-95 gap-2"
-              onClick={() => {
-                if (onLogout) onLogout();
-                navigate('/');
-              }}
+              className="flex items-center justify-center w-full bg-red-500 hover:bg-red-600 text-white py-4 px-6 rounded-2xl border-0 transition-all shadow-lg active:scale-95 gap-2"
+              onClick={handleLogout}
             >
               <LogOut size={20} />
               <span className="text-[20px] font-bakbak">

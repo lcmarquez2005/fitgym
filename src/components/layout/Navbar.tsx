@@ -1,7 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@context/AuthContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   return (
     // Contenedor principal
@@ -31,13 +33,22 @@ const Navbar = () => {
             <Link to="/about" className="text-black text-base hover:text-blue-600 transition-colors">About</Link>
           </div>
 
-          {/* Botón de Login */}
-          <button 
-            className="bg-[#606DE5] py-3 px-6 rounded-3xl hover:bg-[#4a55c2] transition-all active:scale-95 shadow-md shadow-indigo-100"
-            onClick={() => navigate("/login")} 
-          >
-            <span className="text-white text-base font-bold">Log in</span>
-          </button>
+          {/* Botón de Login o Dashboard */}
+          {isAuthenticated ? (
+            <button 
+              className="bg-black py-3 px-6 rounded-3xl hover:bg-gray-800 transition-all active:scale-95 shadow-md"
+              onClick={() => navigate("/erp")} 
+            >
+              <span className="text-white text-base font-bold">Dashboard</span>
+            </button>
+          ) : (
+            <button 
+              className="bg-[#606DE5] py-3 px-6 rounded-3xl hover:bg-[#4a55c2] transition-all active:scale-95 shadow-md shadow-indigo-100"
+              onClick={() => navigate("/login")} 
+            >
+              <span className="text-white text-base font-bold">Log in</span>
+            </button>
+          )}
         </div>
 
       </div>
