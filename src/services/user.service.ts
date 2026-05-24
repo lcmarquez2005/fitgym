@@ -20,6 +20,8 @@ export interface UserPost {
     fotoPerfil: string;
     huellaDigital: string;
     rol: string;
+    email?: string;
+    password?: string;
 }
 
 export interface ApiResponse {

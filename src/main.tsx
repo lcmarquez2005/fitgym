@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import RouterApp from './RouterApp';
-import { BrowserRouter } from 'react-router-dom' 
+import { BrowserRouter } from 'react-router-dom'
 import './index.css' // <--- IMPORTANTE
 
 // Global font imports
@@ -18,10 +18,10 @@ const FontImports = () => (
 )
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
+  <BrowserRouter>
     <FontImports />
-    <BrowserRouter>  
-      <RouterApp />
-    </BrowserRouter>
-  </React.StrictMode>,
+    <RouterApp />
+  </BrowserRouter>
+  // </React.StrictMode>
 )

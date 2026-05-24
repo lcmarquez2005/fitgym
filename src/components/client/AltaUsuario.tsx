@@ -105,11 +105,20 @@ export const AltaUsuario: React.FC<AltaUsuarioProps> = ({ onClose, onUserCreated
               <FormField 
                 label="Correo Electrónico" 
                 name="email" 
-                value={formData.email} 
+                value={formData.email || ''} 
                 onChange={handleChange} 
                 placeholder="ejemplo@fitgym.com" 
                 error={errors.email}
                 type="email"
+                disabled={loading}
+              />
+              <FormField 
+                label="Contraseña Temporal" 
+                name="password" 
+                value={formData.password || ''} 
+                onChange={handleChange} 
+                placeholder="Ej. FitGym2024" 
+                error={errors.password}
                 disabled={loading}
               />
               

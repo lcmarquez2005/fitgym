@@ -22,7 +22,7 @@ export const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) 
 
     // Si no está autenticado, redirigir al login
     if (!isAuthenticated) {
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/register" replace />;
     }
 
     // Si hay roles especificados, verificar que el usuario tenga uno de ellos
