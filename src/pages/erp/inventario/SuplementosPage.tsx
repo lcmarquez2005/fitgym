@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { InventarioService } from '../../../services/inventario.service';
+import { ShoppingBag } from 'lucide-react';
 
 export default function SuplementosPage() {
     const [suplementos, setSuplementos] = useState<any[]>([]);
@@ -42,7 +43,10 @@ export default function SuplementosPage() {
     return (
         <div className="p-6 space-y-6">
             <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold">🛒 Punto de Venta - Suplementos</h2>
+                <h2 className="text-xl font-bold flex items-center gap-2">
+                    <ShoppingBag className="text-[#606DE5]" size={22} />
+                    Punto de Venta - Suplementos
+                </h2>
             </div>
             
             {msg && <div className="p-3 bg-blue-50 text-blue-800 rounded">{msg}</div>}

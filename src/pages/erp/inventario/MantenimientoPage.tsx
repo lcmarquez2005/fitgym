@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { InventarioService } from '../../../services/inventario.service';
+import { Wrench } from 'lucide-react';
 
 export default function MantenimientoPage() {
     const [equipos, setEquipos] = useState<any[]>([]);
@@ -55,7 +56,10 @@ export default function MantenimientoPage() {
 
     return (
         <div className="p-6 space-y-6">
-            <h2 className="text-xl font-bold">🔧 Bitácora de Mantenimiento</h2>
+            <h2 className="text-xl font-bold flex items-center gap-2">
+                <Wrench className="text-[#606DE5]" size={22} />
+                Bitácora de Mantenimiento
+            </h2>
             {msg && <div className="p-3 bg-blue-50 text-blue-800 rounded">{msg}</div>}
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

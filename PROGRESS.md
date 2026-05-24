@@ -32,6 +32,8 @@ This file records implemented functionalities and pending tasks.
     - [x] HR Module (RRHHPage payroll file generation & contract roles).
     - [x] Reservations Module (HorarioSemanal, class lists, slot booking).
     - [x] Marketing Module (LeadsPage, CampanasPage, PromocionesPage, SegmentacionPage).
+- **UX/UI & Polishing**:
+    - [x] Replaced all plain WhatsApp-like emojis in ERP modules, tab titles, status cards, and action modals with professional vector icons (`lucide-react`) and clean CSS dot indicators.
 
 ## 🏗️ In Progress
 - [x] Merged feature branches (`creacionLoginAuth` in backend, `RamaRodrigo` in frontend) into `develop` with compile verification.

@@ -1,6 +1,7 @@
 // src/pages/erp/finanzas/NominaPage.tsx
 import { useState } from 'react';
 import { generarNomina } from '../../../services/finance.service';
+import { CheckCircle2 } from 'lucide-react';
 
 export default function NominaPage() {
   const [periodo, setPeriodo] = useState('');
@@ -58,9 +59,12 @@ export default function NominaPage() {
       {/* Resultado de la nómina */}
       {resultado && (
         <div className="space-y-4">
-          <div className="border rounded bg-green-50 p-4">
-            <p className="font-semibold text-green-800">✅ {resultado.recibos?.length ?? 0} recibos generados — Período: {resultado.periodo}</p>
-            <p className="text-sm text-gray-600">Estado: <span className="font-medium">{resultado.estado}</span></p>
+          <div className="border rounded bg-green-50 p-4 flex items-start gap-2.5">
+            <CheckCircle2 className="text-green-600 mt-0.5 shrink-0" size={20} />
+            <div>
+              <p className="font-semibold text-green-800">{resultado.recibos?.length ?? 0} recibos generados — Período: {resultado.periodo}</p>
+              <p className="text-sm text-gray-600">Estado: <span className="font-medium">{resultado.estado}</span></p>
+            </div>
           </div>
 
           {resultado.recibos?.map((recibo: any) => (

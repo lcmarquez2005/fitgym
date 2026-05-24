@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ReservasService } from '../../../services/reservas.service';
+import { Calendar, Users, Flame } from 'lucide-react';
 
 export default function DashboardReservas() {
     const [clasesActivas, setClasesActivas] = useState<any[]>([]);
@@ -35,12 +36,14 @@ export default function DashboardReservas() {
 
     return (
         <div className="p-6 space-y-6">
-            <h2 className="text-xl font-bold">Resumen de la Semana</h2>
+            <h2 className="text-xl font-bold text-gray-800">Resumen de la Semana</h2>
 
             {/* KPIs */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
-                    <div className="p-4 bg-blue-100 text-blue-600 rounded-full text-2xl">📅</div>
+                    <div className="p-4 bg-blue-50 text-blue-600 rounded-2xl">
+                        <Calendar size={24} />
+                    </div>
                     <div>
                         <p className="text-sm text-gray-500 font-medium">Clases Programadas</p>
                         <p className="text-3xl font-bold text-gray-800">{totalClases}</p>
@@ -48,7 +51,9 @@ export default function DashboardReservas() {
                 </div>
                 
                 <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
-                    <div className="p-4 bg-green-100 text-green-600 rounded-full text-2xl">👥</div>
+                    <div className="p-4 bg-green-50 text-green-600 rounded-2xl">
+                        <Users size={24} />
+                    </div>
                     <div>
                         <p className="text-sm text-gray-500 font-medium">Total de Reservas</p>
                         <p className="text-3xl font-bold text-gray-800">{totalReservas}</p>
@@ -56,7 +61,9 @@ export default function DashboardReservas() {
                 </div>
 
                 <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
-                    <div className="p-4 bg-orange-100 text-orange-600 rounded-full text-2xl">🔥</div>
+                    <div className="p-4 bg-orange-50 text-orange-600 rounded-2xl">
+                        <Flame size={24} />
+                    </div>
                     <div>
                         <p className="text-sm text-gray-500 font-medium">Clases a Máxima Capacidad</p>
                         <p className="text-3xl font-bold text-orange-600">{clasesLlenas}</p>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ReservasService } from '../../../services/reservas.service';
+import { Home, Edit3, Dumbbell } from 'lucide-react';
 
 export default function CatalogosReservas() {
     const [salones, setSalones] = useState<any[]>([]);
@@ -157,7 +158,19 @@ export default function CatalogosReservas() {
                                 Cancelar Edición
                             </button>
                         )}
-                        <h3 className="font-bold mb-4">{editandoSalonId ? '✏️ Editar Salón / Espacio' : '🏠 Registrar Salón / Espacio'}</h3>
+                        <h3 className="font-bold mb-4 flex items-center gap-2">
+                            {editandoSalonId ? (
+                                <>
+                                    <Edit3 size={18} className="text-amber-500" />
+                                    <span>Editar Salón / Espacio</span>
+                                </>
+                            ) : (
+                                <>
+                                    <Home size={18} className="text-blue-500" />
+                                    <span>Registrar Salón / Espacio</span>
+                                </>
+                            )}
+                        </h3>
                         <form onSubmit={handleSubmitSalon} className="space-y-4 text-sm">
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
@@ -206,7 +219,19 @@ export default function CatalogosReservas() {
                                 Cancelar Edición
                             </button>
                         )}
-                        <h3 className="font-bold mb-4">{editandoClaseId ? '✏️ Editar Tipo de Clase' : '🤸‍♂️ Registrar Tipo de Clase (Catálogo)'}</h3>
+                        <h3 className="font-bold mb-4 flex items-center gap-2">
+                            {editandoClaseId ? (
+                                <>
+                                    <Edit3 size={18} className="text-amber-500" />
+                                    <span>Editar Tipo de Clase</span>
+                                </>
+                            ) : (
+                                <>
+                                    <Dumbbell size={18} className="text-indigo-500" />
+                                    <span>Registrar Tipo de Clase (Catálogo)</span>
+                                </>
+                            )}
+                        </h3>
                         <form onSubmit={handleSubmitClase} className="space-y-4 text-sm">
                             <div className="grid grid-cols-2 gap-4">
                                 <div>

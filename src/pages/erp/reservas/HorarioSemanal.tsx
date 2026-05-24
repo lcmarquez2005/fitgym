@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ReservasService } from '../../../services/reservas.service';
 import { UserService } from '../../../services/user.service';
+import { Calendar, CalendarPlus } from 'lucide-react';
 
 export default function HorarioSemanal() {
     const [clases, setClases] = useState<any[]>([]);
@@ -85,7 +86,10 @@ export default function HorarioSemanal() {
     return (
         <div className="p-6 space-y-6">
             <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold">🗓️ Calendario de Clases (7 Días)</h2>
+                <h2 className="text-xl font-bold flex items-center gap-2">
+                    <Calendar className="text-[#606DE5]" size={22} />
+                    Calendario de Clases (7 Días)
+                </h2>
             </div>
             
             {msg && <div className="p-3 bg-blue-50 text-blue-800 rounded">{msg}</div>}
@@ -93,7 +97,10 @@ export default function HorarioSemanal() {
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
                 {/* Formulario Lateral */}
                 <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-fit">
-                    <h3 className="font-bold mb-4">Agendar Nueva Clase</h3>
+                    <h3 className="font-bold mb-4 flex items-center gap-2">
+                        <CalendarPlus className="text-gray-400" size={18} />
+                        Agendar Nueva Clase
+                    </h3>
                     <form onSubmit={handleAgendar} className="space-y-4 text-sm">
                         <div>
                             <label className="block text-gray-600 mb-1">Clase (Catálogo)</label>
@@ -130,7 +137,7 @@ export default function HorarioSemanal() {
                                 <input type="time" required className="w-full border p-2 rounded" value={horaFin} onChange={e => setHoraFin(e.target.value)} />
                             </div>
                         </div>
-                        <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Agendar al Calendario</button>
+                        <button type="submit" className="w-full bg-[#606DE5] text-white p-2 rounded hover:bg-[#4f5bd1]">Agendar al Calendario</button>
                     </form>
                 </div>
 
@@ -139,9 +146,18 @@ export default function HorarioSemanal() {
                     <div className="p-4 bg-gray-50 border-b flex justify-between">
                         <h3 className="font-bold">Horario de la Semana</h3>
                         <div className="flex gap-4 text-xs font-semibold">
-                            <span className="text-green-600">🟢 Disponible</span>
-                            <span className="text-yellow-600">🟡 Poco cupo</span>
-                            <span className="text-red-600">🔴 Lleno/Waitlist</span>
+                            <span className="flex items-center gap-1.5 text-green-600">
+                                <span className="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+                                Disponible
+                            </span>
+                            <span className="flex items-center gap-1.5 text-yellow-600">
+                                <span className="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
+                                Poco cupo
+                            </span>
+                            <span className="flex items-center gap-1.5 text-red-600">
+                                <span className="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                                Lleno / Waitlist
+                            </span>
                         </div>
                     </div>
                     
