@@ -189,6 +189,7 @@ export const EditUsuario: React.FC<EditUsuarioProps> = ({ user, onClose, onUserU
         <ProcesarPagoModal 
           socioId={user.id}
           socioNombre={`${user.name} ${user.lastName}`}
+          userParaAscenso={user}
           onClose={() => setShowPagoModal(false)}
         />
       )}

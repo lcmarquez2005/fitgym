@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import { X, CreditCard, Banknote, Landmark, Loader2, CheckCircle2 } from 'lucide-react';
 import { PagoService, type PagoRequest } from '@services/pago.service';
+import { SocioService } from '@services/socio.service';
+import { type User } from '@services/user.service';
 import { toast } from 'sonner';
 
 interface ProcesarPagoModalProps {
   socioId: string | number;
   socioNombre: string;
+  userParaAscenso?: User;
   onClose: () => void;
   onPagoExitoso?: (nuevaFechaFin: string) => void;
 }
 
 export const ProcesarPagoModal: React.FC<ProcesarPagoModalProps> = ({ 
   socioId, 
-  socioNombre, 
+  socioNombre,
+  userParaAscenso,
   onClose, 
   onPagoExitoso 
 }) => {
@@ -37,6 +41,24 @@ export const ProcesarPagoModal: React.FC<ProcesarPagoModalProps> = ({
     setLoading(true);
 
     try {
+      if (userParaAscenso) {
+        try {
+          const fechaFin = new Date(Date.now() + formData.mesesPagados * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+          await SocioService.ascenderASocio({
+            idSocio: userParaAscenso.noControl || userParaAscenso.id.toString(),
+            nombreCompleto: `${userParaAscenso.name} ${userParaAscenso.lastName}`,
+            email: userParaAscenso.email,
+            tipoMembresia: formData.plan,
+            costoMensual: formData.monto.toString(),
+            fechaInicio: new Date().toISOString().split('T')[0],
+            fechaFin: fechaFin,
+            estatus: 'ACTIVO'
+          });
+        } catch (error) {
+          console.log("Aviso: El usuario ya podría ser socio o hubo un inconveniente al ascenderlo", error);
+        }
+      }
+
       const response = await PagoService.procesarPago({
         idSocio: socioId,
         ...formData
