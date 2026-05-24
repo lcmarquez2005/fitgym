@@ -17,6 +17,7 @@ import TicketPage from '@pages/client/SocioPage/index';
 // =============================================
 import App from './App';
 import SocioPage from '@pages/client/SocioPage/index';
+import DashboardCliente from '@pages/client/DashboardCliente/index';
 import FinanzasPage from './pages/erp/finanzas/FinanzasPage';
 import InventarioPage from './pages/erp/inventario/InventarioPage';
 import RRHHPage from './pages/erp/rrhh/RRHHPage';
@@ -111,6 +112,14 @@ const RouterApp = () => {
                     element={
                         <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
                             <MarketingPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/dashboard"
+                    element={
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                            <DashboardCliente />
                         </ProtectedRoute>
                     }
                 />
