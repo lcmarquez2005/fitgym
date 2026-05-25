@@ -58,6 +58,7 @@ export interface SocioFormData {
   alergias: string;
   extras: string;
   foto?: string;
+  huellaDigital?: string;
 }
 
 export interface SearchFilters {

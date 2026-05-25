@@ -116,6 +116,7 @@ const mapFormDataToRequest = (formData: SocioFormData) => {
         fechaNacimiento: formData.fechaNacimiento,
         sexo: formData.sexo,
         foto: formData.foto,
+        huellaDigital: formData.huellaDigital,
         contactoEmergencia: formData.contactoEmergencia,
         telefonoEmergencia: formData.telefonoEmergencia,
         descuento: formData.descuento,
