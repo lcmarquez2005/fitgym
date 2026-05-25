@@ -1,12 +1,8 @@
 // src/services/api.config.ts
 import { clearToken } from "./auth.headers";
 
-// FORZAMOS LOCALHOST para debugging, ignorando variables de entorno que están "pegadas"
-export const BASE_URL = 'http://localhost:8080/api';
-
-console.log('--- DEBUG API CONFIG (FORCED) ---');
-console.log('BASE_URL hardcoded to:', BASE_URL);
-console.log('------------------------');
+// En el futuro esto vendrá de un .env, por ahora lo dejamos fijo
+export const BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 export const handleResponse = async <T>(response: Response): Promise<T> => {
   if (!response.ok) {

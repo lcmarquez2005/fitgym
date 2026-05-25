@@ -23,6 +23,9 @@ This file records implemented functionalities and pending tasks.
     - [x] `CONTEXT.md` (Project map).
     - [x] `GEMINI.md` (AI instructions).
     - [x] Refactored `AltaUsuario.tsx` into a clean component with a dedicated custom hook (`useAltaUsuario.ts`) and fixed image upload logic.
+- **Infrastructure**:
+    - [x] Vercel Proxy (rewrites) to bypass mixed content (HTTP/HTTPS) issues.
+    - [x] Relative API paths in frontend for cross-environment compatibility.
 - **Main Views (Structure)**:
     - [x] ERP Dashboard (Basic layout).
     - [x] Member Management (CRUD integrated with SocioService).
