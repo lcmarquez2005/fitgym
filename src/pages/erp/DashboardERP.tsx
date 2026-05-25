@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import  { useState, useEffect } from 'react';
 import {
   Notification,
   Header,
@@ -7,13 +7,28 @@ import {
   RightPanel,
   Footer,
 } from '@/components';
+import { DashboardService } from '@services/dashboard.service';
+import { toast } from 'sonner';
 
 const DashboardERP = () => {
   const [notification, setNotification] = useState<string | null>(null);
 
   // Estados para que la gráfica sea dinámica
-  const [inscritos, setInscritos] = useState(55);
-  const [sinPagar, setSinPagar] = useState(2);
+  const [inscritos, setInscritos] = useState(0);
+  const [sinPagar, setSinPagar] = useState(0);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const data = await DashboardService.getErpResumen();
+        setInscritos(data.inscritos);
+        setSinPagar(data.sinPagar);
+      } catch (error) {
+        toast.error("Error al cargar estadísticas del dashboard");
+      }
+    };
+    fetchStats();
+  }, []);
 
   const showNotification = (message: string) => {
     setNotification(message);
