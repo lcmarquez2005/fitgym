@@ -126,7 +126,7 @@ export const EditUsuario: React.FC<EditUsuarioProps> = ({ user, onClose, onUserU
               <FormField 
                 label="Correo Electrónico" 
                 name="email" 
-                value={formData.email} 
+                value={formData.email || ''} 
                 onChange={handleChange} 
                 placeholder="ejemplo@fitgym.com" 
                 error={errors.email}

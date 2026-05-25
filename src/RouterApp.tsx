@@ -31,7 +31,6 @@ import { RegisterPage } from './pages/auth/RegisterPage';
 import { ForgotPasswordPage } from './pages/auth/ForgotPasswordPage';
 import { ResetPasswordPage } from './pages/auth/ResetPasswordPage';
 import { VerifyEmailPage } from './pages/auth/VerifyEmailPAge';
-import DashboardERP from '@pages/erp/DashboardERP';
 import ControlAcceso from '@pages/erp/ControlAcceso';
 import MarketingPage from '@pages/erp/marketing/MarketingPage';
 
