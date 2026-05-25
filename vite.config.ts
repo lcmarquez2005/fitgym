@@ -4,6 +4,7 @@ import { resolve } from 'path';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
+  console.log('VITE: Proxy target is', env.VITE_API_TARGET || 'http://localhost:8080');
   return {
     plugins: [react()],
     server: {

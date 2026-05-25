@@ -3,6 +3,8 @@ import { clearToken } from "./auth.headers";
 
 // En el futuro esto vendrá de un .env, por ahora lo dejamos fijo
 export const BASE_URL = import.meta.env.VITE_API_URL || '/api';
+console.log('DEBUG: BASE_URL is', BASE_URL);
+console.log('DEBUG: VITE_API_URL is', import.meta.env.VITE_API_URL);
 
 export const handleResponse = async <T>(response: Response): Promise<T> => {
   if (!response.ok) {
