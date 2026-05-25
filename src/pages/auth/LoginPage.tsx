@@ -1,18 +1,28 @@
-// src/pages/auth/LoginPage.tsx
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { AuthService, type LoginRequest } from '@services/auth.service';
 import { useAuth } from '@context/AuthContext';
-import { useAuthRedirect } from '@hooks/useAuthRedirect';
-import { ArrowLeft, LogIn } from 'lucide-react';
+import { ArrowLeft, LogIn, Sparkles } from 'lucide-react';
 import logoImage from '@assets/logo.png';
 
 export const LoginPage = () => {
     const navigate = useNavigate();
-    const { login } = useAuth();
+    const location = useLocation();
+    const { login, user, isAuthenticated } = useAuth();
+    const planPending = location.state?.planPendingSelection;
 
-    // Redirect authenticated users to ERP
-    useAuthRedirect();
+    // Redirección en base a rol y estado al montar si ya está autenticado
+    useEffect(() => {
+        if (isAuthenticated && user) {
+            if (planPending) {
+                navigate('/checkout', { state: { plan: planPending } });
+            } else if (user.rol === 'ADMIN' || user.rol === 'COACH') {
+                navigate('/erp');
+            } else {
+                navigate('/dashboard');
+            }
+        }
+    }, [isAuthenticated, user, planPending, navigate]);
 
     const [formData, setFormData] = useState<LoginRequest>({
         email: '',
@@ -37,8 +47,14 @@ export const LoginPage = () => {
                 // Guardar en contexto
                 login(response.data.user, response.data.token);
                 
-                // Redirigir SIEMPRE al ERP
-                navigate('/erp');
+                const targetUser = response.data.user;
+                if (planPending) {
+                    navigate('/checkout', { state: { plan: planPending } });
+                } else if (targetUser.rol === 'ADMIN' || targetUser.rol === 'COACH') {
+                    navigate('/erp');
+                } else {
+                    navigate('/dashboard');
+                }
             } else {
                 setError(response.message || 'Error al iniciar sesión');
             }
@@ -73,6 +89,24 @@ export const LoginPage = () => {
                     <h2 className="text-[32px] font-bakbak text-black uppercase leading-tight">Iniciar Sesión</h2>
                     <p className="text-gray-500 font-medium mt-2">Accede a tu panel de FitGym</p>
                 </div>
+
+                {planPending && (
+                    <div className="bg-gradient-to-r from-indigo-50 to-indigo-100/50 border border-indigo-100 rounded-2xl p-4 mb-6 flex items-center justify-between gap-3 text-black">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-[#606DE5] flex items-center justify-center text-white shrink-0 shadow-md">
+                                <Sparkles size={18} className="animate-pulse" />
+                            </div>
+                            <div>
+                                <span className="text-[10px] font-bold text-[#606DE5] uppercase tracking-widest block">Membresía Seleccionada</span>
+                                <span className="font-bold text-sm text-gray-800">{planPending.nombre}</span>
+                            </div>
+                        </div>
+                        <div className="text-right">
+                            <span className="text-[10px] font-bold text-gray-400 block uppercase">Total</span>
+                            <span className="font-extrabold text-sm text-indigo-600">MXN {planPending.precio.toFixed(2)}</span>
+                        </div>
+                    </div>
+                )}
 
                 {error && (
                     <div className="bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-2xl mb-6 text-sm font-medium animate-pulse">

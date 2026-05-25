@@ -41,26 +41,45 @@ export const ProcesarPagoModal: React.FC<ProcesarPagoModalProps> = ({
     setLoading(true);
 
     try {
+      let targetSocioId = socioId;
+
       if (userParaAscenso) {
-        try {
-          const fechaFin = new Date(Date.now() + formData.mesesPagados * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-          await SocioService.ascenderASocio({
-            idSocio: userParaAscenso.noControl || userParaAscenso.id.toString(),
-            nombreCompleto: `${userParaAscenso.name} ${userParaAscenso.lastName}`,
-            email: userParaAscenso.email,
-            tipoMembresia: formData.plan,
-            costoMensual: formData.monto.toString(),
-            fechaInicio: new Date().toISOString().split('T')[0],
-            fechaFin: fechaFin,
-            estatus: 'ACTIVO'
-          });
-        } catch (error) {
-          console.log("Aviso: El usuario ya podría ser socio o hubo un inconveniente al ascenderlo", error);
+        if (userParaAscenso.rol === 'SOCIO') {
+          // Si ya es socio, buscamos su ID de socio real usando su email o número de control
+          try {
+            const socios = await SocioService.buscar(userParaAscenso.email || userParaAscenso.noControl || '');
+            const matchingSocio = socios.find(s => s.usuarioId === userParaAscenso.id || s.email === userParaAscenso.email);
+            if (matchingSocio) {
+              targetSocioId = matchingSocio.id;
+            }
+          } catch (err) {
+            console.error("Error buscando socio existente para el pago:", err);
+          }
+        } else {
+          // Si no es socio, realizamos el ascenso automático en el backend
+          try {
+            const fechaFin = new Date(Date.now() + formData.mesesPagados * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+            const ascendResponse = await SocioService.ascenderASocio({
+              idSocio: userParaAscenso.noControl || "PENDIENTE",
+              nombreCompleto: `${userParaAscenso.name} ${userParaAscenso.lastName}`,
+              email: userParaAscenso.email,
+              tipoMembresia: formData.plan,
+              costoMensual: formData.monto.toString(),
+              fechaInicio: new Date().toISOString().split('T')[0],
+              fechaFin: fechaFin,
+              estatus: 'ACTIVO'
+            });
+            if (ascendResponse.success && ascendResponse.data) {
+              targetSocioId = ascendResponse.data.id;
+            }
+          } catch (error) {
+            console.warn("Aviso: Hubo un inconveniente al ascender al usuario a socio", error);
+          }
         }
       }
 
       const response = await PagoService.procesarPago({
-        idSocio: socioId,
+        idSocio: targetSocioId,
         ...formData
       });
 

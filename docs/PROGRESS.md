@@ -40,19 +40,28 @@ This file records implemented functionalities and pending tasks.
 - **Payments and Memberships**:
     - [x] `PagoService` for processing payments.
     - [x] `ProcesarPagoModal` for manual membership renewals and payments.
-    - [x] Integration of payment flow into User and Socio details.
+    - [x] Integration of payment flow into User and Socio details (ERP).
+    - [x] **Public Web Purchase Flow**: Connected `Planes.tsx`, `CheckoutPage` (auto-promotion/payment), and dynamic `TicketPage.tsx` for client-side subscription purchases.
+    - [x] Aligned ID handling to resolve user/socio ID mismatch in payments.
+- **Plans Module**:
+    - [x] `GET /planes` endpoint in backend integrated with authorization headers in frontend.
+    - [x] Dynamic pricing plan cards populated from database.
 - **UX/UI & Polishing**:
     - [x] Replaced all plain WhatsApp-like emojis in ERP modules, tab titles, status cards, and action modals with professional vector icons (`lucide-react`) and clean CSS dot indicators.
+    - [x] Fixed React Rules of Hooks violations in `Sidebar` component.
+    - [x] Fixed copy-paste route import error for `/ticket`.
+    - [x] **Premium Landing Page & Checkout Redesign**: Fully redesigned landing page (`Bienvenida.tsx`), credit card checkout mockup, custom authentication banners for purchase flow context, and digital invoice receipt with print functionality.
+    - [x] Consolidated pricing grid directly on the landing page and deleted the redundant `/planes` view.
+    - [x] Implemented smooth CSS scroll snapping for all landing page sections.
+    - [x] Reduced dimensions and spacing of pricing cards to accommodate multiple membership items horizontally.
+    - [x] Removed hard dark borders and enhanced glassmorphism/backdrop-blur elements with colored background spheres.
 
 ## 🏗️ In Progress
-- [x] Merged feature branches (`creacionLoginAuth` in backend, `RamaRodrigo` in frontend) into `develop` with compile verification.
+- [ ] Real Checkout payment gateway integration (Stripe or similar).
 
 ## 📋 Pending Implementation
-- **Plans Module**:
-    - [ ] `GET /planes` endpoint in backend and integrate in frontend.
-    - [ ] Plan purchasing from client view.
 - **Payments Module**:
-    - [ ] Real Checkout integration (Stripe or similar).
+    - [ ] Real Checkout integration (Stripe or similar) webhook handlers.
     - [ ] Generation of real digital tickets/invoices.
 - **Dynamic ERP Dashboard**:
     - [ ] Charts connected to real backend data.

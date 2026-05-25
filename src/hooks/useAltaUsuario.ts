@@ -16,7 +16,7 @@ export const useAltaUsuario = ({ onClose, onUserCreated }: UseAltaUsuarioProps) 
     email: '',
     fotoPerfil: '',
     huellaDigital: '',
-    rol: 'CLIENTE'
+    rol: 'USER'
   });
 
   const [loading, setLoading] = useState(false);
