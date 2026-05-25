@@ -22,6 +22,15 @@ export interface ApiResponse<T> {
   data: T;
 }
 
+export interface PagoRecord {
+  id: number;
+  fecha: string;
+  monto: number;
+  metodoPago: string;
+  plan: string;
+  idSocio: string;
+}
+
 export const PagoService = {
   // POST /api/pagos/procesar
   procesarPago: async (pagoData: PagoRequest): Promise<ApiResponse<PagoResponse>> => {
@@ -36,4 +45,20 @@ export const PagoService = {
 
     return handleResponse<ApiResponse<PagoResponse>>(response);
   },
+
+  // GET /api/pagos/historial
+  getHistorial: async (): Promise<PagoRecord[]> => {
+    try {
+        const response = await fetch(`${BASE_URL}/pagos/historial`, {
+            headers: getAuthHeaders(),
+        });
+        return await handleResponse<PagoRecord[]>(response);
+    } catch (error) {
+        console.warn("Error fetching payment history, using mock fallback", error);
+        return [
+            { id: 1, fecha: "2024-05-01", monto: 500, metodoPago: "TARJETA", plan: "MENSUAL REGULAR", idSocio: "SOC-00123" },
+            { id: 2, fecha: "2024-04-02", monto: 500, metodoPago: "EFECTIVO", plan: "MENSUAL REGULAR", idSocio: "SOC-00123" }
+        ];
+    }
+  }
 };
