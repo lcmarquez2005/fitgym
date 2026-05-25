@@ -51,8 +51,9 @@ export const useAltaUsuario = ({ onClose, onUserCreated }: UseAltaUsuarioProps) 
     if (!formData.name.trim()) newErrors.name = 'Nombre requerido';
     if (!formData.lastName.trim()) newErrors.lastName = 'Apellidos requeridos';
     if (!formData.noControl.trim()) newErrors.noControl = 'No. Control requerido';
-    if (!formData.email.trim()) newErrors.email = 'Email requerido';
-    else if (!/^\S+@\S+\.\S+$/.test(formData.email)) newErrors.email = 'Email inválido';
+    const email = formData.email || '';
+    if (!email.trim()) newErrors.email = 'Email requerido';
+    else if (!/^\S+@\S+\.\S+$/.test(email)) newErrors.email = 'Email inválido';
     if (!formData.huellaDigital) newErrors.huellaDigital = 'Falta huella digital';
 
     setErrors(newErrors);

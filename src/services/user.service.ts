@@ -17,10 +17,11 @@ export interface UserPost {
     name: string;
     lastName: string;
     noControl: string;
-    email: string;
     fotoPerfil: string;
     huellaDigital: string;
     rol: string;
+    email?: string;
+    password?: string;
     token?: string | null;
 }
 

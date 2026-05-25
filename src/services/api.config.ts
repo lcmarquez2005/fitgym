@@ -6,13 +6,15 @@ export const BASE_URL = import.meta.env.VITE_API_URL || '/api';
 console.log('DEBUG: BASE_URL is', BASE_URL);
 console.log('DEBUG: VITE_API_URL is', import.meta.env.VITE_API_URL);
 
-export const handleResponse = async <T>(response: Response): Promise<T> => {
+export const handleResponse = async <T = any>(response: Response): Promise<T> => {
   if (!response.ok) {
-    // Si el token es inválido (401), limpiamos y recargamos
-    if (response.status === 401) {
+    // Si el token es inválido o ha expirado, el servidor responderá con 401 o 403.
+    if (response.status === 401 || response.status === 403) {
       clearToken();
+      // Usamos location.reload() para forzar una recarga completa,
+      // lo que llevará al usuario a la página de login si la ruta está protegida.
       window.location.reload();
-      throw new Error('Sesión expirada. Por favor, inicia sesión de nuevo.');
+      throw new Error('Sesión inválida o expirada. Por favor, inicia sesión de nuevo.');
     }
 
     let errorMessage = 'Error en la petición';

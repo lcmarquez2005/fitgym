@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { AuthService } from '@services/auth.service';
+import { CheckCircle2, XCircle } from 'lucide-react';
 
 export const VerifyEmailPage = () => {
     const [searchParams] = useSearchParams();
@@ -23,7 +24,7 @@ export const VerifyEmailPage = () => {
 
             try {
                 const response = await AuthService.verifyEmail(token);
-                console.log('📥 Respuesta del backend:', response);
+                console.log('Respuesta del backend:', response);
                 setDebugInfo(prev => prev + `\nRespuesta: ${JSON.stringify(response)}`);
                 
                 if (response.success) {
@@ -34,7 +35,7 @@ export const VerifyEmailPage = () => {
                     setMessage(response.message || 'Error al verificar email.');
                 }
             } catch (err: any) {
-                console.error('❌ Error:', err);
+                console.error('Error:', err);
                 setDebugInfo(prev => prev + `\nError: ${err.message}`);
                 setStatus('error');
                 setMessage(err.message || 'Error de conexión con el servidor.');
@@ -45,7 +46,7 @@ export const VerifyEmailPage = () => {
     }, [token]);
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="min-h-screen flex items-center justify-center bg-gray-100 font-inter">
             <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md text-center">
                 {status === 'loading' && (
                     <>
@@ -57,7 +58,9 @@ export const VerifyEmailPage = () => {
 
                 {status === 'success' && (
                     <>
-                        <div className="text-6xl mb-4">✅</div>
+                        <div className="flex justify-center mb-4 text-green-500">
+                            <CheckCircle2 size={64} />
+                        </div>
                         <h2 className="text-2xl font-bold text-green-600">¡Email Verificado!</h2>
                         <p className="text-gray-600 mt-2">{message}</p>
                         <Link
@@ -71,7 +74,9 @@ export const VerifyEmailPage = () => {
 
                 {status === 'error' && (
                     <>
-                        <div className="text-6xl mb-4">❌</div>
+                        <div className="flex justify-center mb-4 text-red-500">
+                            <XCircle size={64} />
+                        </div>
                         <h2 className="text-2xl font-bold text-red-600">Error de Verificación</h2>
                         <p className="text-gray-600 mt-2">{message}</p>
                         

@@ -1,17 +1,22 @@
 // components/Sidebar.tsx (agregar estado para controlar el modal)
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  UserPlus, 
-  Dumbbell, 
-  ShieldCheck, 
+import {
+  LayoutDashboard,
+  UserPlus,
+  Dumbbell,
+  ShieldCheck,
   LogOut,
   Settings,
   Menu,
   X,
   Users,
-  Home
+  Home,
+  Banknote,
+  Package,
+  Briefcase,
+  CalendarCheck,
+  LineChart
 } from 'lucide-react';
 import { AltaUsuario } from '../client/AltaUsuario';
 import { useAuth } from '@context/AuthContext';
@@ -32,9 +37,14 @@ const Sidebar: React.FC<SidebarProps> = ({
   
   // Sincroniza el tab activo con la ruta
   const getActiveTab = () => {
-    if (location.pathname === '/erp') return 'Dashboard';
-    if (location.pathname === '/planes') return 'Planes';
-    if (location.pathname === '/socio') return 'Socio';
+    if (location.pathname.startsWith('/erp/finanzas')) return 'Finanzas';
+    if (location.pathname.startsWith('/erp/inventario')) return 'Inventario';
+    if (location.pathname.startsWith('/erp/rrhh')) return 'RRHH';
+    if (location.pathname.startsWith('/erp/reservas')) return 'Reservas';
+    if (location.pathname.startsWith('/erp/marketing')) return 'Marketing';
+    if (location.pathname.startsWith('/erp')) return 'Dashboard';
+    if (location.pathname.startsWith('/planes')) return 'Planes';
+    if (location.pathname.startsWith('/socio')) return 'Socio';
     if (location.pathname.startsWith('/control')) return 'Control Acceso';
     if (location.pathname.startsWith('/alta')) return 'Alta de Usuario';
     return propActiveTab;
@@ -53,7 +63,12 @@ const Sidebar: React.FC<SidebarProps> = ({
     { name: "Dashboard", icon: <LayoutDashboard size={24} /> },
     { name: "Alta de Usuario", icon: <UserPlus size={24} /> },
     { name: "Socio", icon: <Users size={24} /> },
+    { name: "Finanzas", icon: <Banknote size={24} /> },
+    { name: "Inventario", icon: <Package size={24} /> },
+    { name: "RRHH", icon: <Briefcase size={24} /> },
+    { name: "Reservas", icon: <CalendarCheck size={24} /> },
     { name: "Planes", icon: <Dumbbell size={24} /> },
+    { name: "Marketing", icon: <LineChart size={24} /> },
     { name: "Control Acceso", icon: <ShieldCheck size={24} /> },
   ];
 
@@ -67,6 +82,18 @@ const Sidebar: React.FC<SidebarProps> = ({
     } else if(name === "Dashboard") {
       navigate('/erp');
       setIsOpen(false);
+    } else if (name === "Finanzas") {
+      navigate('/erp/finanzas');
+      setIsOpen(false);
+    } else if (name === "Inventario") {
+      navigate('/erp/inventario');
+      setIsOpen(false);
+    } else if (name === "RRHH") {
+      navigate('/erp/rrhh');
+      setIsOpen(false);
+    } else if (name === "Reservas") {
+      navigate('/erp/reservas');
+      setIsOpen(false);
     } else if(name === "Planes") {
       setActiveTab('Planes')
       navigate('/planes');
@@ -74,6 +101,9 @@ const Sidebar: React.FC<SidebarProps> = ({
     } else if (name === "Socio") {
       setActiveTab('Socio');
       navigate('/socio');
+      setIsOpen(false);
+    } else if (name === "Marketing") {
+      navigate('/erp/marketing');
       setIsOpen(false);
     } else {
       onNavigate?.(name);

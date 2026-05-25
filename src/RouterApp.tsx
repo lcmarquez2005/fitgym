@@ -15,8 +15,13 @@ import TicketPage from '@pages/client/SocioPage/index';
 // =============================================
 // PÁGINAS ERP (Protegidas)
 // =============================================
-// import App from './App';
+import App from './App';
 import SocioPage from '@pages/client/SocioPage/index';
+import DashboardCliente from '@pages/client/DashboardCliente/index';
+import FinanzasPage from './pages/erp/finanzas/FinanzasPage';
+import InventarioPage from './pages/erp/inventario/InventarioPage';
+import RRHHPage from './pages/erp/rrhh/RRHHPage';
+import ReservasPage from './pages/erp/reservas/ReservasPage';
 
 // =============================================
 // PÁGINAS DE AUTENTICACIÓN
@@ -28,6 +33,7 @@ import { ResetPasswordPage } from './pages/auth/ResetPasswordPage';
 import { VerifyEmailPage } from './pages/auth/VerifyEmailPAge';
 import DashboardERP from '@pages/erp/DashboardERP';
 import ControlAcceso from '@pages/erp/ControlAcceso';
+import MarketingPage from '@pages/erp/marketing/MarketingPage';
 
 const RouterApp = () => {
     return (
@@ -57,30 +63,66 @@ const RouterApp = () => {
                 {/* Solo accesibles con token JWT válido          */}
                 {/* ============================================= */}
                 <Route
-                    path="*"
+                    path="/erp"
                     element={
-                        <div className="min-h-screen flex items-center justify-center">
-                            <div className="text-center">
-                                <h1 className="text-6xl font-bold text-gray-300">404</h1>
-                                <p className="text-xl text-gray-500 mt-4">Página no encontrada</p>
-                            </div>
-                        </div>
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                            <App />
+                        </ProtectedRoute>
                     }
                 />
                 <Route
                     path="/socio"
                     element={
-                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH']}>
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
                             <SocioPage />
                         </ProtectedRoute>
                     }
                 />
-                
                 <Route
-                    path="/erp"
+                    path="/erp/finanzas"
                     element={
-                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH']}>
-                            <DashboardERP />
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                            <FinanzasPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/erp/inventario"
+                    element={
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                            <InventarioPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/erp/rrhh"
+                    element={
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                            <RRHHPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/erp/reservas"
+                    element={
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                            <ReservasPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/erp/marketing"
+                    element={
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                            <MarketingPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/dashboard"
+                    element={
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                            <DashboardCliente />
                         </ProtectedRoute>
                     }
                 />

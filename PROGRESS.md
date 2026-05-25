@@ -26,19 +26,26 @@ This file records implemented functionalities and pending tasks.
 - **Infrastructure**:
     - [x] Vercel Proxy (rewrites) to bypass mixed content (HTTP/HTTPS) issues.
     - [x] Relative API paths in frontend for cross-environment compatibility.
-- **Main Views (Structure)**:
+- **Main Views & ERP Modules**:
     - [x] ERP Dashboard (Basic layout).
     - [x] Member Management (CRUD integrated with SocioService).
     - [x] Landing Page and Plans.
+    - [x] Finance Module (Caja, Estado de Resultados, Impuestos, Nómina integration).
+    - [x] Inventory Module (Equipos, Suplementos, Mantenimiento, Proveedores).
+    - [x] HR Module (RRHHPage payroll file generation & contract roles).
+    - [x] Reservations Module (HorarioSemanal, class lists, slot booking).
+    - [x] Marketing Module (LeadsPage, CampanasPage, PromocionesPage, SegmentacionPage).
     - [x] **Edit User**: Modal for editing user profiles directly from the dashboard.
     - [x] **Access Control (Kiosk Mode)**: Public view for entry validation via Control Number or Fingerprint.
 - **Payments and Memberships**:
     - [x] `PagoService` for processing payments.
     - [x] `ProcesarPagoModal` for manual membership renewals and payments.
     - [x] Integration of payment flow into User and Socio details.
+- **UX/UI & Polishing**:
+    - [x] Replaced all plain WhatsApp-like emojis in ERP modules, tab titles, status cards, and action modals with professional vector icons (`lucide-react`) and clean CSS dot indicators.
 
 ## 🏗️ In Progress
-- [ ] Refinement of context documentation.
+- [x] Merged feature branches (`creacionLoginAuth` in backend, `RamaRodrigo` in frontend) into `develop` with compile verification.
 
 ## 📋 Pending Implementation
 - **Plans Module**:
