@@ -5,7 +5,6 @@ import {
   LayoutDashboard,
   UserPlus,
   Dumbbell,
-  ShieldCheck,
   LogOut,
   Settings,
   Menu,
@@ -16,7 +15,9 @@ import {
   Package,
   Briefcase,
   CalendarCheck,
-  LineChart
+  LineChart,
+  UserCircle,
+  ShieldCheck
 } from 'lucide-react';
 import { AltaUsuario } from '../client/AltaUsuario';
 import { useAuth } from '@context/AuthContext';
@@ -47,43 +48,50 @@ export const Sidebar: React.FC<SidebarProps> = ({
     if (location.pathname.startsWith('/erp/planes')) return 'Planes';
     if (location.pathname.startsWith('/erp')) return 'Dashboard';
     if (location.pathname.startsWith('/socio')) return 'Socio';
-    // if (location.pathname.startsWith('/control')) return 'Control Acceso';
+    if (location.pathname.startsWith('/control')) return 'Control Acceso';
     if (location.pathname.startsWith('/alta')) return 'Alta de Usuario';
+    if (location.pathname.startsWith('/dashboard')) return 'Mi Perfil';
     return propActiveTab;
-  };
+    };
 
-  const [activeTab, setActiveTab] = useState<string>('Dashboard');
+    const [activeTab, setActiveTab] = useState<string>('Dashboard');
 
-  // Actualiza el tab activo cuando cambia la ruta
-  React.useEffect(() => {
+    // Actualiza el tab activo cuando cambia la ruta
+    React.useEffect(() => {
     setActiveTab(getActiveTab());
-  }, [location.pathname]);
+    }, [location.pathname]);
 
-  // Si no está autenticado, NO mostramos la barra lateral
-  if (!isAuthenticated) return null;
+    // Si no está autenticado, NO mostramos la barra lateral
+    if (!isAuthenticated) return null;
 
-  const menuItems = [
-    { name: "Dashboard", icon: <LayoutDashboard size={20} /> },
-    { name: "Alta de Usuario", icon: <UserPlus size={20} /> },
-    { name: "Socio", icon: <Users size={20} /> },
-    { name: "Finanzas", icon: <Banknote size={20} /> },
-    { name: "Inventario", icon: <Package size={20} /> },
-    { name: "RRHH", icon: <Briefcase size={20} /> },
-    { name: "Reservas", icon: <CalendarCheck size={20} /> },
-    { name: "Planes", icon: <Dumbbell size={20} /> },
-    { name: "Marketing", icon: <LineChart size={20} /> },
-    // { name: "Control Acceso", icon: <ShieldCheck size={20} /> },
-  ];
+    const allMenuItems = [
+    { name: "Dashboard", icon: <LayoutDashboard size={20} />, roles: ['ADMIN', 'COACH'] },
+    { name: "Mi Perfil", icon: <UserCircle size={20} />, roles: ['USER', 'SOCIO'] },
+    { name: "Alta de Usuario", icon: <UserPlus size={20} />, roles: ['ADMIN'] },
+    { name: "Socio", icon: <Users size={20} />, roles: ['ADMIN', 'COACH'] },
+    { name: "Finanzas", icon: <Banknote size={20} />, roles: ['ADMIN'] },
+    { name: "Inventario", icon: <Package size={20} />, roles: ['ADMIN', 'COACH'] },
+    { name: "RRHH", icon: <Briefcase size={20} />, roles: ['ADMIN'] },
+    { name: "Reservas", icon: <CalendarCheck size={20} />, roles: ['ADMIN', 'COACH'] },
+    { name: "Planes", icon: <Dumbbell size={20} />, roles: ['ADMIN'] },
+    { name: "Marketing", icon: <LineChart size={20} />, roles: ['ADMIN'] },
+    { name: "Control Acceso", icon: <ShieldCheck size={20} />, roles: ['ADMIN', 'COACH'] },
+    ];
 
-  const toggleSidebar = () => setIsOpen(!isOpen);
+    const menuItems = allMenuItems.filter(item => user && item.roles.includes(user.rol));
 
-  const handleNavigation = (name: string) => {
+    const toggleSidebar = () => setIsOpen(!isOpen);
+
+    const handleNavigation = (name: string) => {
     setActiveTab(name);
     if (name === "Alta de Usuario") {
       setShowAltaUsuario(true);
       setIsOpen(false);
     } else if(name === "Dashboard") {
       navigate('/erp');
+      setIsOpen(false);
+    } else if (name === "Mi Perfil") {
+      navigate('/dashboard');
       setIsOpen(false);
     } else if (name === "Finanzas") {
       navigate('/erp/finanzas');
@@ -97,7 +105,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     } else if (name === "Reservas") {
       navigate('/erp/reservas');
       setIsOpen(false);
-    } else if(name === "Planes") {
+    } else if (name === "Planes") {
       navigate('/erp/planes');
       setIsOpen(false);
     } else if (name === "Socio") {
@@ -107,11 +115,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
     } else if (name === "Marketing") {
       navigate('/erp/marketing');
       setIsOpen(false);
+    } else if (name === "Control Acceso") {
+      navigate('/control-acceso');
+      setIsOpen(false);
     } else {
       onNavigate?.(name);
       setIsOpen(false);
     }
-  };
+    };
+
 
   const handleLogout = () => {
     logout();

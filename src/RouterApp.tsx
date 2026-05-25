@@ -8,9 +8,8 @@ import { Toaster } from 'sonner';
 // PÁGINAS PÚBLICAS (Landing Page)
 // =============================================
 import LandingPage from '@pages/client/Bienvenida';
-import Planes from '@pages/client/Planes';
 import CheckoutPage from '@pages/client/CheckoutPage/index';
-import TicketPage from '@pages/client/SocioPage/index';
+import TicketPage from '@pages/client/TicketPage';
 
 // =============================================
 // PÁGINAS ERP (Protegidas)
@@ -33,6 +32,7 @@ import { ResetPasswordPage } from './pages/auth/ResetPasswordPage';
 import { VerifyEmailPage } from './pages/auth/VerifyEmailPAge';
 import ControlAcceso from '@pages/erp/ControlAcceso';
 import MarketingPage from '@pages/erp/marketing/MarketingPage';
+import PlanesCRUD from '@pages/erp/planes/PlanesCRUD';
 
 const RouterApp = () => {
     return (
@@ -43,7 +43,6 @@ const RouterApp = () => {
                 {/* RUTAS PÚBLICAS - LANDING PAGE                 */}
                 {/* ============================================= */}
                 <Route path="/" element={<LandingPage />} />
-                <Route path="/planes" element={<Planes />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="/ticket" element={<TicketPage />} />
                 <Route path="/control-acceso" element={<ControlAcceso />} />
@@ -64,7 +63,7 @@ const RouterApp = () => {
                 <Route
                     path="/erp"
                     element={
-                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH']}>
                             <App />
                         </ProtectedRoute>
                     }
@@ -72,7 +71,7 @@ const RouterApp = () => {
                 <Route
                     path="/socio"
                     element={
-                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH']}>
                             <SocioPage />
                         </ProtectedRoute>
                     }
@@ -80,7 +79,7 @@ const RouterApp = () => {
                 <Route
                     path="/erp/finanzas"
                     element={
-                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                        <ProtectedRoute allowedRoles={['ADMIN']}>
                             <FinanzasPage />
                         </ProtectedRoute>
                     }
@@ -88,7 +87,7 @@ const RouterApp = () => {
                 <Route
                     path="/erp/inventario"
                     element={
-                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH']}>
                             <InventarioPage />
                         </ProtectedRoute>
                     }
@@ -96,7 +95,7 @@ const RouterApp = () => {
                 <Route
                     path="/erp/rrhh"
                     element={
-                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                        <ProtectedRoute allowedRoles={['ADMIN']}>
                             <RRHHPage />
                         </ProtectedRoute>
                     }
@@ -104,7 +103,7 @@ const RouterApp = () => {
                 <Route
                     path="/erp/reservas"
                     element={
-                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH']}>
                             <ReservasPage />
                         </ProtectedRoute>
                     }
@@ -112,15 +111,23 @@ const RouterApp = () => {
                 <Route
                     path="/erp/marketing"
                     element={
-                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                        <ProtectedRoute allowedRoles={['ADMIN']}>
                             <MarketingPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/erp/planes"
+                    element={
+                        <ProtectedRoute allowedRoles={['ADMIN']}>
+                            <PlanesCRUD />
                         </ProtectedRoute>
                     }
                 />
                 <Route
                     path="/dashboard"
                     element={
-                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
+                        <ProtectedRoute allowedRoles={['USER', 'SOCIO']}>
                             <DashboardCliente />
                         </ProtectedRoute>
                     }
