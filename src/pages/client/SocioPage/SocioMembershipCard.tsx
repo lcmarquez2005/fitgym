@@ -29,17 +29,26 @@ const SocioMembershipCard: React.FC<SocioMembershipCardProps> = ({
                 id="idSocio"
                 name="idSocio"
                 value={formData.idSocio}
-                onChange={handleChange}
-                disabled={!editable}
+                readOnly
                 placeholder="00001"
-                className="w-40 p-1 text-3xl font-extrabold transition-all bg-transparent border-2 rounded-lg outline-none font-syne text-slate-800 disabled:cursor-not-allowed disabled:border-transparent disabled:bg-slate-100 enabled:border-slate-200 enabled:bg-slate-50 focus:border-indigo-400 focus:bg-white"
+                className="w-40 p-1 text-3xl font-extrabold transition-all bg-transparent border-none outline-none font-syne text-slate-800 cursor-default"
                 autoComplete="off"
+                title="El ID se genera automáticamente"
               />
             </div>
           </div>
           <div className="text-right">
             <label htmlFor="fechaRegistro" className={`${labelClass} text-right`}>Fecha de registro</label>
-            <input id="fechaRegistro" name="fechaRegistro" value={formData.fechaRegistro} onChange={handleChange} type="date" disabled={!editable} className={`${inputClass} max-w-[180px]`} autoComplete="off" />
+            <input 
+              id="fechaRegistro" 
+              name="fechaRegistro" 
+              value={formData.fechaRegistro} 
+              type="date" 
+              readOnly
+              className="text-sm font-bold text-slate-600 text-right bg-transparent border-none outline-none cursor-default max-w-[180px]" 
+              autoComplete="off" 
+              title="La fecha de registro se asigna automáticamente"
+            />
           </div>
         </div>
 

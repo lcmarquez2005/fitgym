@@ -9,12 +9,14 @@ import SocioMembershipCard from "./SocioMembershipCard";
 import SocioMedicalCard from "./SocioMedicalCard";
 import SocioActions from "./SocioActions";
 import { SocioService } from "@services/socio.service";
+import { UserService } from "@services/user.service";
 import { UserPlus, UserCircle, Activity, CreditCard, Users } from 'lucide-react';
 import { GenerarDatosPrueba } from "@/components";
+import peopleImage from '@assets/people.png';
 
 export default function SocioPage() {
   const images = {
-    userPhoto: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/Umrd8oNQvi/bp4d6fgu_expires_30_days.png",
+    userPhoto: peopleImage,
     statusIcon: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/Umrd8oNQvi/7rubqqgd_expires_30_days.png",
     fingerprint: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/Umrd8oNQvi/z8h8ojz9_expires_30_days.png",
   };
@@ -28,7 +30,7 @@ export default function SocioPage() {
     contactoEmergencia: "",
     telefonoEmergencia: "",
     idSocio: "",
-    fechaRegistro: "",
+    fechaRegistro: new Date().toISOString().split('T')[0],
     estatus: "ACTIVO",
     tipoMembresia: "MENSUAL",
     descuento: "0",
@@ -38,10 +40,11 @@ export default function SocioPage() {
     lesiones: "Ninguna",
     alergias: "Ninguna",
     extras: "",
+    foto: "",
+    huellaDigital: "",
   };
 
   const [activeTab, setActiveTab] = useState<'perfil' | 'membresia' | 'medico'>('perfil');
-  const [foto, setFoto] = useState(images.userPhoto);
   const [busqueda, setBusqueda] = useState("");
   const [resultados, setResultados] = useState<Socio[]>([]);
   const [allSocios, setAllSocios] = useState<Socio[]>([]);
@@ -51,6 +54,26 @@ export default function SocioPage() {
   const [socioSeleccionadoId, setSocioSeleccionadoId] = useState<string | null>(null);
   const [editable, setEditable] = useState(true);
   const [formData, setFormData] = useState<SocioFormData>(initialFormData);
+  
+  // New states for biometrics and photo upload
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [isCapturingFingerprint, setIsCapturingFingerprint] = useState(false);
+
+  // Helper to generate the next logical Socio ID
+  const generateNextId = (socios: Socio[]) => {
+    if (socios.length === 0) return "00001";
+    
+    // Extract numbers from existing idSocio values
+    const numericIds = socios
+      .map(s => {
+        const match = s.idSocio?.match(/\d+/);
+        return match ? parseInt(match[0], 10) : 0;
+      })
+      .filter(n => n > 0);
+    
+    const maxId = numericIds.length > 0 ? Math.max(...numericIds) : socios.length;
+    return (maxId + 1).toString().padStart(5, '0');
+  };
 
   // Carga inicial de todos los socios
   useEffect(() => {
@@ -64,6 +87,12 @@ export default function SocioPage() {
       console.log("SocioPage: Socios cargados", data);
       setAllSocios(data);
       setResultados(data);
+      
+      // If we are currently in "New" mode (no socio selected), update the ID
+      if (!socioSeleccionadoId) {
+        const nextId = generateNextId(data);
+        setFormData(prev => ({ ...prev, idSocio: nextId }));
+      }
     } catch (err) {
       console.error("SocioPage: Error cargando socios", err);
       toast.error("Error al cargar la lista de socios");
@@ -72,17 +101,54 @@ export default function SocioPage() {
     }
   };
 
-  const handleFotoChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFotoChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const archivo = e.target.files?.[0];
-    if (archivo) {
-      const url = URL.createObjectURL(archivo);
-      setFoto(url);
+    if (!archivo) return;
+
+    if (archivo.size > 5 * 1024 * 1024) {
+      toast.warning('La imagen excede el límite de 5MB');
+      return;
+    }
+
+    setUploadingPhoto(true);
+    
+    try {
+      const data = await UserService.uploadPhoto(archivo);
+      setFormData(prev => ({ ...prev, foto: data.url }));
+      toast.success('Foto subida exitosamente');
+    } catch (error: any) {
+      console.error('Upload error:', error);
+      toast.error(error.message || 'Error al subir la foto');
+    } finally {
+      setUploadingPhoto(false);
+    }
+  };
+
+  const handleFingerprintCapture = async () => {
+    if (!editable) return;
+    setIsCapturingFingerprint(true);
+    try {
+      // Simulación de captura (igual que en AltaUsuario)
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      const fingerprintId = `FP_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+      setFormData(prev => ({
+        ...prev,
+        huellaDigital: fingerprintId
+      }));
+      toast.success('Huella digital capturada correctamente');
+    } catch (error) {
+      console.error('Fingerprint error:', error);
+      toast.error('Error al capturar la huella');
+    } finally {
+      setIsCapturingFingerprint(false);
     }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     if (!editable) return;
     const { name, value } = e.target;
+    // Don't allow manual change of idSocio or fechaRegistro
+    if (name === "idSocio" || name === "fechaRegistro") return;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -110,12 +176,13 @@ export default function SocioPage() {
       ...initialFormData,
       ...socio,
       id: socio.id,
+      idSocio: socio.idSocio || socio.noControl || "", // Ensure we have the ID
       descuento: socio.descuento?.toString() ?? "0",
       costoMensual: socio.costoMensual?.toString() ?? "0",
+      foto: peopleImage, // Hardcode as requested
     };
 
     setFormData(newFormData);
-    if (socio.foto) setFoto(socio.foto);
     setSocioSeleccionadoId(socio.id);
     setEditable(false);
     setActiveTab('perfil');
@@ -123,8 +190,12 @@ export default function SocioPage() {
 
   const limpiarFormulario = () => {
     setSocioSeleccionadoId(null);
-    setFormData(initialFormData);
-    setFoto(images.userPhoto);
+    const nextId = generateNextId(allSocios);
+    setFormData({ 
+      ...initialFormData, 
+      idSocio: nextId,
+      fechaRegistro: new Date().toISOString().split('T')[0]
+    });
     setEditable(true);
     setBusqueda("");
     setResultados(allSocios);
@@ -220,7 +291,7 @@ export default function SocioPage() {
                     >
                       <div className={`w-12 h-12 rounded-full overflow-hidden border-2 ${socioSeleccionadoId === socio.id ? 'border-white/40' : 'border-gray-100'}`}>
                         <img 
-                          src={socio.foto || images.userPhoto} 
+                          src={peopleImage} 
                           className="w-full h-full object-cover" 
                           alt={socio.nombreCompleto} 
                         />
@@ -289,8 +360,6 @@ export default function SocioPage() {
                   handleChange={handleChange}
                   editable={editable}
                   setEditable={setEditable}
-                  foto={foto}
-                  handleFotoChange={handleFotoChange}
                   inputClass={inputClass}
                   labelClass={labelClass}
                 />
@@ -312,6 +381,10 @@ export default function SocioPage() {
                   inputClass={inputClass}
                   labelClass={labelClass}
                   fingerprintImg={images.fingerprint}
+                  isCapturingFingerprint={isCapturingFingerprint}
+                  onFingerprintCapture={handleFingerprintCapture}
+                  uploadingPhoto={uploadingPhoto}
+                  onPhotoChange={handleFotoChange}
                 />
               )}
             </div>
