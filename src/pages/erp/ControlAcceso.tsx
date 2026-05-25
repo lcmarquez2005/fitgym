@@ -3,6 +3,7 @@ import { ShieldCheck, ShieldAlert, Fingerprint, Search, Loader2 } from 'lucide-r
 import { BASE_URL } from '@/services/api.config';
 import { toast } from 'sonner';
 import logoImage from '@assets/logo.png';
+import peopleImage from '@assets/people.png';
 
 interface CheckResponse {
   success: boolean;
@@ -112,17 +113,11 @@ const ControlAcceso: React.FC = () => {
               <div className={`w-full flex flex-col md:flex-row items-center gap-8 p-8 rounded-[32px] animate-in fade-in zoom-in duration-300 ${result.success ? 'bg-green-50 border-2 border-green-100' : 'bg-red-50 border-2 border-red-100'}`}>
                 {/* Foto / Icono */}
                 <div className="relative">
-                  {result.data?.fotoPerfil ? (
-                    <img 
-                      src={result.data.fotoPerfil.startsWith('http') ? result.data.fotoPerfil : `${BASE_URL.replace('/api', '')}${result.data.fotoPerfil}`} 
-                      className="w-40 h-40 rounded-3xl object-cover border-4 border-white shadow-xl"
-                      alt="Socio"
-                    />
-                  ) : (
-                    <div className={`w-40 h-40 rounded-3xl flex items-center justify-center ${result.success ? 'bg-green-200' : 'bg-red-200'}`}>
-                      {result.success ? <ShieldCheck size={80} className="text-green-600" /> : <ShieldAlert size={80} className="text-red-600" />}
-                    </div>
-                  )}
+                  <img 
+                    src={peopleImage} 
+                    className="w-40 h-40 rounded-3xl object-cover border-4 border-white shadow-xl"
+                    alt="Socio"
+                  />
                   <div className={`absolute -bottom-4 -right-4 p-4 rounded-2xl shadow-lg ${result.success ? 'bg-green-500' : 'bg-red-500'} text-white`}>
                     {result.success ? <ShieldCheck size={32} /> : <ShieldAlert size={32} />}
                   </div>

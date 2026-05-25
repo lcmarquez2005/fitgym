@@ -1,6 +1,7 @@
 import React from 'react';
 import { X, Loader2 } from 'lucide-react';
 import frame10 from "@assets/frame-10.png";
+import peopleImage from "@assets/people.png";
 import { BiometricInput, CameraInput } from "@/components";
 import { useAltaUsuario } from '@hooks/useAltaUsuario';
 
@@ -45,7 +46,6 @@ export const AltaUsuario: React.FC<AltaUsuarioProps> = ({ onClose, onUserCreated
     uploadingPhoto,
     isCapturingFingerprint,
     errors,
-    getImageUrl,
     handleChange,
     handleFingerprintCapture,
     handlePhotoUpload,
@@ -131,7 +131,8 @@ export const AltaUsuario: React.FC<AltaUsuarioProps> = ({ onClose, onUserCreated
                   className="w-full p-3 rounded-2xl border-2 border-gray-100 bg-gray-50/50 focus:border-indigo-500 focus:bg-white transition-all outline-none text-sm font-medium"
                   disabled={loading}
                 >
-                  <option value="SOCIO">Socio (Cliente)</option>
+                  <option value="USER">Usuario (Cliente sin Membresía)</option>
+                  <option value="SOCIO">Socio (Cliente con Membresía)</option>
                   <option value="ADMIN">Administrador</option>
                   <option value="COACH">Entrenador (Coach)</option>
                 </select>
@@ -146,7 +147,7 @@ export const AltaUsuario: React.FC<AltaUsuarioProps> = ({ onClose, onUserCreated
               />
               
               <CameraInput
-                photoPreview={getImageUrl(formData.fotoPerfil)}
+                photoPreview={peopleImage}
                 onPhotoChange={handlePhotoUpload}
                 errors={errors}
                 uploading={uploadingPhoto}

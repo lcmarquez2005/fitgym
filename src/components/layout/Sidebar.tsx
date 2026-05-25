@@ -1,4 +1,4 @@
-// components/Sidebar.tsx (agregar estado para controlar el modal)
+// components/Sidebar.tsx
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
@@ -20,21 +20,23 @@ import {
 } from 'lucide-react';
 import { AltaUsuario } from '../client/AltaUsuario';
 import { useAuth } from '@context/AuthContext';
+import peopleImage from '@assets/people.png';
 
 interface SidebarProps {
   activeTab?: string;
   onNavigate?: (tab: string) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ 
+export const Sidebar: React.FC<SidebarProps> = ({ 
   activeTab: propActiveTab = "Dashboard",
   onNavigate,
 }) => {
-  const { user, logout } = useAuth();
+  const { user, logout, isAuthenticated } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [showAltaUsuario, setShowAltaUsuario] = useState(false);
   const location = useLocation();
-  
+  const navigate = useNavigate();
+
   // Sincroniza el tab activo con la ruta
   const getActiveTab = () => {
     if (location.pathname.startsWith('/erp/finanzas')) return 'Finanzas';
@@ -42,10 +44,10 @@ const Sidebar: React.FC<SidebarProps> = ({
     if (location.pathname.startsWith('/erp/rrhh')) return 'RRHH';
     if (location.pathname.startsWith('/erp/reservas')) return 'Reservas';
     if (location.pathname.startsWith('/erp/marketing')) return 'Marketing';
+    if (location.pathname.startsWith('/erp/planes')) return 'Planes';
     if (location.pathname.startsWith('/erp')) return 'Dashboard';
-    if (location.pathname.startsWith('/planes')) return 'Planes';
     if (location.pathname.startsWith('/socio')) return 'Socio';
-    if (location.pathname.startsWith('/control')) return 'Control Acceso';
+    // if (location.pathname.startsWith('/control')) return 'Control Acceso';
     if (location.pathname.startsWith('/alta')) return 'Alta de Usuario';
     return propActiveTab;
   };
@@ -56,20 +58,21 @@ const Sidebar: React.FC<SidebarProps> = ({
   React.useEffect(() => {
     setActiveTab(getActiveTab());
   }, [location.pathname]);
-  
-  const navigate = useNavigate();
+
+  // Si no está autenticado, NO mostramos la barra lateral
+  if (!isAuthenticated) return null;
 
   const menuItems = [
-    { name: "Dashboard", icon: <LayoutDashboard size={24} /> },
-    { name: "Alta de Usuario", icon: <UserPlus size={24} /> },
-    { name: "Socio", icon: <Users size={24} /> },
-    { name: "Finanzas", icon: <Banknote size={24} /> },
-    { name: "Inventario", icon: <Package size={24} /> },
-    { name: "RRHH", icon: <Briefcase size={24} /> },
-    { name: "Reservas", icon: <CalendarCheck size={24} /> },
-    { name: "Planes", icon: <Dumbbell size={24} /> },
-    { name: "Marketing", icon: <LineChart size={24} /> },
-    { name: "Control Acceso", icon: <ShieldCheck size={24} /> },
+    { name: "Dashboard", icon: <LayoutDashboard size={20} /> },
+    { name: "Alta de Usuario", icon: <UserPlus size={20} /> },
+    { name: "Socio", icon: <Users size={20} /> },
+    { name: "Finanzas", icon: <Banknote size={20} /> },
+    { name: "Inventario", icon: <Package size={20} /> },
+    { name: "RRHH", icon: <Briefcase size={20} /> },
+    { name: "Reservas", icon: <CalendarCheck size={20} /> },
+    { name: "Planes", icon: <Dumbbell size={20} /> },
+    { name: "Marketing", icon: <LineChart size={20} /> },
+    // { name: "Control Acceso", icon: <ShieldCheck size={20} /> },
   ];
 
   const toggleSidebar = () => setIsOpen(!isOpen);
@@ -95,8 +98,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       navigate('/erp/reservas');
       setIsOpen(false);
     } else if(name === "Planes") {
-      setActiveTab('Planes')
-      navigate('/planes');
+      navigate('/erp/planes');
       setIsOpen(false);
     } else if (name === "Socio") {
       setActiveTab('Socio');
@@ -142,12 +144,12 @@ const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Sidebar */}
       <aside 
-        className={`fixed top-0 left-0 w-[320px] z-50 bg-transparent font-inter transition-transform duration-300 ease-in-out transform 
+        className={`fixed top-0 left-0 w-[280px] h-screen z-50 bg-transparent font-inter transition-transform duration-300 ease-in-out transform 
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
-        <div className="h-full p-6">
+        <div className="h-full p-4">
           <div 
-            className="flex flex-col items-start bg-white h-full py-8 px-6 rounded-[26px] border border-gray-100 relative"
+            className="flex flex-col items-start bg-white h-full py-6 px-4 rounded-[26px] border border-gray-100 relative overflow-hidden"
             style={{ boxShadow: "5px 6px 17px rgba(0, 0, 0, 0.15)" }}
           >
             {/* Botón Cerrar interno */}
@@ -158,76 +160,76 @@ const Sidebar: React.FC<SidebarProps> = ({
               <X size={20} />
             </button>
 
-            {/* Perfil de Usuario */}
-            <div className="flex items-center mb-6 gap-3 w-full mt-4">
+            {/* Perfil de Usuario - Estático arriba */}
+            <div className="flex items-center mb-4 gap-3 w-full mt-4 shrink-0 px-2">
               <img
-                src="https://storage.googleapis.com/tagjs-prod.appspot.com/v1/KQqb07sxCU/92au2agi_expires_30_days.png"
-                className="w-[60px] h-[60px] rounded-full object-cover border-2 border-gray-50"
+                src={peopleImage}
+                className="w-[50px] h-[50px] rounded-full object-cover border-2 border-gray-50"
                 alt="Avatar"
               />
-              <div className="flex flex-1 flex-col items-start gap-0">
-                <span className="text-black text-[22px] font-bakbak leading-tight">
+              <div className="flex flex-1 flex-col items-start gap-0 overflow-hidden">
+                <span className="text-black text-[18px] font-bakbak leading-tight truncate w-full">
                   {user?.name || "Invitado"}
                 </span>
-                <span className="text-gray-500 text-[16px] font-inter font-medium">
+                <span className="text-gray-500 text-[14px] font-inter font-medium truncate w-full">
                   {user?.rol || "Sin rol"}
                 </span>
               </div>
               <button className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-400">
-                <Settings size={20} />
+                <Settings size={18} />
               </button>
             </div>
 
-            <div className="bg-gray-200 w-full h-[1px] mb-6" />
+            <div className="bg-gray-200 w-full h-[1px] mb-4 shrink-0" />
 
-            {/* Menú de Navegación */}
-            <nav className="flex flex-col w-full gap-2 mb-6 flex-1 overflow-y-auto">
+            {/* Menú de Navegación - Scrollable */}
+            <nav className="flex flex-col w-full gap-1 mb-4 flex-1 overflow-y-auto pr-1 custom-scrollbar">
               <button
                 onClick={() => {
                   navigate('/');
                   setIsOpen(false);
                 }}
-                className="flex items-center w-full p-3 rounded-xl transition-all gap-3 group text-gray-600 hover:bg-gray-50 mb-2"
+                className="flex items-center w-full p-2.5 rounded-xl transition-all gap-3 group text-gray-600 hover:bg-gray-50 mb-1"
               >
                 <div className="text-gray-400 group-hover:text-black">
-                  <Home size={24} />
+                  <Home size={20} />
                 </div>
-                <span className="text-[19px] font-inter font-semibold">
+                <span className="text-[16px] font-inter font-semibold">
                   Ir a Landing
                 </span>
               </button>
 
-              <div className="bg-gray-100 w-full h-[1px] mb-4" />
+              <div className="bg-gray-100 w-full h-[1px] mb-2" />
 
               {menuItems.map((item) => (
                 <button
                   key={item.name}
                   onClick={() => handleNavigation(item.name)}
-                  className={`flex items-center w-full p-3 rounded-xl transition-all gap-3 group
+                  className={`flex items-center w-full p-2.5 rounded-xl transition-all gap-3 group
                     ${activeTab === item.name 
-                      ? 'bg-black text-white' 
+                      ? 'bg-black text-white shadow-md' 
                       : 'text-gray-600 hover:bg-gray-50'
                     }`}
                 >
                   <div className={`${activeTab === item.name ? 'text-white' : 'text-gray-400 group-hover:text-black'}`}>
                     {item.icon}
                   </div>
-                  <span className="text-[19px] font-inter font-semibold">
+                  <span className="text-[16px] font-inter font-semibold">
                     {item.name}
                   </span>
                 </button>
               ))}
             </nav>
 
-            <div className="bg-gray-200 w-full h-[1px] mb-6" />
+            <div className="bg-gray-200 w-full h-[1px] mb-4 shrink-0" />
 
-            {/* Botón Log Out */}
+            {/* Botón Log Out - Estático abajo */}
             <button 
-              className="flex items-center justify-center w-full bg-red-500 hover:bg-red-600 text-white py-4 px-6 rounded-2xl border-0 transition-all shadow-lg active:scale-95 gap-2"
+              className="flex items-center justify-center w-full bg-red-500 hover:bg-red-600 text-white py-3 px-6 rounded-2xl border-0 transition-all shadow-lg active:scale-95 gap-2 shrink-0"
               onClick={handleLogout}
             >
-              <LogOut size={20} />
-              <span className="text-[20px] font-bakbak">
+              <LogOut size={18} />
+              <span className="text-[18px] font-bakbak">
                 Log Out
               </span>
             </button>
