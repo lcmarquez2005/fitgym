@@ -1,1 +1,9 @@
-VITE_API_URL=http://localhost:5000/api
+# --- CONFIGURACIÓN PARA AWS (HTTP) ---
+# En producción (Vercel), se usará el proxy configurado en vercel.json automáticamente.
+# En desarrollo local, se usará el proxy de Vite apuntando a VITE_API_TARGET.
+VITE_API_URL=/api
+VITE_API_TARGET=http://3.230.123.181:8080
+
+# --- CONFIGURACIÓN PARA RENDER (HTTPS) ---
+# Si usas HTTPS, puedes saltarte el proxy y usar la URL completa.
+# VITE_API_URL=https://tu-backend.onrender.com/api

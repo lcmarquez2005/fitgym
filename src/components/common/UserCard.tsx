@@ -5,11 +5,15 @@ interface UserCardProps {
   name: string;
   controlNumber: string;
   imageUrl: string;
+  onClick?: () => void;
 }
 
-const UserCard: React.FC<UserCardProps> = ({ index, name, controlNumber, imageUrl }) => {
+const UserCard: React.FC<UserCardProps> = ({ index, name, controlNumber, imageUrl, onClick }) => {
   return (
-    <div className="flex items-center gap-2.5 p-2 hover:bg-gray-100 rounded-2xl transition-all cursor-pointer">
+    <div 
+      className="flex items-center gap-2.5 p-2 hover:bg-gray-100 rounded-2xl transition-all cursor-pointer"
+      onClick={onClick}
+    >
       <div className="flex items-center justify-center flex-shrink-1">
         <img
           src={imageUrl}

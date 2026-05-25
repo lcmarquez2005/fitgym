@@ -1,9 +1,9 @@
 import { Camera, Loader2 } from 'lucide-react';
 
-export const CameraInput = ({ photoPreview, onPhotoChange, errors, uploading }: any) => (
+export const CameraInput = ({ photoPreview, onPhotoChange, errors = {}, uploading }: any) => (
   <div className="flex items-center m-0">
     <label className={`relative w-30 h-20 rounded-2xl border-2 border-dashed cursor-pointer overflow-hidden transition-all ${
-      errors.fotoPerfil ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-indigo-400 bg-white'
+      errors?.fotoPerfil ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-indigo-400 bg-white'
     }`}>
       {uploading ? (
         <div className="w-full h-full flex items-center justify-center bg-white/80 absolute inset-0 z-10">

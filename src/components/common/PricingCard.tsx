@@ -6,9 +6,10 @@ interface PricingCardProps {
   benefits: string[];
   imageSrc?: string;
   buttonText?: string;
+  onSelect?: () => void;
 }
 
-const PricingCard: React.FC<PricingCardProps> = ({ title, price, benefits, imageSrc, buttonText }) => {
+const PricingCard: React.FC<PricingCardProps> = ({ title, price, benefits, imageSrc, buttonText, onSelect }) => {
   return (
     <div className="flex flex-1 flex-col items-start bg-white py-8 rounded-3xl shadow-lg min-w-[300px]">
       <img
@@ -23,7 +24,7 @@ const PricingCard: React.FC<PricingCardProps> = ({ title, price, benefits, image
       </div>
 
       <div className="flex flex-col gap-4 px-8 w-full mb-8 flex-grow">
-        {benefits.map((benefit, index) => (
+        {(benefits || []).map((benefit, index) => (
           <div key={index} className="flex items-start gap-4">
             <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center shrink-0">
                 {/* Icono de check simple */}
@@ -36,8 +37,8 @@ const PricingCard: React.FC<PricingCardProps> = ({ title, price, benefits, image
 
       <div className="flex flex-col md:flex-row justify-between items-center w-full px-8 gap-4 mt-auto">
         <button 
-          className="bg-[#606DE5] py-3 px-6 rounded-3xl w-full md:w-auto hover:bg-[#4a55c2] transition"
-          onClick={() => alert(`Seleccionaste: ${title}`)}
+          className="bg-[#606DE5] py-3 px-6 rounded-3xl w-full md:w-auto hover:bg-[#4a55c2] transition cursor-pointer"
+          onClick={onSelect || (() => alert(`Seleccionaste: ${title}`))}
         >
           <span className="text-white text-base font-bold">{buttonText || "¡Lo quiero!"}</span>
         </button>

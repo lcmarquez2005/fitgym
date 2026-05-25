@@ -1,65 +1,88 @@
-// components/Sidebar.tsx (agregar estado para controlar el modal)
+// components/Sidebar.tsx
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  UserPlus, 
-  Dumbbell, 
-  ShieldCheck, 
+import {
+  LayoutDashboard,
+  UserPlus,
+  Dumbbell,
   LogOut,
   Settings,
   Menu,
   X,
-  Users
+  Users,
+  Home,
+  Banknote,
+  Package,
+  Briefcase,
+  CalendarCheck,
+  LineChart,
+  UserCircle,
+  ShieldCheck
 } from 'lucide-react';
 import { AltaUsuario } from '../client/AltaUsuario';
+import { useAuth } from '@context/AuthContext';
+import peopleImage from '@assets/people.png';
 
 interface SidebarProps {
-  userName?: string;
-  role?: string;
   activeTab?: string;
   onNavigate?: (tab: string) => void;
-  onLogout?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ 
-  userName = "Luis", 
-  role = "Admin", 
+export const Sidebar: React.FC<SidebarProps> = ({ 
   activeTab: propActiveTab = "Dashboard",
   onNavigate,
-  onLogout 
 }) => {
+  const { user, logout, isAuthenticated } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [showAltaUsuario, setShowAltaUsuario] = useState(false);
   const location = useLocation();
-  // Sincroniza el tab activo con la ruta
-  const getActiveTab = () => {
-    if (location.pathname.startsWith('/erp')) return 'Dashboard';
-    if (location.pathname.startsWith('/plans')) return 'Planes';
-    if (location.pathname.startsWith('/control')) return 'Control Acceso';
-    if (location.pathname.startsWith('/alta')) return 'Alta de Usuario';
-    if (location.pathname.startsWith('/socio')) return 'Socio';
-    return propActiveTab;
-  };const [activeTab, setActiveTab] = useState<string>('Dashboard');
-
-  // Actualiza el tab activo cuando cambia la ruta
-  React.useEffect(() => {
-    setActiveTab(getActiveTab());
-  }, [location.pathname]);
-  
   const navigate = useNavigate();
 
-  const menuItems = [
-    { name: "Dashboard", icon: <LayoutDashboard size={24} /> },
-    { name: "Alta de Usuario", icon: <UserPlus size={24} /> },
-    { name: "Socio", icon: <Users size={24} /> }, // <-- NUEVO: Agregamos la opción Socio al menú
-    { name: "Planes", icon: <Dumbbell size={24} /> },
-    { name: "Control Acceso", icon: <ShieldCheck size={24} /> },
-  ];
+  // Sincroniza el tab activo con la ruta
+  const getActiveTab = () => {
+    if (location.pathname.startsWith('/erp/finanzas')) return 'Finanzas';
+    if (location.pathname.startsWith('/erp/inventario')) return 'Inventario';
+    if (location.pathname.startsWith('/erp/rrhh')) return 'RRHH';
+    if (location.pathname.startsWith('/erp/reservas')) return 'Reservas';
+    if (location.pathname.startsWith('/erp/marketing')) return 'Marketing';
+    if (location.pathname.startsWith('/erp/planes')) return 'Planes';
+    if (location.pathname.startsWith('/erp')) return 'Dashboard';
+    if (location.pathname.startsWith('/socio')) return 'Socio';
+    if (location.pathname.startsWith('/control')) return 'Control Acceso';
+    if (location.pathname.startsWith('/alta')) return 'Alta de Usuario';
+    if (location.pathname.startsWith('/dashboard')) return 'Mi Perfil';
+    return propActiveTab;
+    };
 
-  const toggleSidebar = () => setIsOpen(!isOpen);
+    const [activeTab, setActiveTab] = useState<string>('Dashboard');
 
-  const handleNavigation = (name: string) => {
+    // Actualiza el tab activo cuando cambia la ruta
+    React.useEffect(() => {
+    setActiveTab(getActiveTab());
+    }, [location.pathname]);
+
+    // Si no está autenticado, NO mostramos la barra lateral
+    if (!isAuthenticated) return null;
+
+    const allMenuItems = [
+    { name: "Dashboard", icon: <LayoutDashboard size={20} />, roles: ['ADMIN', 'COACH'] },
+    { name: "Mi Perfil", icon: <UserCircle size={20} />, roles: ['USER', 'SOCIO'] },
+    { name: "Alta de Usuario", icon: <UserPlus size={20} />, roles: ['ADMIN'] },
+    { name: "Socio", icon: <Users size={20} />, roles: ['ADMIN', 'COACH'] },
+    { name: "Finanzas", icon: <Banknote size={20} />, roles: ['ADMIN'] },
+    { name: "Inventario", icon: <Package size={20} />, roles: ['ADMIN', 'COACH'] },
+    { name: "RRHH", icon: <Briefcase size={20} />, roles: ['ADMIN'] },
+    { name: "Reservas", icon: <CalendarCheck size={20} />, roles: ['ADMIN', 'COACH'] },
+    { name: "Planes", icon: <Dumbbell size={20} />, roles: ['ADMIN'] },
+    { name: "Marketing", icon: <LineChart size={20} />, roles: ['ADMIN'] },
+    { name: "Control Acceso", icon: <ShieldCheck size={20} />, roles: ['ADMIN', 'COACH'] },
+    ];
+
+    const menuItems = allMenuItems.filter(item => user && item.roles.includes(user.rol));
+
+    const toggleSidebar = () => setIsOpen(!isOpen);
+
+    const handleNavigation = (name: string) => {
     setActiveTab(name);
     if (name === "Alta de Usuario") {
       setShowAltaUsuario(true);
@@ -67,23 +90,49 @@ const Sidebar: React.FC<SidebarProps> = ({
     } else if(name === "Dashboard") {
       navigate('/erp');
       setIsOpen(false);
-    } else if(name === "Planes") {
-      setActiveTab('Planes')
-      navigate('/planes');
+    } else if (name === "Mi Perfil") {
+      navigate('/dashboard');
       setIsOpen(false);
-    } else if (name === "Socio") { // <-- NUEVO: Agregamos la navegación para Socio
+    } else if (name === "Finanzas") {
+      navigate('/erp/finanzas');
+      setIsOpen(false);
+    } else if (name === "Inventario") {
+      navigate('/erp/inventario');
+      setIsOpen(false);
+    } else if (name === "RRHH") {
+      navigate('/erp/rrhh');
+      setIsOpen(false);
+    } else if (name === "Reservas") {
+      navigate('/erp/reservas');
+      setIsOpen(false);
+    } else if (name === "Planes") {
+      navigate('/erp/planes');
+      setIsOpen(false);
+    } else if (name === "Socio") {
       setActiveTab('Socio');
       navigate('/socio');
+      setIsOpen(false);
+    } else if (name === "Marketing") {
+      navigate('/erp/marketing');
+      setIsOpen(false);
+    } else if (name === "Control Acceso") {
+      navigate('/control-acceso');
       setIsOpen(false);
     } else {
       onNavigate?.(name);
       setIsOpen(false);
     }
+    };
+
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+    setIsOpen(false);
   };
 
   const handleUserCreated = (userData: any) => {
     console.log('Usuario creado exitosamente:', userData);
-    // Aquí puedes agregar lógica adicional como actualizar una lista, mostrar notificación, etc.
   };
 
   return (
@@ -107,12 +156,12 @@ const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Sidebar */}
       <aside 
-        className={`fixed top-0 left-0 w-[320px] z-50 bg-transparent font-inter transition-transform duration-300 ease-in-out transform 
+        className={`fixed top-0 left-0 w-[280px] h-screen z-50 bg-transparent font-inter transition-transform duration-300 ease-in-out transform 
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
-        <div className="h-full p-6">
+        <div className="h-full p-4">
           <div 
-            className="flex flex-col items-start bg-white h-full py-8 px-6 rounded-[26px] border border-gray-100 relative"
+            className="flex flex-col items-start bg-white h-full py-6 px-4 rounded-[26px] border border-gray-100 relative overflow-hidden"
             style={{ boxShadow: "5px 6px 17px rgba(0, 0, 0, 0.15)" }}
           >
             {/* Botón Cerrar interno */}
@@ -123,62 +172,76 @@ const Sidebar: React.FC<SidebarProps> = ({
               <X size={20} />
             </button>
 
-            {/* Perfil de Usuario */}
-            <div className="flex items-center mb-6 gap-3 w-full mt-4">
+            {/* Perfil de Usuario - Estático arriba */}
+            <div className="flex items-center mb-4 gap-3 w-full mt-4 shrink-0 px-2">
               <img
-                src="https://storage.googleapis.com/tagjs-prod.appspot.com/v1/KQqb07sxCU/92au2agi_expires_30_days.png"
-                className="w-[60px] h-[60px] rounded-full object-cover border-2 border-gray-50"
+                src={peopleImage}
+                className="w-[50px] h-[50px] rounded-full object-cover border-2 border-gray-50"
                 alt="Avatar"
               />
-              <div className="flex flex-1 flex-col items-start gap-0">
-                <span className="text-black text-[22px] font-bakbak leading-tight">
-                  {userName}
+              <div className="flex flex-1 flex-col items-start gap-0 overflow-hidden">
+                <span className="text-black text-[18px] font-bakbak leading-tight truncate w-full">
+                  {user?.name || "Invitado"}
                 </span>
-                <span className="text-gray-500 text-[16px] font-inter font-medium">
-                  {role}
+                <span className="text-gray-500 text-[14px] font-inter font-medium truncate w-full">
+                  {user?.rol || "Sin rol"}
                 </span>
               </div>
               <button className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-400">
-                <Settings size={20} />
+                <Settings size={18} />
               </button>
             </div>
 
-            <div className="bg-gray-200 w-full h-[1px] mb-6" />
+            <div className="bg-gray-200 w-full h-[1px] mb-4 shrink-0" />
 
-            {/* Menú de Navegación */}
-            <nav className="flex flex-col w-full gap-2 mb-6 flex-1 overflow-y-auto">
+            {/* Menú de Navegación - Scrollable */}
+            <nav className="flex flex-col w-full gap-1 mb-4 flex-1 overflow-y-auto pr-1 custom-scrollbar">
+              <button
+                onClick={() => {
+                  navigate('/');
+                  setIsOpen(false);
+                }}
+                className="flex items-center w-full p-2.5 rounded-xl transition-all gap-3 group text-gray-600 hover:bg-gray-50 mb-1"
+              >
+                <div className="text-gray-400 group-hover:text-black">
+                  <Home size={20} />
+                </div>
+                <span className="text-[16px] font-inter font-semibold">
+                  Ir a Landing
+                </span>
+              </button>
+
+              <div className="bg-gray-100 w-full h-[1px] mb-2" />
+
               {menuItems.map((item) => (
                 <button
                   key={item.name}
                   onClick={() => handleNavigation(item.name)}
-                  className={`flex items-center w-full p-3 rounded-xl transition-all gap-3 group
+                  className={`flex items-center w-full p-2.5 rounded-xl transition-all gap-3 group
                     ${activeTab === item.name 
-                      ? 'bg-black text-white' 
+                      ? 'bg-black text-white shadow-md' 
                       : 'text-gray-600 hover:bg-gray-50'
                     }`}
                 >
                   <div className={`${activeTab === item.name ? 'text-white' : 'text-gray-400 group-hover:text-black'}`}>
                     {item.icon}
                   </div>
-                  <span className="text-[19px] font-inter font-semibold">
+                  <span className="text-[16px] font-inter font-semibold">
                     {item.name}
                   </span>
                 </button>
               ))}
             </nav>
 
-            <div className="bg-gray-200 w-full h-[1px] mb-6" />
+            <div className="bg-gray-200 w-full h-[1px] mb-4 shrink-0" />
 
-            {/* Botón Log Out */}
+            {/* Botón Log Out - Estático abajo */}
             <button 
-              className="flex items-center justify-center w-full bg-[#606DE5] hover:bg-[#4f5bd1] text-white py-4 px-6 rounded-2xl border-0 transition-all shadow-lg active:scale-95 gap-2"
-              onClick={() => {
-                if (onLogout) onLogout();
-                navigate('/');
-              }}
+              className="flex items-center justify-center w-full bg-red-500 hover:bg-red-600 text-white py-3 px-6 rounded-2xl border-0 transition-all shadow-lg active:scale-95 gap-2 shrink-0"
+              onClick={handleLogout}
             >
-              <LogOut size={20} />
-              <span className="text-[20px] font-bakbak">
+              <LogOut size={18} />
+              <span className="text-[18px] font-bakbak">
                 Log Out
               </span>
             </button>
@@ -189,7 +252,10 @@ const Sidebar: React.FC<SidebarProps> = ({
       {/* Modal de Alta de Usuario */}
       {showAltaUsuario && (
         <AltaUsuario 
-          onClose={() => setShowAltaUsuario(false)}
+          onClose={() => {
+            setShowAltaUsuario(false);
+            setActiveTab(getActiveTab());
+          }}
           onUserCreated={handleUserCreated}
         />
       )}

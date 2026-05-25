@@ -7,6 +7,7 @@ interface User {
     name: string;
     email: string;
     rol: string;
+    fotoPerfil?: string;
 }
 
 // 2. Definir qué tiene el contexto

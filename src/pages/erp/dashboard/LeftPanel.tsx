@@ -5,7 +5,7 @@ import UserCard from '@common/UserCard';
 import ReportSection from './ReportSection';
 import peopleImage from '@assets/people.png';
 import { UserService, type User } from '@services/user.service';
-// import { AltaUsuario } from './Alta';
+import { EditUsuario } from '@/components';
 
 interface LeftPanelProps {
   inscritos: number;
@@ -18,6 +18,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({ inscritos, sinPagar }) => {
   const [error, setError] = useState<string | null>(null);
   const [ _, setLoading] = useState<boolean>(false);
   const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   useEffect(() => {
     loadUsers();
@@ -81,12 +82,24 @@ const LeftPanel: React.FC<LeftPanelProps> = ({ inscritos, sinPagar }) => {
               name={user.name + " " + user.lastName}
               controlNumber={user.noControl}
               imageUrl={peopleImage}
+              onClick={() => setSelectedUser(user)}
             />
           ))}
         </div>
       </div>
 
       <ReportSection inscritos={inscritos} sinPagar={sinPagar} />
+
+      {selectedUser && (
+        <EditUsuario 
+          user={selectedUser} 
+          onClose={() => setSelectedUser(null)} 
+          onUserUpdated={() => {
+            loadUsers();
+            setSelectedUser(null);
+          }} 
+        />
+      )}
     </div>
   );
 };

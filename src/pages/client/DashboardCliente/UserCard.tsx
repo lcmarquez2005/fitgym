@@ -1,49 +1,62 @@
 import React from "react";
+import type { ClienteResumen } from "@services/dashboard.service";
+import peopleImage from "@assets/people.png";
 
 interface UserCardProps {
   images: {
     iconCard: string;
     idCardImage: string;
   };
+  data: ClienteResumen | null;
+  onRenew?: () => void;
 }
 
-const UserCard: React.FC<UserCardProps> = ({ images }) => {
+const UserCard: React.FC<UserCardProps> = ({ images, data, onRenew }) => {
   return (
     <div className="bg-white rounded-[32px] p-8 shadow-sm flex flex-col items-center w-full xl:w-5/12 relative">
       {/* Estrella Roja (Icono) - Posición absoluta arriba izq */}
       <img src={images.iconCard} className="absolute top-8 left-8 w-10 h-10 object-contain" alt="Star" />
 
-      {/* Imagen Central (Chico Pesas) */}
-      <div className="mt-4 mb-6 relative">
-        {/* Círculo morado decorativo detrás del chico */}
-        <div className="w-48 h-48 bg-[#6B5AED] rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-20 blur-xl"></div>
-        <img src={images.idCardImage} className="w-64 h-48 object-contain relative z-10" alt="ID Card" />
+      {/* Imagen Central (Avatar de Usuario) */}
+      <div className="mt-4 mb-8 relative">
+        {/* Círculo morado decorativo detrás del avatar */}
+        <div className="w-40 h-40 bg-[#6B5AED] rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-20 blur-2xl"></div>
+        <div className="w-44 h-44 rounded-full border-8 border-white shadow-2xl overflow-hidden relative z-10">
+          <img src={peopleImage} className="w-full h-full object-cover" alt="User Avatar" />
+        </div>
       </div>
 
-      <h2 className="text-black text-2xl font-bold mb-6">21515161 (ID DE SOCIO)</h2>
+      <h2 className="text-black text-2xl font-bakbak uppercase mb-6 tracking-tight">
+        {data?.idSocio || "SIN ID"} <span className="text-indigo-500 text-sm ml-2">ID DE SOCIO</span>
+      </h2>
 
       {/* Tabla de Datos */}
-      <div className="w-full flex flex-col gap-3 text-sm">
-        <div className="flex justify-between items-center">
-          <span className="text-black font-bold">Nombre</span>
-          <span className="text-[#3851EE] font-bold">Fulanito Guhdiuh</span>
+      <div className="w-full flex flex-col gap-4 text-sm font-inter">
+        <div className="flex justify-between items-center p-3 bg-gray-50 rounded-2xl border border-gray-100">
+          <span className="text-gray-500 font-bold uppercase text-[10px] tracking-widest">Nombre</span>
+          <span className="text-[#3851EE] font-extrabold uppercase">{data?.nombreCompleto || "Cargando..."}</span>
         </div>
-        <div className="flex justify-between items-center">
-          <span className="text-black font-bold">Días restantes de membresía</span>
-          <span className="text-black font-bold">15 días</span>
+        <div className="flex justify-between items-center p-3 bg-gray-50 rounded-2xl border border-gray-100">
+          <span className="text-gray-500 font-bold uppercase text-[10px] tracking-widest">Días restantes</span>
+          <span className={`font-extrabold ${data && data.diasRestantes < 5 ? 'text-red-500' : 'text-green-600'}`}>
+            {data?.diasRestantes} DÍAS
+          </span>
+        </div>
+        <div className="flex justify-between items-center p-3 bg-gray-50 rounded-2xl border border-gray-100">
+          <span className="text-gray-500 font-bold uppercase text-[10px] tracking-widest">Estatus</span>
+          <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase ${data?.estatus === 'ACTIVO' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
+            {data?.estatus || "PENDIENTE"}
+          </span>
         </div>
       </div>
 
       {/* Botones */}
       <div className="flex gap-3 mt-8 w-full justify-center">
-        <button className="bg-[#FBBB62] hover:bg-[#eeb15b] text-white text-sm font-bold py-3 px-6 rounded-3xl min-w-[100px]">
-          Renovar
-        </button>
-        <button className="bg-[#FF6500] hover:bg-[#e55b00] text-white text-sm font-bold py-3 px-6 rounded-3xl min-w-[100px]">
-          Cobrar
-        </button>
-        <button className="bg-[#5BBBFF] hover:bg-[#4ba8eb] text-white text-sm font-bold py-3 px-6 rounded-3xl min-w-[100px]">
-          Editar
+        <button 
+          onClick={onRenew}
+          className="bg-black text-white text-xs font-bakbak py-3 px-8 rounded-2xl shadow-xl hover:bg-gray-800 transition-all active:scale-95 uppercase tracking-wider cursor-pointer"
+        >
+          Renovar Membresía
         </button>
       </div>
     </div>
