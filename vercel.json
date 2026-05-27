@@ -2,7 +2,11 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "http://3.230.123.181:8080/api/:path*"
+      "destination": "http://44.214.43.255:8080/api/:path*"
+    },
+    {
+      "source": "/((?!api|assets|images|favicon.ico).*)",
+      "destination": "/index.html"
     }
   ]
 }
