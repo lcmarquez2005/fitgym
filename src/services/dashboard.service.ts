@@ -11,6 +11,7 @@ export interface ClienteResumen {
     diasRestantes: number;
     mesPagado: string; // "Mayo", "Junio", etc.
     costoMensual: number;
+    foto?: string;
 }
 
 export interface ErpResumen {

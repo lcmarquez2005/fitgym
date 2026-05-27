@@ -56,6 +56,7 @@ This file records implemented functionalities and pending tasks.
     - [x] Reduced dimensions and spacing of pricing cards to accommodate multiple membership items horizontally.
     - [x] Removed hard dark borders and enhanced glassmorphism/backdrop-blur elements with colored background spheres.
     - [x] **Stripe + Google Pay Frontend Integration**: Public registration, live payment QR code generation, link for desktop checkout, and automatic payment detection using endpoint polling, redirected to a success activation page.
+    - [x] **Premium Member Dashboard Redesign**: Fully overhauled the member dashboard (`DashboardCliente`) with reactive light/dark mode support, interactive Apple Wallet style digital QR pass with custom laser scan line animation, dynamic backend profile photo loading with status glowing rings, and printer-ready digital thermal receipt checkout popup.
 
 ## 🏗️ In Progress
 
