@@ -52,10 +52,15 @@ export interface ApiResponse {
 export const AuthService = {
     // POST /api/auth/register
     register: async (data: RegisterRequest): Promise<ApiResponse> => {
+        const payload = {
+            fullName: `${data.name} ${data.lastName}`.trim(),
+            email: data.email,
+            password: data.password
+        };
         const response = await fetch(`${BASE_URL}/auth/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
+            body: JSON.stringify(payload),
         });
         return handleResponse<ApiResponse>(response);
     },
