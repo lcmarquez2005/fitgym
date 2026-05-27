@@ -9,7 +9,8 @@ console.log('DEBUG: VITE_API_URL is', import.meta.env.VITE_API_URL);
 export const handleResponse = async <T = any>(response: Response): Promise<T> => {
   if (!response.ok) {
     // Si el token es inválido o ha expirado, el servidor responderá con 401 o 403.
-    if (response.status === 401 || response.status === 403) {
+    // Excepto para la petición de login, donde el 401 indica credenciales incorrectas.
+    if ((response.status === 401 || response.status === 403) && !response.url.includes('/auth/login')) {
       clearToken();
       // Usamos location.reload() para forzar una recarga completa,
       // lo que llevará al usuario a la página de login si la ruta está protegida.

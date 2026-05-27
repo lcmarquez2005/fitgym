@@ -186,16 +186,14 @@ export const LoginPage = () => {
                     </button>
                 </form>
 
-                {!isErpLogin && (
-                    <div className="mt-8 text-center pt-6 border-t border-gray-100">
-                        <p className="text-gray-500 font-medium">
-                            ¿No tienes cuenta todavía?{' '}
-                            <Link to="/register" className="text-[#606DE5] hover:underline font-bold ml-1">
-                                Regístrate aquí
-                            </Link>
-                        </p>
-                    </div>
-                )}
+                <div className="mt-8 text-center pt-6 border-t border-gray-100">
+                    <p className="text-gray-500 font-medium">
+                        ¿No tienes cuenta todavía?{' '}
+                        <Link to="/register" className="text-[#606DE5] hover:underline font-bold ml-1">
+                            Regístrate aquí
+                        </Link>
+                    </p>
+                </div>
             </div>
         </div>
     );
