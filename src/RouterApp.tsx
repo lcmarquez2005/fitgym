@@ -53,6 +53,7 @@ const RouterApp = () => {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/erp/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
+                <Route path="/erp/register" element={<RegisterPage />} />
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/reset-password" element={<ResetPasswordPage />} />
                 <Route path="/verify-email" element={<VerifyEmailPage />} />
@@ -64,7 +65,7 @@ const RouterApp = () => {
                 <Route
                     path="/erp"
                     element={
-                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH']}>
+                        <ProtectedRoute allowedRoles={['ADMIN', 'COACH', 'USER']}>
                             <App />
                         </ProtectedRoute>
                     }
@@ -128,7 +129,7 @@ const RouterApp = () => {
                 <Route
                     path="/dashboard"
                     element={
-                        <ProtectedRoute allowedRoles={['USER', 'SOCIO']}>
+                        <ProtectedRoute allowedRoles={['SOCIO']}>
                             <DashboardCliente />
                         </ProtectedRoute>
                     }

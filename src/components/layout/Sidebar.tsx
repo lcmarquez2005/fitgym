@@ -65,8 +65,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
     if (!isAuthenticated) return null;
 
     const allMenuItems = [
-    { name: "Dashboard", icon: <LayoutDashboard size={20} />, roles: ['ADMIN', 'COACH'] },
-    { name: "Mi Perfil", icon: <UserCircle size={20} />, roles: ['USER', 'SOCIO'] },
+    { name: "Dashboard", icon: <LayoutDashboard size={20} />, roles: ['ADMIN', 'COACH', 'USER'] },
+    { name: "Mi Perfil", icon: <UserCircle size={20} />, roles: ['SOCIO'] },
     { name: "Alta de Usuario", icon: <UserPlus size={20} />, roles: ['ADMIN'] },
     { name: "Socio", icon: <Users size={20} />, roles: ['ADMIN', 'COACH'] },
     { name: "Finanzas", icon: <Banknote size={20} />, roles: ['ADMIN'] },

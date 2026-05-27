@@ -7,6 +7,7 @@ import { CheckCircle2, XCircle } from 'lucide-react';
 export const VerifyEmailPage = () => {
     const [searchParams] = useSearchParams();
     const token = searchParams.get('token') || '';
+    const portal = searchParams.get('portal') || 'client';
     
     const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
     const [message, setMessage] = useState('');
@@ -64,7 +65,7 @@ export const VerifyEmailPage = () => {
                         <h2 className="text-2xl font-bold text-green-600">¡Email Verificado!</h2>
                         <p className="text-gray-600 mt-2">{message}</p>
                         <Link
-                            to="/login"
+                            to={portal === 'erp' ? "/erp/login" : "/login"}
                             className="inline-block mt-6 px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors"
                         >
                             Iniciar Sesión
@@ -92,14 +93,14 @@ export const VerifyEmailPage = () => {
                         
                         <div className="mt-6 space-y-2">
                             <Link
-                                to="/login"
+                                to={portal === 'erp' ? "/erp/login" : "/login"}
                                 className="inline-block px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors"
                             >
                                 Ir al Login
                             </Link>
                             <br />
                             <Link
-                                to="/register"
+                                to={portal === 'erp' ? "/erp/register" : "/register"}
                                 className="text-sm text-indigo-600 hover:underline"
                             >
                                 ¿No tienes cuenta? Regístrate

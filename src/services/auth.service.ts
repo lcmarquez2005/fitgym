@@ -12,6 +12,7 @@ export interface RegisterRequest {
     lastName: string;
     email: string;
     password: string;
+    role?: string;
 }
 
 export interface ForgotPasswordRequest {
@@ -55,7 +56,8 @@ export const AuthService = {
         const payload = {
             fullName: `${data.name} ${data.lastName}`.trim(),
             email: data.email,
-            password: data.password
+            password: data.password,
+            role: data.role
         };
         const response = await fetch(`${BASE_URL}/auth/register`, {
             method: 'POST',

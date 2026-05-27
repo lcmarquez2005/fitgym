@@ -17,16 +17,17 @@ export const LoginPage = () => {
         const token = localStorage.getItem('token');
         if (isAuthenticated && user && token) {
             const role = user.rol.toUpperCase();
+            const isErpRole = role === 'ADMIN' || role === 'COACH' || role === 'USER';
             
-            // Si están en el portal de clientes pero son admins, o en el del erp pero son socios
-            if (!isErpLogin && (role === 'ADMIN' || role === 'COACH')) {
+            // Si están en el portal de clientes pero son del erp, o en el del erp pero son socios
+            if (!isErpLogin && isErpRole) {
                 navigate('/erp');
-            } else if (isErpLogin && (role === 'USER' || role === 'SOCIO')) {
+            } else if (isErpLogin && role === 'SOCIO') {
                 navigate('/dashboard');
             } else {
                 if (planPending) {
                     navigate('/checkout', { state: { plan: planPending } });
-                } else if (role === 'ADMIN' || role === 'COACH') {
+                } else if (isErpRole) {
                     navigate('/erp');
                 } else {
                     navigate('/dashboard');
@@ -58,9 +59,11 @@ export const LoginPage = () => {
                 const targetUser = response.data.user;
                 const role = targetUser.rol.toUpperCase();
                 
-                // Si están en el portal de clientes (/login) pero es un administrador/entrenador, bloquear acceso
-                if (!isErpLogin && (role === 'ADMIN' || role === 'COACH')) {
-                    setError('Acceso no permitido: Las cuentas administrativas deben iniciar sesión desde el portal del ERP.');
+                const isErpRole = role === 'ADMIN' || role === 'COACH' || role === 'USER';
+                
+                // Si están en el portal de clientes (/login) pero es un rol administrativo/ERP, bloquear acceso
+                if (!isErpLogin && isErpRole) {
+                    setError('Acceso no permitido: Las cuentas del personal del ERP deben iniciar sesión desde el portal del ERP.');
                     setLoading(false);
                     return;
                 }
@@ -70,7 +73,7 @@ export const LoginPage = () => {
                 
                 if (planPending) {
                     navigate('/checkout', { state: { plan: planPending } });
-                } else if (role === 'ADMIN' || role === 'COACH') {
+                } else if (isErpRole) {
                     navigate('/erp');
                 } else {
                     navigate('/dashboard');
@@ -133,7 +136,7 @@ export const LoginPage = () => {
                 )}
 
                 {error && (
-                    <div className="bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-2xl mb-6 text-sm font-medium animate-pulse">
+                    <div className="bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-2xl mb-6 text-sm font-medium">
                         {error}
                     </div>
                 )}
@@ -189,7 +192,10 @@ export const LoginPage = () => {
                 <div className="mt-8 text-center pt-6 border-t border-gray-100">
                     <p className="text-gray-500 font-medium">
                         ¿No tienes cuenta todavía?{' '}
-                        <Link to="/register" className="text-[#606DE5] hover:underline font-bold ml-1">
+                        <Link 
+                            to={isErpLogin ? "/erp/register" : "/register"} 
+                            className="text-[#606DE5] hover:underline font-bold ml-1"
+                        >
                             Regístrate aquí
                         </Link>
                     </p>

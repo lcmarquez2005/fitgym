@@ -53,7 +53,7 @@ const Navbar = ({ isDark = false }: { isDark?: boolean }) => {
               onClick={() => {
                 if (user) {
                   const role = user.rol.toUpperCase();
-                  if (role === 'ADMIN' || role === 'COACH') {
+                  if (role === 'ADMIN' || role === 'COACH' || role === 'USER') {
                     navigate("/erp");
                   } else {
                     navigate("/dashboard");

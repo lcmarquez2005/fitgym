@@ -7,6 +7,7 @@ export const ResetPasswordPage = () => {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const token = searchParams.get('token') || '';
+    const portal = searchParams.get('portal') || 'client';
 
     const [newPassword, setNewPassword] = useState('');
     const [message, setMessage] = useState('');
@@ -22,7 +23,7 @@ export const ResetPasswordPage = () => {
             const response = await AuthService.resetPassword({ token, newPassword });
             if (response.success) {
                 setMessage('Contraseña actualizada. Redirigiendo al login...');
-                setTimeout(() => navigate('/login'), 2000);
+                setTimeout(() => navigate(portal === 'erp' ? '/erp/login' : '/login'), 2000);
             } else {
                 setError(response.message);
             }

@@ -9,7 +9,7 @@ interface ProtectedRouteProps {
 }
 
 export const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
-    const { isAuthenticated, user, isLoading, logout } = useAuth();
+    const { isAuthenticated, user, isLoading } = useAuth();
 
     // Mientras carga, mostrar spinner
     if (isLoading) {
@@ -22,7 +22,7 @@ export const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) 
 
     // Si no está autenticado, redirigir al login
     if (!isAuthenticated) {
-        const isErpRoute = allowedRoles?.some(r => ['ADMIN', 'COACH'].includes(r.toUpperCase()));
+        const isErpRoute = allowedRoles?.some(r => ['ADMIN', 'COACH', 'USER'].includes(r.toUpperCase()));
         return <Navigate to={isErpRoute ? "/erp/login" : "/login"} replace />;
     }
 
@@ -32,9 +32,8 @@ export const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) 
             (role) => role.toUpperCase() === user.rol.toUpperCase()
         );
         if (!hasRole) {
-            logout(); // Cerrar sesión para evitar quedar atrapado en rol no autorizado
-            const isErpRoute = allowedRoles.some(r => ['ADMIN', 'COACH'].includes(r.toUpperCase()));
-            return <Navigate to={isErpRoute ? "/erp/login" : "/login"} replace />;
+            const isErpUser = ['ADMIN', 'COACH', 'USER'].includes(user.rol.toUpperCase());
+            return <Navigate to={isErpUser ? "/erp" : "/dashboard"} replace />;
         }
     }
 

@@ -9,6 +9,7 @@ export const RegisterPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const planPending = location.state?.planPendingSelection;
+    const isErpRegister = location.pathname.startsWith('/erp');
 
     const [formData, setFormData] = useState<RegisterRequest>({
         name: '',
@@ -31,8 +32,10 @@ export const RegisterPage = () => {
         setLoading(true);
 
         try {
-            // El backend por defecto debería asignar el ROL 'USER' a registros públicos
-            const response = await AuthService.register(formData);
+            const response = await AuthService.register({
+                ...formData,
+                role: isErpRegister ? 'USER' : 'SOCIO'
+            });
             if (response.success) {
                 setMessage(response.message);
             } else {
@@ -66,8 +69,12 @@ export const RegisterPage = () => {
                     <div className="w-20 h-20 bg-[#F6F8FE] rounded-3xl flex items-center justify-center mb-4 shadow-inner">
                         <img src={logoImage} alt="FitGym Logo" className="w-12 h-12 object-contain" />
                     </div>
-                    <h2 className="text-[32px] font-bakbak text-black uppercase leading-tight">Crear Cuenta</h2>
-                    <p className="text-gray-500 font-medium mt-2">Únete a la comunidad FitGym</p>
+                    <h2 className="text-[32px] font-bakbak text-black uppercase leading-tight">
+                        {isErpRegister ? "Registro ERP" : "Crear Cuenta"}
+                    </h2>
+                    <p className="text-gray-500 font-medium mt-2">
+                        {isErpRegister ? "Crea una cuenta para el portal del ERP" : "Únete a la comunidad FitGym"}
+                    </p>
                 </div>
 
                 {message ? (
@@ -80,7 +87,7 @@ export const RegisterPage = () => {
                             </p>
                         </div>
                         <Link 
-                            to="/login" 
+                            to={isErpRegister ? "/erp/login" : "/login"} 
                             state={{ planPendingSelection: planPending }}
                             className="mt-4 px-6 py-2 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-colors"
                         >
@@ -108,7 +115,7 @@ export const RegisterPage = () => {
                         )}
 
                         {error && (
-                            <div className="bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-2xl mb-6 text-sm font-medium animate-pulse">
+                            <div className="bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-2xl mb-6 text-sm font-medium">
                                 {error}
                             </div>
                         )}
@@ -190,7 +197,11 @@ export const RegisterPage = () => {
                     <div className="mt-8 text-center pt-6 border-t border-gray-100">
                         <p className="text-gray-500 font-medium">
                             ¿Ya tienes cuenta?{' '}
-                            <Link to="/login" state={{ planPendingSelection: planPending }} className="text-[#606DE5] hover:underline font-bold ml-1">
+                            <Link 
+                                to={isErpRegister ? "/erp/login" : "/login"} 
+                                state={{ planPendingSelection: planPending }} 
+                                className="text-[#606DE5] hover:underline font-bold ml-1"
+                            >
                                 Inicia sesión
                             </Link>
                         </p>
