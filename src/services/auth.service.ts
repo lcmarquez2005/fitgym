@@ -60,12 +60,6 @@ export const AuthService = {
         return handleResponse<ApiResponse>(response);
     },
 
-    // GET /api/auth/verify-email?token=xxx
-    verifyEmail: async (token: string): Promise<ApiResponse> => {
-        const response = await fetch(`${BASE_URL}/auth/verify-email?token=${token}`);
-        return handleResponse<ApiResponse>(response);
-    },
-
     // POST /api/auth/login
     login: async (data: LoginRequest): Promise<AuthResponse> => {
         const response = await fetch(`${BASE_URL}/auth/login`, {

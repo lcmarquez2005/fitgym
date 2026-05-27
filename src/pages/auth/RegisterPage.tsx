@@ -76,7 +76,6 @@ export const RegisterPage = () => {
                         <div>
                             <p className="font-bold text-lg mb-1">{message}</p>
                             <p className="text-sm opacity-90">
-                                Revisa tu email para verificar la cuenta antes de iniciar sesión.
                             </p>
                         </div>
                         <Link 
