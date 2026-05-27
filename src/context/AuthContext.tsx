@@ -29,17 +29,39 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [token, setToken] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true); // Empieza cargando
 
+    // Helper para verificar si un token JWT ha expirado
+    const isTokenExpired = (tokenStr: string): boolean => {
+        try {
+            const parts = tokenStr.split('.');
+            if (parts.length !== 3) return true;
+            const payload = JSON.parse(atob(parts[1]));
+            if (!payload.exp) return false;
+            // payload.exp está en segundos, Date.now() en milisegundos
+            return payload.exp * 1000 - 10000 < Date.now();
+        } catch (e) {
+            return true;
+        }
+    };
+
     // 5. Al montar el componente, revisar localStorage
     useEffect(() => {
         const savedToken = localStorage.getItem('token');
         const savedUser = localStorage.getItem('user');
 
         if (savedToken && savedUser) {
-            setToken(savedToken);
-            setUser(JSON.parse(savedUser));
+            if (isTokenExpired(savedToken)) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                setToken(null);
+                setUser(null);
+            } else {
+                setToken(savedToken);
+                setUser(JSON.parse(savedUser));
+            }
         }
         setIsLoading(false); // Ya terminó de cargar
     }, []);
+
 
     // 6. Función login: guarda en estado y localStorage
     const login = (userData: User, token: string) => {

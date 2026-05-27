@@ -13,10 +13,12 @@ export const LoginPage = () => {
 
     // Redirección en base a rol y estado al montar si ya está autenticado
     useEffect(() => {
-        if (isAuthenticated && user) {
+        const token = localStorage.getItem('token');
+        if (isAuthenticated && user && token) {
+            const role = user.rol.toUpperCase();
             if (planPending) {
                 navigate('/checkout', { state: { plan: planPending } });
-            } else if (user.rol === 'ADMIN' || user.rol === 'COACH') {
+            } else if (role === 'ADMIN' || role === 'COACH') {
                 navigate('/erp');
             } else {
                 navigate('/dashboard');
@@ -48,9 +50,10 @@ export const LoginPage = () => {
                 login(response.data.user, response.data.token);
                 
                 const targetUser = response.data.user;
+                const role = targetUser.rol.toUpperCase();
                 if (planPending) {
                     navigate('/checkout', { state: { plan: planPending } });
-                } else if (targetUser.rol === 'ADMIN' || targetUser.rol === 'COACH') {
+                } else if (role === 'ADMIN' || role === 'COACH') {
                     navigate('/erp');
                 } else {
                     navigate('/dashboard');

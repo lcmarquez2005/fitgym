@@ -78,7 +78,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { name: "Control Acceso", icon: <ShieldCheck size={20} />, roles: ['ADMIN', 'COACH'] },
     ];
 
-    const menuItems = allMenuItems.filter(item => user && item.roles.includes(user.rol));
+    const menuItems = allMenuItems.filter(item => user && item.roles.map(r => r.toUpperCase()).includes(user.rol.toUpperCase()));
 
     const toggleSidebar = () => setIsOpen(!isOpen);
 

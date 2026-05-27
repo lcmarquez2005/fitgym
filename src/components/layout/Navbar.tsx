@@ -3,7 +3,7 @@ import { useAuth } from "@context/AuthContext";
 
 const Navbar = ({ isDark = false }: { isDark?: boolean }) => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
@@ -45,12 +45,23 @@ const Navbar = ({ isDark = false }: { isDark?: boolean }) => {
             <a href="#planes-section" onClick={(e) => handleScroll(e, "planes-section")} className={`text-sm font-semibold hover:text-[#606DE5] transition-colors ${isDark ? 'text-gray-300 hover:text-[#606DE5]' : 'text-black'}`}>Planes</a>
             <a href="#testimonios-section" onClick={(e) => handleScroll(e, "testimonios-section")} className={`text-sm font-semibold hover:text-[#606DE5] transition-colors ${isDark ? 'text-gray-300 hover:text-[#606DE5]' : 'text-black'}`}>Testimonios</a>
           </div>
-
+ 
           {/* Botón de Login o Dashboard */}
           {isAuthenticated ? (
             <button 
               className={`py-3 px-6 rounded-3xl hover:opacity-90 transition-all active:scale-95 shadow-md font-bold text-base cursor-pointer ${isDark ? 'bg-white text-black' : 'bg-black text-white'}`}
-              onClick={() => navigate("/erp")} 
+              onClick={() => {
+                if (user) {
+                  const role = user.rol.toUpperCase();
+                  if (role === 'ADMIN' || role === 'COACH') {
+                    navigate("/erp");
+                  } else {
+                    navigate("/dashboard");
+                  }
+                } else {
+                  navigate("/dashboard");
+                }
+              }} 
             >
               Dashboard
             </button>

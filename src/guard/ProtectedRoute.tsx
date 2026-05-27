@@ -9,7 +9,7 @@ interface ProtectedRouteProps {
 }
 
 export const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
-    const { isAuthenticated, user, isLoading } = useAuth();
+    const { isAuthenticated, user, isLoading, logout } = useAuth();
 
     // Mientras carga, mostrar spinner
     if (isLoading) {
@@ -22,12 +22,18 @@ export const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) 
 
     // Si no está autenticado, redirigir al login
     if (!isAuthenticated) {
-        return <Navigate to="/register" replace />;
+        return <Navigate to="/login" replace />;
     }
 
     // Si hay roles especificados, verificar que el usuario tenga uno de ellos
-    if (allowedRoles && user && !allowedRoles.includes(user.rol)) {
-        return <Navigate to="/" replace />; // O a una página de "No autorizado"
+    if (allowedRoles && user) {
+        const hasRole = allowedRoles.some(
+            (role) => role.toUpperCase() === user.rol.toUpperCase()
+        );
+        if (!hasRole) {
+            logout(); // Cerrar sesión para evitar quedar atrapado en rol no autorizado
+            return <Navigate to="/login" replace />;
+        }
     }
 
     // Todo bien, mostrar la página protegida

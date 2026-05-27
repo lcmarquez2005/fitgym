@@ -26,6 +26,7 @@ export const getToken = (): string | null => {
  */
 export const clearToken = (): void => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
 };
 
 /**
