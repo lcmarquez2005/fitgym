@@ -4,13 +4,13 @@ import { resolve } from 'path';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  console.log('VITE: Proxy target is', env.VITE_API_TARGET || 'http://localhost:8080');
+  console.log('VITE: Proxy target is', env.VITE_API_TARGET);
   return {
     plugins: [react()],
     server: {
       proxy: {
         '/api': {
-          target: env.VITE_API_TARGET || 'http://localhost:8080',
+          target: env.VITE_API_TARGET,
           changeOrigin: true,
         },
       },

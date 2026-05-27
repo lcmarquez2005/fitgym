@@ -4,7 +4,6 @@ import Footer from "@layout/Footer";
 import Sidebar from "@layout/Sidebar";
 import { PlanesService, type Plan } from "@services/planes.service";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@context/AuthContext";
 import { 
   Dumbbell, 
   Flame, 
@@ -30,7 +29,7 @@ const LandingPage: React.FC = () => {
     return savedTheme === "dark";
   });
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+
 
   useEffect(() => {
     const loadPlanes = async () => {
@@ -72,11 +71,7 @@ const LandingPage: React.FC = () => {
   };
 
   const handleSelectPlan = (plan: Plan) => {
-    if (isAuthenticated) {
-      navigate('/checkout', { state: { plan } });
-    } else {
-      navigate('/register', { state: { planPendingSelection: plan } });
-    }
+    navigate('/registro', { state: { planPendingSelection: plan } });
   };
 
   return (

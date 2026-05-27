@@ -55,13 +55,13 @@ This file records implemented functionalities and pending tasks.
     - [x] Implemented smooth CSS scroll snapping for all landing page sections.
     - [x] Reduced dimensions and spacing of pricing cards to accommodate multiple membership items horizontally.
     - [x] Removed hard dark borders and enhanced glassmorphism/backdrop-blur elements with colored background spheres.
+    - [x] **Stripe + Google Pay Frontend Integration**: Public registration, live payment QR code generation, link for desktop checkout, and automatic payment detection using endpoint polling, redirected to a success activation page.
 
 ## 🏗️ In Progress
-- [ ] Real Checkout payment gateway integration (Stripe or similar).
 
 ## 📋 Pending Implementation
 - **Payments Module**:
-    - [ ] Real Checkout integration (Stripe or similar) webhook handlers.
+    - [ ] Real Checkout integration (Stripe or similar) webhook handlers in ERP.
     - [ ] Generation of real digital tickets/invoices.
 - **Dynamic ERP Dashboard**:
     - [ ] Charts connected to real backend data.

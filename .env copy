@@ -4,6 +4,8 @@
 VITE_API_URL=/api
 VITE_API_TARGET=http://3.230.123.181:8080
 
+VITE_API_URL=https://fitgym-backend-hrwj.onrender.com/api
+VITE_STRIPE_PUBLISHABLE_KEY=xxx
 # --- CONFIGURACIÓN PARA RENDER (HTTPS) ---
 # Si usas HTTPS, puedes saltarte el proxy y usar la URL completa.
 # VITE_API_URL=https://tu-backend.onrender.com/api

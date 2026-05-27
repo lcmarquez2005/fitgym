@@ -10,6 +10,8 @@ import { Toaster } from 'sonner';
 import LandingPage from '@pages/client/Bienvenida';
 import CheckoutPage from '@pages/client/CheckoutPage/index';
 import TicketPage from '@pages/client/TicketPage';
+import { RegistroPage } from '@pages/client/RegistroPage';
+import { RegistroExitoso } from '@pages/client/RegistroExitoso';
 
 // =============================================
 // PÁGINAS ERP (Protegidas)
@@ -43,7 +45,9 @@ const RouterApp = () => {
                 {/* RUTAS PÚBLICAS - LANDING PAGE                 */}
                 {/* ============================================= */}
                 <Route path="/" element={<LandingPage />} />
+                <Route path="/registro" element={<RegistroPage />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/registro-exitoso" element={<RegistroExitoso />} />
                 <Route path="/ticket" element={<TicketPage />} />
                 <Route path="/control-acceso" element={<ControlAcceso />} />
 

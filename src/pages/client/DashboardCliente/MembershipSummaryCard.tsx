@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import type { ClienteResumen } from "@services/dashboard.service";
+import { ChevronRight, Sparkles, CheckCircle2 } from "lucide-react";
 
 interface MembershipSummaryCardProps {
   images: {
@@ -11,18 +12,31 @@ interface MembershipSummaryCardProps {
 }
 
 const MembershipSummaryCard: React.FC<MembershipSummaryCardProps> = ({ images, data, onViewHistory }) => {
+  const [isDarkMode] = useState<boolean>(() => {
+    return localStorage.getItem("theme") === "dark";
+  });
+
   const formatDate = (dateStr?: string) => {
     if (!dateStr) return "S/D";
-    return new Date(dateStr).toLocaleDateString('es-ES', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-    });
+    try {
+      return new Date(dateStr).toLocaleDateString('es-ES', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+      });
+    } catch {
+      return dateStr;
+    }
   };
 
   return (
-    <div className="bg-white rounded-[32px] p-8 shadow-sm flex flex-col md:flex-row w-full xl:w-7/12 items-center gap-8 overflow-visible">
-      {/* SECCIÓN GRÁFICA (Izquierda dentro de la tarjeta) */}
+    <div className={`rounded-3xl p-8 border transition-all duration-300 flex flex-col lg:flex-row w-full xl:w-7/12 items-center gap-8 backdrop-blur-md relative z-20 ${
+      isDarkMode 
+        ? "bg-[#111827]/70 border-gray-800 shadow-2xl" 
+        : "bg-white border-gray-100 shadow-xl"
+    }`}>
+      
+      {/* SECCIÓN GRÁFICA (Izquierda dentro de la tarjeta - Posicionamiento absoluto original recuperado) */}
       <div className="relative w-[280px] h-[300px] shrink-0">
         {/* Círculo Morado (FONDO) */}
         <img 
@@ -40,38 +54,58 @@ const MembershipSummaryCard: React.FC<MembershipSummaryCardProps> = ({ images, d
       </div>
 
       {/* SECCIÓN DATOS (Derecha dentro de la tarjeta) */}
-      <div className="flex flex-col gap-2 w-full">
-        <h3 className="text-black text-2xl font-bakbak uppercase mb-4 tracking-tight">Resumen de membresía</h3>
+      <div className="flex flex-col gap-2 w-full min-w-0 relative z-20">
+        <h3 className="text-lg font-black uppercase tracking-tight mb-4 flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-[#606DE5]" /> Resumen del Plan
+        </h3>
         
-        <div className="space-y-4 text-sm font-inter">
-          <div className="flex justify-between items-center border-b border-gray-50 pb-2">
-            <span className="font-bold text-gray-400 uppercase text-[10px] tracking-widest">Tipo actual</span>
-            <span className="text-slate-700 font-extrabold">{data?.tipoMembresia || "Cargando..."}</span>
+        <div className="space-y-3.5 text-xs font-inter">
+          <div className="flex justify-between items-center border-b border-gray-855/5 dark:border-gray-155/5 pb-2">
+            <span className={`font-bold uppercase text-[10px] tracking-wider ${isDarkMode ? "text-gray-500" : "text-gray-400"}`}>
+              Tipo de membresía
+            </span>
+            <span className="font-extrabold truncate ml-4">{data?.tipoMembresia || "Cargando..."}</span>
           </div>
-          <div className="flex justify-between items-center border-b border-gray-50 pb-2">
-            <span className="font-bold text-gray-400 uppercase text-[10px] tracking-widest">Fecha inicio</span>
-            <span className="text-slate-700 font-extrabold">{formatDate(data?.fechaInicio)}</span>
+          
+          <div className="flex justify-between items-center border-b border-gray-855/5 dark:border-gray-155/5 pb-2">
+            <span className={`font-bold uppercase text-[10px] tracking-wider ${isDarkMode ? "text-gray-500" : "text-gray-400"}`}>
+              Fecha de Inicio
+            </span>
+            <span className="font-extrabold ml-4">{formatDate(data?.fechaInicio)}</span>
           </div>
-          <div className="flex justify-between items-center border-b border-gray-50 pb-2">
-            <span className="font-bold text-gray-400 uppercase text-[10px] tracking-widest">Vencimiento</span>
-            <span className="text-[#3ACAFF] font-extrabold underline decoration-2 underline-offset-4">{formatDate(data?.fechaFin)}</span>
+          
+          <div className="flex justify-between items-center border-b border-gray-855/5 dark:border-gray-155/5 pb-2">
+            <span className={`font-bold uppercase text-[10px] tracking-wider ${isDarkMode ? "text-gray-500" : "text-gray-400"}`}>
+              Fecha de Vencimiento
+            </span>
+            <span className="text-cyan-500 font-extrabold underline decoration-2 underline-offset-4 ml-4">
+              {formatDate(data?.fechaFin)}
+            </span>
           </div>
-          <div className="flex justify-between items-center border-b border-gray-50 pb-2">
-            <span className="font-bold text-gray-400 uppercase text-[10px] tracking-widest">Costo Mensual</span>
-            <span className="text-slate-700 font-extrabold">${data?.costoMensual} MXN</span>
+          
+          <div className="flex justify-between items-center border-b border-gray-855/5 dark:border-gray-155/5 pb-2">
+            <span className={`font-bold uppercase text-[10px] tracking-wider ${isDarkMode ? "text-gray-500" : "text-gray-400"}`}>
+              Inversión Mensual
+            </span>
+            <span className="font-extrabold ml-4">${data?.costoMensual} MXN</span>
           </div>
-          <div className="flex justify-between items-center p-3 bg-indigo-50 rounded-2xl">
-            <span className="font-bold text-indigo-400 uppercase text-[10px] tracking-widest">Próximo Mes Pagado</span>
-            <span className="text-indigo-600 font-black uppercase text-base">{data?.mesPagado}</span>
+
+          <div className={`flex justify-between items-center p-3.5 rounded-2xl border ${
+            isDarkMode ? "bg-indigo-500/5 border-indigo-500/10 text-indigo-300" : "bg-indigo-50/50 border-indigo-50 text-indigo-600"
+          }`}>
+            <span className="font-bold uppercase text-[10px] tracking-wider">Próxima Renovación</span>
+            <span className="font-black uppercase text-sm flex items-center gap-1.5 ml-4 shrink-0">
+              <CheckCircle2 className="w-4 h-4 stroke-[2.5]" /> {data?.mesPagado || "N/A"}
+            </span>
           </div>
         </div>
 
         <div className="mt-6 flex justify-start">
           <button 
             onClick={onViewHistory}
-            className="bg-[#3ACAFF] hover:bg-[#32b2e0] text-white text-[10px] font-black uppercase tracking-[2px] py-4 px-10 rounded-2xl shadow-xl shadow-cyan-100 transition-all active:scale-95 cursor-pointer"
+            className="w-full md:w-auto bg-[#3ACAFF] hover:bg-[#2cb2e0] text-white text-[10px] font-black uppercase tracking-[2px] py-4 px-8 rounded-2xl shadow-md hover:shadow-lg shadow-cyan-500/10 transition-all active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5"
           >
-            Ver historial de pagos
+            Ver historial de pagos <ChevronRight className="w-4 h-4" />
           </button>
         </div>
       </div>
