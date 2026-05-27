@@ -8,8 +8,14 @@ console.log('DEBUG: VITE_API_URL is', import.meta.env.VITE_API_URL);
 
 export const handleResponse = async <T = any>(response: Response): Promise<T> => {
   if (!response.ok) {
-    // Si el token es inválido o ha expirado, el servidor responderá con 401 o 403.
-    if (response.status === 401 || response.status === 403) {
+    // Si es una ruta pública (autenticación o chequeo de kiosko), un 401/403 es una falla esperada (ej: credenciales incorrectas, no verificado).
+    // No debe gatillar expiración de sesión ni recarga de página.
+    const isPublicRoute = response.url.includes('/auth/') || 
+                          response.url.includes('/socios/check-user/') ||
+                          response.url.includes('/users/upload-photo');
+
+    // Si el token privado es inválido o ha expirado, el servidor responderá con 401 o 403.
+    if ((response.status === 401 || response.status === 403) && !isPublicRoute) {
       clearToken();
       // Usamos location.reload() para forzar una recarga completa,
       // lo que llevará al usuario a la página de login si la ruta está protegida.
