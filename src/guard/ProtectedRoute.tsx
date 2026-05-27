@@ -22,7 +22,8 @@ export const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) 
 
     // Si no está autenticado, redirigir al login
     if (!isAuthenticated) {
-        return <Navigate to="/login" replace />;
+        const isErpRoute = allowedRoles?.some(r => ['ADMIN', 'COACH'].includes(r.toUpperCase()));
+        return <Navigate to={isErpRoute ? "/erp/login" : "/login"} replace />;
     }
 
     // Si hay roles especificados, verificar que el usuario tenga uno de ellos
@@ -32,7 +33,8 @@ export const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) 
         );
         if (!hasRole) {
             logout(); // Cerrar sesión para evitar quedar atrapado en rol no autorizado
-            return <Navigate to="/login" replace />;
+            const isErpRoute = allowedRoles.some(r => ['ADMIN', 'COACH'].includes(r.toUpperCase()));
+            return <Navigate to={isErpRoute ? "/erp/login" : "/login"} replace />;
         }
     }
 

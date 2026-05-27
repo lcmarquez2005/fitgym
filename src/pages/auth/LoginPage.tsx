@@ -10,21 +10,30 @@ export const LoginPage = () => {
     const location = useLocation();
     const { login, user, isAuthenticated } = useAuth();
     const planPending = location.state?.planPendingSelection;
+    const isErpLogin = location.pathname.startsWith('/erp');
 
     // Redirección en base a rol y estado al montar si ya está autenticado
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (isAuthenticated && user && token) {
             const role = user.rol.toUpperCase();
-            if (planPending) {
-                navigate('/checkout', { state: { plan: planPending } });
-            } else if (role === 'ADMIN' || role === 'COACH') {
+            
+            // Si están en el portal de clientes pero son admins, o en el del erp pero son socios
+            if (!isErpLogin && (role === 'ADMIN' || role === 'COACH')) {
                 navigate('/erp');
-            } else {
+            } else if (isErpLogin && (role === 'USER' || role === 'SOCIO')) {
                 navigate('/dashboard');
+            } else {
+                if (planPending) {
+                    navigate('/checkout', { state: { plan: planPending } });
+                } else if (role === 'ADMIN' || role === 'COACH') {
+                    navigate('/erp');
+                } else {
+                    navigate('/dashboard');
+                }
             }
         }
-    }, [isAuthenticated, user, planPending, navigate]);
+    }, [isAuthenticated, user, planPending, navigate, isErpLogin]);
 
     const [formData, setFormData] = useState<LoginRequest>({
         email: '',
@@ -46,11 +55,19 @@ export const LoginPage = () => {
             const response = await AuthService.login(formData);
 
             if (response.success && response.data) {
+                const targetUser = response.data.user;
+                const role = targetUser.rol.toUpperCase();
+                
+                // Si están en el portal de clientes (/login) pero es un administrador/entrenador, bloquear acceso
+                if (!isErpLogin && (role === 'ADMIN' || role === 'COACH')) {
+                    setError('Acceso no permitido: Las cuentas administrativas deben iniciar sesión desde el portal del ERP.');
+                    setLoading(false);
+                    return;
+                }
+
                 // Guardar en contexto
                 login(response.data.user, response.data.token);
                 
-                const targetUser = response.data.user;
-                const role = targetUser.rol.toUpperCase();
                 if (planPending) {
                     navigate('/checkout', { state: { plan: planPending } });
                 } else if (role === 'ADMIN' || role === 'COACH') {
@@ -89,8 +106,12 @@ export const LoginPage = () => {
                     <div className="w-20 h-20 bg-[#F6F8FE] rounded-3xl flex items-center justify-center mb-4 shadow-inner">
                         <img src={logoImage} alt="FitGym Logo" className="w-12 h-12 object-contain" />
                     </div>
-                    <h2 className="text-[32px] font-bakbak text-black uppercase leading-tight">Iniciar Sesión</h2>
-                    <p className="text-gray-500 font-medium mt-2">Accede a tu panel de FitGym</p>
+                    <h2 className="text-[32px] font-bakbak text-black uppercase leading-tight">
+                        {isErpLogin ? "ERP Access" : "Iniciar Sesión"}
+                    </h2>
+                    <p className="text-gray-500 font-medium mt-2">
+                        {isErpLogin ? "Accede al portal administrativo de FitGym" : "Accede a tu panel de socio de FitGym"}
+                    </p>
                 </div>
 
                 {planPending && (
@@ -165,14 +186,16 @@ export const LoginPage = () => {
                     </button>
                 </form>
 
-                <div className="mt-8 text-center pt-6 border-t border-gray-100">
-                    <p className="text-gray-500 font-medium">
-                        ¿No tienes cuenta todavía?{' '}
-                        <Link to="/register" className="text-[#606DE5] hover:underline font-bold ml-1">
-                            Regístrate aquí
-                        </Link>
-                    </p>
-                </div>
+                {!isErpLogin && (
+                    <div className="mt-8 text-center pt-6 border-t border-gray-100">
+                        <p className="text-gray-500 font-medium">
+                            ¿No tienes cuenta todavía?{' '}
+                            <Link to="/register" className="text-[#606DE5] hover:underline font-bold ml-1">
+                                Regístrate aquí
+                            </Link>
+                        </p>
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -51,6 +51,7 @@ const RouterApp = () => {
                 {/* RUTAS DE AUTENTICACIÓN                        */}
                 {/* ============================================= */}
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="/erp/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/reset-password" element={<ResetPasswordPage />} />

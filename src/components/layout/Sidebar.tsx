@@ -127,7 +127,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate('/erp/login');
     setIsOpen(false);
   };
 
